@@ -22,12 +22,12 @@ export type IContractDeployment = {
   address: string;
 
   /** Types of transactions to listen for */
-  listenForTransactions: LISTEN_FOR_TRANSACTIONS[];
+  listenForTransactions: LISTEN_FOR_TRANSACTIONS[] | null;
 };
 
 /** Configuration for a smart contract event */
 export type IContractEventConfig = {
-  /** Event signature */
+  /** Topic of the event */
   signature: string;
 
   /** Interface for the event */
