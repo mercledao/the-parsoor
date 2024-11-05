@@ -1,6 +1,7 @@
 import { CHAIN_ID } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
 import RhinoFiDepositAbi from "./abis/RhinoFiDeposit.json";
+import { ethers } from "ethers";
 
 enum CONTRACT_ENUM {
   DEPOSIT_CONTRACT = "DVFDepositContract",
@@ -8,12 +9,17 @@ enum CONTRACT_ENUM {
 
 const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.DEPOSIT_CONTRACT]: {
-    abi: RhinoFiDepositAbi,
+    interface: new ethers.Interface(RhinoFiDepositAbi),
     deployments: {
       [CHAIN_ID.ARBITRUM]: "0x0000000000000000000000000000000000000000",
     },
 
-    events: {},
+    events: {
+      Swap: {
+        signature: "",
+        abi: "",
+      },
+    },
   },
 };
 
