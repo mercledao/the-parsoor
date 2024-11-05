@@ -1,5 +1,6 @@
+import { protocols } from "../config";
 import RhinoFi from "./RhinoFi";
 
 export const parsers = {
-  rhinoFi: new RhinoFi(),
+  [protocols.rhinofi.identifier]: new RhinoFi(),
 };

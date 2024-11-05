@@ -1,11 +1,10 @@
-import { contracts } from "./contracts";
 import {
   IBridgeInAction,
   IBridgeOutAction,
   ITransaction,
   ITransactionAction,
 } from "../../types";
-import { CONTRACT_ENUM } from "./contracts";
+import { CONTRACT_ENUM, contracts } from "./contracts";
 import { ProtocolHelper } from "../../helpers";
 import { ethers } from "ethers";
 import { ACTION_ENUM } from "../../enums";

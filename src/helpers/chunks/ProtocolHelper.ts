@@ -1,5 +1,4 @@
-import { ITransaction } from "../../types";
-import { IProtocolContractDefinitions } from "../../types/chunks/IContractDefinition";
+import { ITransaction, IProtocolContractDefinitions } from "../../types";
 import { ethers } from "ethers";
 
 export class ProtocolHelper {
