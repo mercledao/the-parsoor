@@ -1,7 +1,7 @@
+import { ethers } from "ethers";
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
 import RhinoFiDepositAbi from "./abis/RhinoFiDeposit.json";
-import { ethers } from "ethers";
 
 enum CONTRACT_ENUM {
   // The deposit contract
