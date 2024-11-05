@@ -1,4 +1,4 @@
-import { ProtocolHelper } from "../../../helpers";
+import { ProtocolHelper } from "../../helpers";
 import { protocols } from "../../config";
 import { ITransaction, ITransactionAction, IProtocolParser } from "../../types";
 import { contracts } from "./contracts";

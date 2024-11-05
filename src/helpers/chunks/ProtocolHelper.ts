@@ -1,4 +1,4 @@
-import { IProtocolContractDefinitions } from "../../src/types/chunks/IContractDefinition";
+import { IProtocolContractDefinitions } from "../../types/chunks/IContractDefinition";
 
 export class ProtocolHelper {
   public static extractAllContracts(
