@@ -1,2 +1,2 @@
-export * from "./protocols";
 export * from "./chainConfig";
+export * from "./protocols";

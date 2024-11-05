@@ -16,6 +16,7 @@ export type IContractConfig = {
   events: Record<string, IContractEventConfig>;
 };
 
+/** Deployment configuration for a smart contract */
 export type IContractDeployment = {
   /** Address of the contract */
   address: string;

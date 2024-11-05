@@ -1,10 +1,10 @@
-import { ProtocolHelper } from "../../helpers";
 import { protocols } from "../../config";
+import { ProtocolHelper } from "../../helpers";
 import {
   IProtocolContractDefinitions,
+  IProtocolParserExport,
   ITransaction,
   ITransactionAction,
-  IProtocolParserExport,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
 import { DepositContractParser } from "./parser";

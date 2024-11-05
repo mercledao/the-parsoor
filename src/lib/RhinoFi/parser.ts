@@ -1,3 +1,6 @@
+import { ethers } from "ethers";
+import { ACTION_ENUM } from "../../enums";
+import { ProtocolHelper } from "../../helpers";
 import {
   IBridgeInAction,
   IBridgeOutAction,
@@ -5,9 +8,6 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import { ProtocolHelper } from "../../helpers";
-import { ethers } from "ethers";
-import { ACTION_ENUM } from "../../enums";
 
 enum CONTRACT_FUNCTION_NAMES {
   // Function for depositing tokens to the bridge
