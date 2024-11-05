@@ -10,14 +10,10 @@ import { ethers } from "ethers";
 import { ACTION_ENUM } from "../../enums";
 
 enum CONTRACT_FUNCTION_NAMES {
-  /**
-   * Function for depositing tokens to the bridge
-   */
+  // Function for depositing tokens to the bridge
   DEPOSIT = "deposit",
 
-  /**
-   * Function for depositing native tokens to the bridge
-   */
+  // Function for depositing native tokens to the bridge
   DEPOSIT_NATIVE = "depositNative",
 }
 

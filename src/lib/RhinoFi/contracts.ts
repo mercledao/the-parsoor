@@ -1,4 +1,4 @@
-import { CHAIN_ID } from "../../enums";
+import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
 import RhinoFiDepositAbi from "./abis/RhinoFiDeposit.json";
 import { ethers } from "ethers";
@@ -17,7 +17,10 @@ const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.DEPOSIT_CONTRACT]: {
     interface: new ethers.Interface(RhinoFiDepositAbi),
     deployments: {
-      [CHAIN_ID.ARBITRUM]: "0x10417734001162Ea139e8b044DFe28DbB8B28ad0",
+      [CHAIN_ID.ARBITRUM]: {
+        address: "0x10417734001162Ea139e8b044DFe28DbB8B28ad0",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
     },
 
     events: {

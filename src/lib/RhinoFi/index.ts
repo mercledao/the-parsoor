@@ -1,9 +1,13 @@
 import { ProtocolHelper } from "../../helpers";
 import { protocols } from "../../config";
-import { ITransaction, ITransactionAction } from "../../types";
+import {
+  IProtocolContractDefinitions,
+  ITransaction,
+  ITransactionAction,
+  IProtocolParserExport,
+} from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
 import { DepositContractParser } from "./parser";
-import { IProtocolParserExport } from "../../types";
 
 export default class RhinoFi implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
@@ -31,7 +35,7 @@ export default class RhinoFi implements IProtocolParserExport {
     return actions;
   }
 
-  public getListenerContracts(): string[] {
-    return ProtocolHelper.extractAllContracts(contracts);
+  public getProtocolContracts(): IProtocolContractDefinitions {
+    return contracts;
   }
 }

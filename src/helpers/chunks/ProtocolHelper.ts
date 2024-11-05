@@ -1,5 +1,4 @@
-import { contracts } from "../../lib/RhinoFi/contracts";
-import { ITransaction, ITransactionAction } from "../../types";
+import { ITransaction } from "../../types";
 import { IProtocolContractDefinitions } from "../../types/chunks/IContractDefinition";
 import { ethers } from "ethers";
 
@@ -47,7 +46,7 @@ export class ProtocolHelper {
       protocolContracts[contractName].deployments
     ).find(
       (deployment) =>
-        ethers.getAddress(deployment) === ethers.getAddress(txn.from)
+        ethers.getAddress(deployment.address) === ethers.getAddress(txn.from)
     );
 
     return Boolean(hasContract);
@@ -71,8 +70,9 @@ export class ProtocolHelper {
 
     // Check if the transaction to address is a listener contract for the given contract name
     const hasContract =
-      ethers.getAddress(contracts[contractName].deployments[txn.chainId]) ===
-      ethers.getAddress(txn.to);
+      ethers.getAddress(
+        protocolContracts[contractName].deployments[txn.chainId].address
+      ) === ethers.getAddress(txn.to);
 
     return hasContract;
   }
@@ -89,7 +89,7 @@ export class ProtocolHelper {
 
     Object.values(protocolContracts).forEach((contracts) => {
       Object.values(contracts.deployments).forEach((deployment) => {
-        listenerContracts.push(deployment);
+        listenerContracts.push(deployment.address);
       });
     });
 
