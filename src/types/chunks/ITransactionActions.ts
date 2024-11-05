@@ -69,7 +69,7 @@ export type IBridgeOutAction = {
   /**
    * The chain the funds are going to
    */
-  toChain?: CHAIN_ID;
+  toChain: CHAIN_ID | null;
   /**
    * The token being bridged out
    */
@@ -77,7 +77,7 @@ export type IBridgeOutAction = {
   /**
    * The token being bridged in
    */
-  toToken?: string;
+  toToken: string | null;
   /**
    * The amount being bridged out
    */
@@ -85,7 +85,7 @@ export type IBridgeOutAction = {
   /**
    * The amount being bridged in
    */
-  toAmount?: string;
+  toAmount: string | null;
   /**
    * The sender of the bridged funds
    */
@@ -93,5 +93,5 @@ export type IBridgeOutAction = {
   /**
    * The recipient of the bridged funds
    */
-  recipient?: string;
+  recipient: string | null;
 };

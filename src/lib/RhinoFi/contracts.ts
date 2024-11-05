@@ -4,20 +4,29 @@ import RhinoFiDepositAbi from "./abis/RhinoFiDeposit.json";
 import { ethers } from "ethers";
 
 enum CONTRACT_ENUM {
+  // The deposit contract
   DEPOSIT_CONTRACT = "DVFDepositContract",
+}
+
+enum EVENT_ENUM {
+  // Event for when a deposit is done
+  BRIDGED_DEPOSIT = "BridgedDeposit",
 }
 
 const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.DEPOSIT_CONTRACT]: {
     interface: new ethers.Interface(RhinoFiDepositAbi),
     deployments: {
-      [CHAIN_ID.ARBITRUM]: "0x0000000000000000000000000000000000000000",
+      [CHAIN_ID.ARBITRUM]: "0x10417734001162Ea139e8b044DFe28DbB8B28ad0",
     },
 
     events: {
-      Swap: {
-        signature: "",
-        abi: "",
+      [EVENT_ENUM.BRIDGED_DEPOSIT]: {
+        signature:
+          "0x573284f4c36da6a8d8d84cd06662235f8a770cc98e8c80e304b8f382fdc3dca2",
+        abi: new ethers.Interface([
+          "event BridgedDeposit(address indexed user, address indexed token, uint256 amount)",
+        ]),
       },
     },
   },

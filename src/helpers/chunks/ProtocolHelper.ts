@@ -1,9 +1,31 @@
 import { contracts } from "../../lib/RhinoFi/contracts";
-import { ITransaction } from "../../types";
+import { ITransaction, ITransactionAction } from "../../types";
 import { IProtocolContractDefinitions } from "../../types/chunks/IContractDefinition";
 import { ethers } from "ethers";
 
 export class ProtocolHelper {
+  /**
+   * Parses a transaction
+   * @param transaction - The transaction
+   * @param contractName - The name of the contract
+   * @param protocolContracts - The protocol contracts
+   * @returns The parsed transaction
+   */
+  public static parseTransaction(
+    transaction: ITransaction,
+    contractName: string,
+    protocolContracts: IProtocolContractDefinitions
+  ): ethers.TransactionDescription {
+    const contractInterface = protocolContracts[contractName].interface;
+    const decoded = contractInterface.parseTransaction(transaction);
+
+    if (!decoded) {
+      throw new Error("Failed to parse transaction");
+    }
+
+    return decoded;
+  }
+
   /**
    * Checks if the transaction from address is a listener contract for the given contract name
    * @param txn - The transaction

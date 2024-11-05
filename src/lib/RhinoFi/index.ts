@@ -1,10 +1,11 @@
 import { ProtocolHelper } from "../../helpers";
 import { protocols } from "../../config";
-import { ITransaction, ITransactionAction, IProtocolParser } from "../../types";
+import { ITransaction, ITransactionAction } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import { ethers } from "ethers";
+import { DepositContractParser } from "./parser";
+import { IProtocolParserExport } from "../../types";
 
-export default class RhinoFi implements IProtocolParser {
+export default class RhinoFi implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
 
   constructor() {
@@ -23,10 +24,11 @@ export default class RhinoFi implements IProtocolParser {
         contracts
       )
     ) {
-      const contractInterface =
-        contracts[CONTRACT_ENUM.DEPOSIT_CONTRACT].interface;
-      const decoded = contractInterface.parseTransaction(transaction);
+      const action = DepositContractParser.parseTransaction(transaction);
+      actions.push(...action);
     }
+
+    return actions;
   }
 
   public getListenerContracts(): string[] {

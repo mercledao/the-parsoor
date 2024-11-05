@@ -21,6 +21,6 @@ export type IContractEventConfig = {
   /** Event signature */
   signature: string;
 
-  /** Event abi */
-  abi: any;
+  /** Interface for the event */
+  abi: ethers.Interface;
 };
