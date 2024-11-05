@@ -1,0 +1,6 @@
+export enum ACTION_ENUM {
+  SINGLE_SWAP,
+  MULTI_SWAP,
+  BRIDGE_IN,
+  BRIDGE_OUT,
+}
