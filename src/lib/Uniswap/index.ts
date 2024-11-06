@@ -21,6 +21,11 @@ export default class Uniswap implements IProtocolParserExport {
   ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
 
+    console.log('Checking transaction:', {
+      to: transaction.to,
+      contractAddress: contracts[CONTRACT_ENUM.ROUTER].deployments[transaction.chainId].address
+    });
+
     if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
@@ -28,8 +33,11 @@ export default class Uniswap implements IProtocolParserExport {
         contracts
       )
     ) {
+      console.log('Transaction matches router contract');
       const action = UniswapParser.parseTransaction(transaction);
       actions.push(...action);
+    } else {
+      console.log('Transaction does not match router contract');
     }
 
     return actions;

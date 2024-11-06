@@ -1,4 +1,6 @@
-export const protocols = {
+import { IProtocolDefinitionMap } from '../types';
+
+export const protocols: IProtocolDefinitionMap = {
   rhinofi: {
     identifier: "rhinofi",
     name: "RhinoFi",

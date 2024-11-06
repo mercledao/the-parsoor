@@ -28,6 +28,17 @@ export class UniswapParser {
       contracts
     );
 
+    console.log('Transaction:', {
+      to: transaction.to,
+      value: transaction.value,
+      data: transaction.data
+    });
+
+    console.log('Parsed transaction:', {
+      name: parsedTxn?.name,
+      args: parsedTxn?.args
+    });
+
     switch (parsedTxn.name) {
       case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_TOKENS_FOR_TOKENS:
       case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE:
