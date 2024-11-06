@@ -1,4 +1,4 @@
-import { IProtocolContractDefinitions } from "./IContractDefinition";
+import { IProtocolContractDefinitions } from './IContractDefinition';
 
 /** Interface for a protocol parser */
 export interface IProtocolParserExport {
