@@ -1,5 +1,16 @@
 import { ethers } from 'ethers';
-import { chainConfig, parsers, protocols } from '../src';
+import {
+  ACTION_ENUM,
+  CHAIN_ID,
+  chainConfig,
+  IBridgeInAction,
+  IBridgeOutAction,
+  IProtocolTestTransaction,
+  ITransaction,
+  ITransactionAction,
+  parsers,
+  protocols
+} from '../src';
 
 export class ProtocolParserUtils {
   public readonly protocolIdentifier: string;
@@ -25,5 +36,79 @@ export class ProtocolParserUtils {
       protocols[this.protocolIdentifier].identifier === this.protocolIdentifier;
 
     expect(hasCorrectDefinition).toBe(true);
+  }
+
+  public async fetchAndParseTestTxn(data: IProtocolTestTransaction): Promise<ITransactionAction[]> {
+    const formattedTxn = await this.fetchAndFormatTransaction(data.chainId, data.txnHash);
+    const actions = await parsers[this.protocolIdentifier].parseTransaction(formattedTxn);
+    return actions;
+  }
+
+  private async fetchAndFormatTransaction(chainId: CHAIN_ID, txnHash: string): Promise<ITransaction> {
+    const [txn, receipts] = await Promise.all([
+      this.rpcPool[chainId].getTransaction(txnHash),
+      this.rpcPool[chainId].getTransactionReceipt(txnHash)
+    ]);
+
+    const timestamp = (await this.rpcPool[chainId].getBlock(txn.blockNumber)).timestamp * 1000;
+
+    const formattedTxn: ITransaction = {
+      chainId: chainId,
+      hash: txnHash,
+      from: txn.from,
+      to: txn.to,
+      value: txn.value.toString(),
+      timestamp: timestamp,
+      data: txn.data,
+      logs: receipts.logs.map((log) => ({
+        contractAddress: log.address,
+        topics: log.topics as string[],
+        data: log.data
+      }))
+    };
+
+    return formattedTxn;
+  }
+
+  public assertTestTransactionForData(data: IProtocolTestTransaction, actions: ITransactionAction[]): void {
+    expect(actions.length).toBe(data.emittedActions.length);
+
+    for (let i = 0; i < actions.length; i++) {
+      const expectedAction = data.emittedActions[i];
+      const actualAction = actions[i];
+
+      expect(actualAction.type).toBe(expectedAction.type);
+
+      switch (expectedAction.type) {
+        case ACTION_ENUM.BRIDGE_IN:
+          this.assertBridgeInAction(expectedAction, actualAction as IBridgeInAction);
+          break;
+        case ACTION_ENUM.BRIDGE_OUT:
+          this.assertBridgeOutAction(expectedAction, actualAction as IBridgeOutAction);
+          break;
+      }
+    }
+  }
+
+  public assertBridgeInAction(expectedAction: IBridgeInAction, actualAction: IBridgeInAction): void {
+    expect(actualAction.fromChain).toBe(expectedAction.fromChain);
+    expect(actualAction.toChain).toBe(expectedAction.toChain);
+    expect(actualAction.fromToken).toBe(expectedAction.fromToken);
+    expect(actualAction.toToken).toBe(expectedAction.toToken);
+    expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
+    expect(actualAction.toAmount).toBe(expectedAction.toAmount);
+    expect(actualAction.sender).toBe(expectedAction.sender);
+    expect(actualAction.recipient).toBe(expectedAction.recipient);
+  }
+
+  public assertBridgeOutAction(expectedAction: IBridgeOutAction, actualAction: IBridgeOutAction): void {
+    expect(actualAction.fromChain).toBe(expectedAction.fromChain);
+    expect(actualAction.toChain).toBe(expectedAction.toChain);
+    expect(actualAction.fromToken).toBe(expectedAction.fromToken);
+    expect(actualAction.toToken).toBe(expectedAction.toToken);
+    expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
+    expect(actualAction.toAmount).toBe(expectedAction.toAmount);
+    expect(actualAction.sender).toBe(expectedAction.sender);
+    expect(actualAction.recipient).toBe(expectedAction.recipient);
   }
 }

@@ -1,42 +1,31 @@
-import { ethers } from "ethers";
-import { ACTION_ENUM } from "../../enums";
-import { ProtocolHelper } from "../../helpers";
-import {
-  IBridgeInAction,
-  IBridgeOutAction,
-  ITransaction,
-  ITransactionAction,
-} from "../../types";
-import { CONTRACT_ENUM, contracts } from "./contracts";
+import { ethers } from 'ethers';
+import { ACTION_ENUM } from '../../enums';
+import { ProtocolHelper } from '../../helpers';
+import { IBridgeInAction, IBridgeOutAction, ITransaction, ITransactionAction } from '../../types';
+import { CONTRACT_ENUM, contracts } from './contracts';
 
 enum CONTRACT_FUNCTION_NAMES {
   // Function for depositing tokens to the bridge
-  DEPOSIT = "deposit",
+  DEPOSIT = 'deposit',
 
   // Function for depositing native tokens to the bridge
-  DEPOSIT_NATIVE = "depositNative",
+  DEPOSIT_NATIVE = 'depositNative',
 
   // Function for withdrawing tokens from the bridge
-  WITHDRAW = "withdrawV2",
+  WITHDRAW = 'withdrawV2',
 
   // Function for withdrawing native tokens from the bridge
-  WITHDRAW_NATIVE = "withdrawNativeV2",
+  WITHDRAW_NATIVE = 'withdrawNativeV2',
 
   // Function for withdrawing tokens from the bridge with native + erc20
-  WITHDRAW_WITH_NATIVE = "withdrawV2WithNative",
+  WITHDRAW_WITH_NATIVE = 'withdrawV2WithNative'
 }
 
 export class DepositContractParser {
-  public static parseTransaction(
-    transaction: ITransaction
-  ): ITransactionAction[] {
+  public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
 
-    const parsedTxn = ProtocolHelper.parseTransaction(
-      transaction,
-      CONTRACT_ENUM.DEPOSIT_CONTRACT,
-      contracts
-    );
+    const parsedTxn = ProtocolHelper.parseTransaction(transaction, CONTRACT_ENUM.DEPOSIT_CONTRACT, contracts);
 
     switch (parsedTxn.name) {
       case CONTRACT_FUNCTION_NAMES.DEPOSIT:
@@ -59,10 +48,7 @@ export class DepositContractParser {
     return actions;
   }
 
-  private static parseWithdraw(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): IBridgeInAction {
+  private static parseWithdraw(transaction: ITransaction, parsedTxn: ethers.TransactionDescription): IBridgeInAction {
     return {
       type: ACTION_ENUM.BRIDGE_IN,
 
@@ -73,10 +59,10 @@ export class DepositContractParser {
       toToken: parsedTxn.args.token,
 
       fromAmount: null,
-      toAmount: parsedTxn.args.amount,
+      toAmount: parsedTxn.args.amount.toString(),
 
       sender: null,
-      recipient: parsedTxn.args.to,
+      recipient: parsedTxn.args.to
     };
   }
 
@@ -94,10 +80,10 @@ export class DepositContractParser {
       toToken: ethers.ZeroAddress,
 
       fromAmount: null,
-      toAmount: parsedTxn.args.amount,
+      toAmount: parsedTxn.args.amount.toString(),
 
       sender: null,
-      recipient: parsedTxn.args.to,
+      recipient: parsedTxn.args.to
     };
   }
 
@@ -116,10 +102,10 @@ export class DepositContractParser {
         toToken: parsedTxn.args.token,
 
         fromAmount: null,
-        toAmount: parsedTxn.args.amountToken,
+        toAmount: parsedTxn.args.amountToken.toString(),
 
         sender: null,
-        recipient: parsedTxn.args.to,
+        recipient: parsedTxn.args.to
       },
       {
         type: ACTION_ENUM.BRIDGE_IN,
@@ -131,18 +117,15 @@ export class DepositContractParser {
         toToken: ethers.ZeroAddress,
 
         fromAmount: null,
-        toAmount: parsedTxn.args.amountNative,
+        toAmount: parsedTxn.args.amountNative.toString(),
 
         sender: null,
-        recipient: parsedTxn.args.to,
-      },
+        recipient: parsedTxn.args.to
+      }
     ];
   }
 
-  private static parseDeposit(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): IBridgeOutAction {
+  private static parseDeposit(transaction: ITransaction, parsedTxn: ethers.TransactionDescription): IBridgeOutAction {
     return {
       type: ACTION_ENUM.BRIDGE_OUT,
 
@@ -152,11 +135,11 @@ export class DepositContractParser {
       fromToken: parsedTxn.args.token,
       toToken: null,
 
-      fromAmount: parsedTxn.args.amount,
+      fromAmount: parsedTxn.args.amount.toString(),
       toAmount: null,
 
       sender: transaction.from,
-      recipient: null,
+      recipient: null
     };
   }
 
@@ -173,11 +156,11 @@ export class DepositContractParser {
       fromToken: ethers.ZeroAddress,
       toToken: null,
 
-      fromAmount: transaction.value,
+      fromAmount: transaction.value.toString(),
       toAmount: null,
 
       sender: transaction.from,
-      recipient: null,
+      recipient: null
     };
   }
 }
