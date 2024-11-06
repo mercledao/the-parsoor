@@ -1,19 +1,19 @@
 import { protocols } from "../../config";
 import { ProtocolHelper } from "../../helpers";
 import {
-    IProtocolContractDefinitions,
-    IProtocolParserExport,
-    ITransaction,
-    ITransactionAction,
+  IProtocolContractDefinitions,
+  IProtocolParserExport,
+  ITransaction,
+  ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import { UniswapV2Parser } from "./parser";
+import { UniswapParser } from "./parser";
 
-export default class UniswapV2 implements IProtocolParserExport {
+export default class Uniswap implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
 
   constructor() {
-    this.protocolIdentifier = protocols.uniswapV2.identifier;
+    this.protocolIdentifier = protocols.uniswap.identifier;
   }
 
   public async parseTransaction(
@@ -28,7 +28,7 @@ export default class UniswapV2 implements IProtocolParserExport {
         contracts
       )
     ) {
-      const action = UniswapV2Parser.parseTransaction(transaction);
+      const action = UniswapParser.parseTransaction(transaction);
       actions.push(...action);
     }
 

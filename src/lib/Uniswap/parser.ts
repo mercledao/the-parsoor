@@ -16,7 +16,7 @@ enum CONTRACT_FUNCTION_NAMES {
   SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE = "swapExactTokensForETHSupportingFeeOnTransferTokens"
 }
 
-export class UniswapV2Parser {
+export class UniswapParser {
   public static parseTransaction(
     transaction: ITransaction
   ): ITransactionAction[] {
