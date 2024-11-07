@@ -1,104 +1,132 @@
-import * as ethers from 'ethers';
+import { ethers } from 'ethers';
 import { ACTION_ENUM } from '../../enums';
 import { ProtocolHelper } from '../../helpers';
-import { ISingleSwapAction, ITransaction, ITransactionAction } from '../../types';
+import { IMultiSwapAction, ISingleSwapAction, ITransaction, ITransactionAction } from '../../types';
 import { COMMAND_ENUM, CONTRACT_ENUM, contracts } from './contracts';
 
 interface V3SwapParams {
   recipient: string;
-  sender: string;
   tokenIn: string;
   tokenOut: string;
   fee: number;
+  sender: string;
   amountIn?: string;
+  amountOutMinimum?: string;
   amountOut?: string;
   amountInMaximum?: string;
-  amountOutMinimum?: string;
 }
 
 export class UniswapV3Parser {
   public static async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
-    const actions: ITransactionAction[] = [];
-
-    // First try to parse router calldata
-    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER, contracts)) {
-      try {
-        const routerActions = await this.parseRouterCalldata(transaction);
-        if (routerActions.length > 0) {
-          return this.combineMultiHopSwaps(routerActions);
-        }
-      } catch (error) {
-        console.warn('Failed to parse router calldata:', error);
-      }
-    }
-
-    // Fallback to parsing pool events
-    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.POOL, contracts)) {
-      const swapEvents = transaction.logs.filter(log => 
-        log.topics[0] === contracts[CONTRACT_ENUM.POOL].events.Swap.signature
-      );
-
-      if (swapEvents.length > 0) {
-        try {
-          const parsedSwaps = await this.parseSwapEvents(swapEvents, transaction);
-          actions.push(...parsedSwaps);
-        } catch (error) {
-          console.error('Failed to parse swap events:', error);
-          return [];
-        }
-      }
-    }
-
-    return this.combineMultiHopSwaps(actions);
-  }
-
-  private static async parseRouterCalldata(transaction: ITransaction): Promise<ITransactionAction[]> {
-    const decodedData = contracts[CONTRACT_ENUM.ROUTER].interface.parseTransaction({
-      data: transaction.data
-    });
-
-    if (decodedData.name !== 'execute') {
+    if (!transaction?.data) {
+      console.error('Invalid transaction: missing data');
       return [];
     }
-
-    const commands = decodedData.args[0] as string;
-    const inputs = decodedData.args[1] as string[];
-    
     const actions: ITransactionAction[] = [];
-    let inputIndex = 0;
 
-    for (let i = 0; i < commands.length; i += 2) {
-      const commandId = parseInt(commands.slice(i, i + 2), 16);
-      
-      switch (commandId) {
-        case COMMAND_ENUM.V3_SWAP_EXACT_IN:
-        case COMMAND_ENUM.V3_SWAP_EXACT_OUT: {
-          const swapData = this.decodeSwapData(inputs[inputIndex], commandId);
-          if (swapData) {
-            actions.push(swapData);
-          }
-          inputIndex++;
-          break;
-        }
+    if (!ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER, contracts)) {
+      return actions;
+    }
 
-        case COMMAND_ENUM.PERMIT2_TRANSFER_FROM:
-        case COMMAND_ENUM.WRAP_ETH:
-        case COMMAND_ENUM.UNWRAP_WETH:
-        case COMMAND_ENUM.V3_MINT:
-        case COMMAND_ENUM.V3_COLLECT:
-        case COMMAND_ENUM.V3_BURN:
-        case COMMAND_ENUM.SWEEP:
-        case COMMAND_ENUM.TRANSFER:
-          inputIndex++;
-          break;
-
-        default:
-          inputIndex++;
-          break;
+    try {
+      const routerActions = await this.parseRouterCalldata(transaction);
+      if (routerActions.length > 0) {
+        return this.combineMultiHopSwaps(routerActions);
       }
+    } catch (error) {
+      console.error('Failed to parse router calldata:', error);
     }
 
     return actions;
+  }
+
+  private static async parseRouterCalldata(transaction: ITransaction): Promise<ITransactionAction[]> {
+    try {
+      const decodedData = contracts[CONTRACT_ENUM.ROUTER].interface.parseTransaction({
+        data: transaction.data
+      });
+
+      if (decodedData.name !== 'execute' || !decodedData.args || decodedData.args.length < 2) {
+        console.warn('Not a valid execute transaction');
+        return [];
+      }
+
+      const commands = decodedData.args[0] as string;
+      const inputs = decodedData.args[1] as string[];
+      
+      if (!commands || !inputs || commands.length % 2 !== 0 || commands.length === 0) {
+        console.error('Invalid commands or inputs format');
+        return [];
+      }
+
+      const actions: ITransactionAction[] = [];
+      let inputIndex = 0;
+
+      for (let i = 0; i < commands.length; i += 2) {
+        const commandId = parseInt(commands.slice(i, i + 2), 16);
+        
+        if (inputIndex >= inputs.length) {
+          console.error('Input index out of bounds');
+          break;
+        }
+
+        switch (commandId) {
+          case COMMAND_ENUM.V3_SWAP_EXACT_IN:
+          case COMMAND_ENUM.V3_SWAP_EXACT_OUT: {
+            const swapData = this.decodeSwapData(inputs[inputIndex], commandId);
+            if (swapData) {
+              actions.push(swapData);
+            }
+            inputIndex++;
+            break;
+          }
+
+          case COMMAND_ENUM.V2_SWAP_EXACT_IN:
+          case COMMAND_ENUM.V2_SWAP_EXACT_OUT: {
+            const v2SwapData = this.decodeV2SwapData(inputs[inputIndex], commandId);
+            if (v2SwapData) {
+              actions.push(v2SwapData);
+            }
+            inputIndex++;
+            break;
+          }
+
+          case COMMAND_ENUM.ROUTE: {
+            const routeData = this.decodeRouteData(inputs[inputIndex]);
+            if (routeData.length > 0) {
+              actions.push(...routeData);
+            }
+            inputIndex++;
+            break;
+          }
+          
+          case COMMAND_ENUM.PERMIT2_TRANSFER_FROM:
+          case COMMAND_ENUM.WRAP_ETH:
+          case COMMAND_ENUM.UNWRAP_WETH:
+          case COMMAND_ENUM.V3_MINT:
+          case COMMAND_ENUM.V3_COLLECT:
+          case COMMAND_ENUM.V3_BURN:
+          case COMMAND_ENUM.SWEEP:
+          case COMMAND_ENUM.TRANSFER:
+          case COMMAND_ENUM.PERMIT2_PERMIT:
+          case COMMAND_ENUM.PAY_PORTION:
+          case COMMAND_ENUM.NOOP:
+          case COMMAND_ENUM.TIMESTAMP:
+            inputIndex++;
+            break;
+
+          default:
+            console.warn(`Unknown command ID: ${commandId}`);
+            inputIndex++;
+            break;
+        }
+      }
+
+      return actions;
+    } catch (error) {
+      console.error('Failed to parse router calldata:', error);
+      return [];
+    }
   }
 
   private static decodeSwapData(input: string, commandId: number): ISingleSwapAction | null {
@@ -150,77 +178,129 @@ export class UniswapV3Parser {
     }
   }
 
-  private static async parseSwapEvents(events: any[], transaction: ITransaction): Promise<ISingleSwapAction[]> {
-    const parsedSwaps = await Promise.all(events.map(async event => {
-      try {
-        const decodedData = contracts[CONTRACT_ENUM.POOL].events.Swap.abi.decodeEventLog(
-          'Swap',
-          event.data,
-          event.topics
-        );
+  private static decodeV2SwapData(input: string, commandId: number): ISingleSwapAction | null {
+    try {
+      const abiCoder = new ethers.AbiCoder();
+      
+      const isExactIn = commandId === COMMAND_ENUM.V2_SWAP_EXACT_IN;
+      const params = abiCoder.decode(
+        [
+          'address', // recipient
+          'address', // tokenIn
+          'address', // tokenOut
+          'uint256', // amount
+          'uint256', // amountLimit
+          'address'  // sender
+        ],
+        input
+      ) as unknown[];
 
-        const poolContract = new ethers.Contract(
-          event.contractAddress,
-          contracts[CONTRACT_ENUM.POOL].interface,
-          null
-        );
+      return {
+        type: ACTION_ENUM.SINGLE_SWAP,
+        fromToken: params[1] as string,
+        toToken: params[2] as string,
+        fromAmount: isExactIn ? (params[3] as bigint).toString() : (params[4] as bigint).toString(),
+        toAmount: isExactIn ? (params[4] as bigint).toString() : (params[3] as bigint).toString(),
+        recipient: params[0] as string,
+        sender: params[5] as string
+      };
+    } catch (error) {
+      console.error('Failed to decode V2 swap data:', error);
+      return null;
+    }
+  }
 
-        const [token0, token1] = await Promise.all([
-          poolContract.token0(),
-          poolContract.token1()
-        ]);
+  private static decodeRouteData(input: string): ITransactionAction[] {
+    try {
+      const abiCoder = new ethers.AbiCoder();
+      const decoded = abiCoder.decode(
+        ['bytes', 'bytes[]'],
+        input
+      ) as unknown as [string, string[]];
+      
+      const [nestedCommands, nestedInputs] = decoded;
 
-        const amount0 = decodedData.amount0;
-        const amount1 = decodedData.amount1;
+      const actions: ITransactionAction[] = [];
+      let inputIndex = 0;
 
-        const swap: ISingleSwapAction = {
-          type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: amount0.lt(0) ? token0 : token1,
-          toToken: amount0.gt(0) ? token0 : token1,
-          fromAmount: amount0.lt(0) ? (-amount0).toString() : (-amount1).toString(),
-          toAmount: amount0.gt(0) ? amount0.toString() : amount1.toString(),
-          recipient: decodedData.recipient,
-          sender: decodedData.sender
-        };
-
-        return swap;
-      } catch (error) {
-        console.error('Failed to parse swap event:', error);
-        throw error;
+      for (let i = 0; i < nestedCommands.length; i += 2) {
+        const commandId = parseInt(nestedCommands.slice(i, i + 2), 16);
+        
+        switch (commandId) {
+          case COMMAND_ENUM.V3_SWAP_EXACT_IN:
+          case COMMAND_ENUM.V3_SWAP_EXACT_OUT: {
+            const swapData = this.decodeSwapData(nestedInputs[inputIndex], commandId);
+            if (swapData) {
+              actions.push(swapData);
+            }
+            inputIndex++;
+            break;
+          }
+          case COMMAND_ENUM.V2_SWAP_EXACT_IN:
+          case COMMAND_ENUM.V2_SWAP_EXACT_OUT: {
+            const v2SwapData = this.decodeV2SwapData(nestedInputs[inputIndex], commandId);
+            if (v2SwapData) {
+              actions.push(v2SwapData);
+            }
+            inputIndex++;
+            break;
+          }
+          default:
+            inputIndex++;
+            break;
+        }
       }
-    }));
 
-    return parsedSwaps;
+      return actions;
+    } catch (error) {
+      console.error('Failed to decode route data:', error);
+      return [];
+    }
   }
 
   private static combineMultiHopSwaps(actions: ITransactionAction[]): ITransactionAction[] {
-    if (actions.length <= 1) return actions;
-
     const result: ITransactionAction[] = [];
-    let currentPath: ISingleSwapAction[] = [];
+    let currentMultiSwap: IMultiSwapAction | null = null;
 
-    for (let i = 0; i < actions.length; i++) {
-      const action = actions[i] as ISingleSwapAction;
-      const nextAction = i < actions.length - 1 ? actions[i + 1] as ISingleSwapAction : null;
-
-      currentPath.push(action);
-
-      if (!nextAction || nextAction.fromToken !== action.toToken) {
-        if (currentPath.length === 1) {
-          result.push(currentPath[0]);
-        } else {
-          result.push({
-            type: ACTION_ENUM.MULTI_SWAP,
-            fromTokens: currentPath.map(a => a.fromToken),
-            toTokens: currentPath.map(a => a.toToken),
-            fromAmounts: currentPath.map(a => a.fromAmount),
-            toAmounts: currentPath.map(a => a.toAmount),
-            recipients: currentPath.map(a => a.recipient),
-            sender: currentPath[0].sender
-          });
+    for (const action of actions) {
+      if (action.type !== ACTION_ENUM.SINGLE_SWAP) {
+        if (currentMultiSwap) {
+          result.push(currentMultiSwap);
+          currentMultiSwap = null;
         }
-        currentPath = [];
+        result.push(action);
+        continue;
       }
+
+      const singleSwap = action as ISingleSwapAction;
+
+      if (!currentMultiSwap) {
+        currentMultiSwap = {
+          type: ACTION_ENUM.MULTI_SWAP,
+          fromTokens: [singleSwap.fromToken],
+          toTokens: [singleSwap.toToken],
+          fromAmounts: [singleSwap.fromAmount],
+          toAmounts: singleSwap.toAmount ? [singleSwap.toAmount] : undefined,
+          recipients: singleSwap.recipient ? [singleSwap.recipient] : undefined,
+          sender: singleSwap.sender
+        };
+      } else {
+        currentMultiSwap.fromTokens.push(singleSwap.fromToken);
+        currentMultiSwap.toTokens.push(singleSwap.toToken);
+        currentMultiSwap.fromAmounts.push(singleSwap.fromAmount);
+        
+        if (currentMultiSwap.toAmounts && singleSwap.toAmount) {
+          currentMultiSwap.toAmounts.push(singleSwap.toAmount);
+        }
+        
+        if (currentMultiSwap.recipients && singleSwap.recipient) {
+          currentMultiSwap.recipients.push(singleSwap.recipient);
+        }
+      }
+    }
+
+    if (currentMultiSwap) {
+      result.push(currentMultiSwap);
     }
 
     return result;
