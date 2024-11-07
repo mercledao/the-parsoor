@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 import { ACTION_ENUM } from '../../enums';
 import { ProtocolHelper } from '../../helpers';
-import { IBridgeInAction, IBridgeOutAction, ITransaction, ITransactionAction } from '../../types';
-import { CONTRACT_ENUM, contracts } from './contracts';
+import { IBridgeInAction, IBridgeOutAction, ITransaction, ITransactionAction, ITransactionLog } from '../../types';
+import { CONTRACT_ENUM, contracts, EVENT_ENUM } from './contracts';
 
 enum CONTRACT_FUNCTION_NAMES {
   // Function for depositing tokens to the bridge
@@ -159,6 +159,47 @@ export class DepositContractParser {
       fromAmount: transaction.value.toString(),
       toAmount: null,
 
+      sender: transaction.from,
+      recipient: null
+    };
+  }
+}
+
+export class RhinoFiEthL1DepositContractParser {
+  private static contractDefiniton = contracts[CONTRACT_ENUM.RHINOFI_ETH_L1_DEPOSIT_CONTRACT];
+  private static assetTypesToTokenAddress = {
+    '316623735692853304525146192642758839706355829840274185964789512850136103846': ethers.ZeroAddress
+  };
+
+  public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const hasDepositLog = transaction.logs.find((log) => log.topics[0] === EVENT_ENUM.L1_DEPOSIT_LOG);
+
+    if (hasDepositLog) {
+      actions.push(this.parseDeposit(transaction, hasDepositLog));
+    }
+
+    return actions;
+  }
+
+  private static parseDeposit(transaction: ITransaction, depositLog: ITransactionLog): IBridgeOutAction {
+    const parsedLog = ProtocolHelper.parseLog(depositLog, this.contractDefiniton.events[EVENT_ENUM.L1_DEPOSIT_LOG]);
+
+    const fromToken = this.assetTypesToTokenAddress[parsedLog.args.assetType.toString()];
+
+    if (!fromToken) {
+      throw new Error(`No token found for asset type ${parsedLog.args.assetType.toString()}`);
+    }
+
+    return {
+      type: ACTION_ENUM.BRIDGE_OUT,
+      fromChain: transaction.chainId,
+      toChain: null,
+      fromToken,
+      toToken: null,
+      fromAmount: transaction.value.toString(),
+      toAmount: null,
       sender: transaction.from,
       recipient: null
     };

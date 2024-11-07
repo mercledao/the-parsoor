@@ -27,9 +27,6 @@ export type IContractDeployment = {
 
 /** Configuration for a smart contract event */
 export type IContractEventConfig = {
-  /** Topic of the event */
-  signature: string;
-
   /** Interface for the event */
   abi: ethers.Interface;
 };

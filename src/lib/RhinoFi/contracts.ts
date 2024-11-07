@@ -2,21 +2,28 @@ import { ethers } from 'ethers';
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from '../../enums';
 import { IProtocolContractDefinitions } from '../../types';
 import RhinoFiDepositAbi from './abis/RhinoFiDeposit.json';
+import TokensAndRampingAKAL1DepositContractAbi from './abis/TokensAndRampingAKAL1DepositContract.json';
 
 enum CONTRACT_ENUM {
   // The deposit contract
-  DEPOSIT_CONTRACT = 'DVFDepositContract'
+  DEPOSIT_CONTRACT = 'DVFDepositContract',
+
+  // The deposit contract for the eth l1 chain
+  RHINOFI_ETH_L1_DEPOSIT_CONTRACT = 'RhinoFiEthL1DepositContract'
 }
 
 enum EVENT_ENUM {
   // Event for when a deposit is done
-  BRIDGED_DEPOSIT = 'BridgedDeposit',
+  BRIDGED_DEPOSIT = '0x573284f4c36da6a8d8d84cd06662235f8a770cc98e8c80e304b8f382fdc3dca2',
 
   // Event for when a withdrawal is done
-  BRIDGED_WITHDRAWAL = 'BridgedWithdrawal',
+  BRIDGED_WITHDRAWAL = '0xe4f4f1fb3534fe80225d336f6e5a73007dc992e5f6740152bf13ed2a08f3851a',
 
   // Event for when a withdrawal is done with native + erc20
-  BRIDGED_WITHDRAWAL_WITH_NATIVE = 'BridgedWithdrawalWithNative'
+  BRIDGED_WITHDRAWAL_WITH_NATIVE = '0x0ec14d41fb8dd758c7a1fc411ce327517caf88a8b9dee8bed60869801990d22c',
+
+  // Event for when a deposit is done on the eth l1 chain
+  L1_DEPOSIT_LOG = '0x06724742ccc8c330a39a641ef02a0b419bd09248360680bb38159b0a8c2635d6'
 }
 
 const contracts: IProtocolContractDefinitions = {
@@ -67,21 +74,35 @@ const contracts: IProtocolContractDefinitions = {
 
     events: {
       [EVENT_ENUM.BRIDGED_DEPOSIT]: {
-        signature: '0x573284f4c36da6a8d8d84cd06662235f8a770cc98e8c80e304b8f382fdc3dca2',
         abi: new ethers.Interface(['event BridgedDeposit(address indexed user, address indexed token, uint256 amount)'])
       },
 
       [EVENT_ENUM.BRIDGED_WITHDRAWAL]: {
-        signature: '0xe4f4f1fb3534fe80225d336f6e5a73007dc992e5f6740152bf13ed2a08f3851a',
         abi: new ethers.Interface([
           'event BridgedWithdrawal(address indexed user, address indexed token, uint256 amount, string withdrawalId)'
         ])
       },
 
       [EVENT_ENUM.BRIDGED_WITHDRAWAL_WITH_NATIVE]: {
-        signature: '0x0ec14d41fb8dd758c7a1fc411ce327517caf88a8b9dee8bed60869801990d22c',
         abi: new ethers.Interface([
           'event BridgedWithdrawalWithNative(address indexed user, address indexed token, uint256 amountToken, uint256 amountNative)'
+        ])
+      }
+    }
+  },
+
+  [CONTRACT_ENUM.RHINOFI_ETH_L1_DEPOSIT_CONTRACT]: {
+    interface: new ethers.Interface(TokensAndRampingAKAL1DepositContractAbi),
+    deployments: {
+      [CHAIN_ID.ETHEREUM]: {
+        address: '0x5d22045DAcEAB03B158031eCB7D9d06Fad24609b',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      }
+    },
+    events: {
+      [EVENT_ENUM.L1_DEPOSIT_LOG]: {
+        abi: new ethers.Interface([
+          'event LogDeposit(address depositorEthKey, uint256 starkKey, uint256 vaultId, uint256 assetType, uint256 nonQuantizedAmount, uint256 quantizedAmount)'
         ])
       }
     }

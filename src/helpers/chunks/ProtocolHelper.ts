@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { IProtocolContractDefinitions, ITransaction } from '../../types';
+import { IContractEventConfig, IProtocolContractDefinitions, ITransaction, ITransactionLog } from '../../types';
 
 export class ProtocolHelper {
   /**
@@ -19,6 +19,26 @@ export class ProtocolHelper {
 
     if (!decoded) {
       throw new Error('Failed to parse transaction');
+    }
+
+    return decoded;
+  }
+
+  /**
+   * Parses a log
+   * @param log - The log to parse
+   * @param eventDefinition - The event's defintion
+   * @returns The parsed log
+   */
+  public static parseLog(log: ITransactionLog, eventDefinition: IContractEventConfig): ethers.LogDescription {
+    const eventInterface = eventDefinition.abi;
+    const decoded = eventInterface.parseLog({
+      topics: log.topics,
+      data: log.data
+    });
+
+    if (!decoded) {
+      throw new Error('Failed to parse log');
     }
 
     return decoded;
