@@ -134,5 +134,19 @@ export const uniswapData: IProtocolTestingData = {
         }
       ]
     },
+    {
+      txnHash: '0x19b2c1a867d2f81f289842e061f4392133c2236bb001df6d0b5216bc9bb8ef9f',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xEd7d16E3aD3D98E623C1dF356A810867f44F4D8d', 
+          toToken: '0x0000000000000000000000000000000000000000', 
+          fromAmount: '100000000000000000000',
+          toAmount: '3112638000000000',                   
+          recipient: '0x74d90f1dcb8EBA0B3855601747A3a905f02C157B',
+        }
+      ]
+    },
   ]
 }; 
