@@ -1,4 +1,4 @@
-import { CHAIN_ID } from "../../enums";
+import { CHAIN_ID } from '../../enums';
 
 export type ITransaction = {
   /** Chain ID of the transaction */

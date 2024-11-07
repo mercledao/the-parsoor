@@ -1,4 +1,3 @@
 export enum CHAIN_ID {
-  ARBITRUM = 42161,
+  ARBITRUM = 42161
 }
-
