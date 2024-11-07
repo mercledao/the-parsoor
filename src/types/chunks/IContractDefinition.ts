@@ -1,5 +1,5 @@
-import { ethers } from "ethers";
-import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
+import { ethers } from 'ethers';
+import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from '../../enums';
 
 /** Mapping of a protocol's contract names to their configurations */
 export type IProtocolContractDefinitions = Record<string, IContractConfig>;

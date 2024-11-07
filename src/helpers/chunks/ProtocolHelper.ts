@@ -1,5 +1,5 @@
-import { ethers } from "ethers";
-import { IProtocolContractDefinitions, ITransaction } from "../../types";
+import { ethers } from 'ethers';
+import { IProtocolContractDefinitions, ITransaction } from '../../types';
 
 export class ProtocolHelper {
   /**
@@ -18,7 +18,7 @@ export class ProtocolHelper {
     const decoded = contractInterface.parseTransaction(transaction);
 
     if (!decoded) {
-      throw new Error("Failed to parse transaction");
+      throw new Error('Failed to parse transaction');
     }
 
     return decoded;
@@ -41,11 +41,8 @@ export class ProtocolHelper {
     }
 
     // Check if the transaction to address is a listener contract for the given contract name
-    const hasContract = Object.values(
-      protocolContracts[contractName].deployments
-    ).find(
-      (deployment) =>
-        ethers.getAddress(deployment.address) === ethers.getAddress(txn.from)
+    const hasContract = Object.values(protocolContracts[contractName].deployments).find(
+      (deployment) => ethers.getAddress(deployment.address) === ethers.getAddress(txn.from)
     );
 
     return Boolean(hasContract);
@@ -69,9 +66,7 @@ export class ProtocolHelper {
 
     // Check if the transaction to address is a listener contract for the given contract name
     const hasContract =
-      ethers.getAddress(
-        protocolContracts[contractName].deployments[txn.chainId].address
-      ) === ethers.getAddress(txn.to);
+      ethers.getAddress(protocolContracts[contractName].deployments[txn.chainId].address) === ethers.getAddress(txn.to);
 
     return hasContract;
   }
@@ -81,9 +76,7 @@ export class ProtocolHelper {
    * @param protocolContracts - The protocol contracts
    * @returns An array of listener contracts
    */
-  public static extractAllContracts(
-    protocolContracts: IProtocolContractDefinitions
-  ): string[] {
+  public static extractAllContracts(protocolContracts: IProtocolContractDefinitions): string[] {
     const listenerContracts: string[] = [];
 
     Object.values(protocolContracts).forEach((contracts) => {
