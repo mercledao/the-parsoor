@@ -10,7 +10,7 @@ export type IContractConfig = {
   interface: ethers.Interface;
 
   /** Mapping of chain IDs to contract deployments */
-  deployments: Record<CHAIN_ID, IContractDeployment>;
+  deployments: Partial<Record<CHAIN_ID, IContractDeployment>>;
 
   /** Mapping of event names to their configurations */
   events: Record<string, IContractEventConfig>;

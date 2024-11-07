@@ -26,6 +26,42 @@ const contracts: IProtocolContractDefinitions = {
       [CHAIN_ID.ARBITRUM]: {
         address: '0x10417734001162Ea139e8b044DFe28DbB8B28ad0',
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.BSC]: {
+        address: '0xB80A582fa430645A043bB4f6135321ee01005fEf',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.POLYGON]: {
+        address: '0xBA4EEE20F434bC3908A0B18DA496348657133A7E',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.ZKSYNC]: {
+        address: '0x1fa66e2B38d0cC496ec51F81c3e05E6A6708986F',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.POLYGON_ZK]: {
+        address: '0x65A4b8A0927c7FD899aed24356BF83810f7b9A3f',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.OPTIMISM]: {
+        address: '0x0bCa65bf4b4c8803d2f0B49353ed57CAAF3d66Dc',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.LINEA]: {
+        address: '0xcF68a2721394dcf5dCF66F6265C1819720F24528',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.BASE]: {
+        address: '0x2f59E9086ec8130E21BD052065a9E6B2497bb102',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.MANTA]: {
+        address: '0x2B4553122D960CA98075028d68735cC6b15DeEB5',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      },
+      [CHAIN_ID.SCROLL]: {
+        address: '0x87627c7E586441EeF9eE3C28B66662e897513f33',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
       }
     },
 
