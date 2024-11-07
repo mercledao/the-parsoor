@@ -4,18 +4,14 @@ import { IProtocolContractDefinitions } from '../../types';
 import RhinoFiDepositAbi from './abis/RhinoFiDeposit.json';
 
 enum CONTRACT_ENUM {
-  // The deposit contract
   DEPOSIT_CONTRACT = 'DVFDepositContract'
 }
 
 enum EVENT_ENUM {
-  // Event for when a deposit is done
   BRIDGED_DEPOSIT = 'BridgedDeposit',
 
-  // Event for when a withdrawal is done
   BRIDGED_WITHDRAWAL = 'BridgedWithdrawal',
 
-  // Event for when a withdrawal is done with native + erc20
   BRIDGED_WITHDRAWAL_WITH_NATIVE = 'BridgedWithdrawalWithNative'
 }
 
