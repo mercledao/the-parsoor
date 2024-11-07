@@ -168,7 +168,24 @@ export class DepositContractParser {
 export class RhinoFiEthL1DepositContractParser {
   private static contractDefiniton = contracts[CONTRACT_ENUM.RHINOFI_ETH_L1_DEPOSIT_CONTRACT];
   private static assetTypesToTokenAddress = {
-    '316623735692853304525146192642758839706355829840274185964789512850136103846': ethers.ZeroAddress
+    // ETH
+    '316623735692853304525146192642758839706355829840274185964789512850136103846': ethers.ZeroAddress,
+
+    // USDC
+    '1147032829293317481173155891309375254605214077236177772270270553197624560221':
+      '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+
+    // USDT
+    '1269275113502683198091459784363068703822460788394621599952252545182480283333':
+      '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+
+    // MATIC
+    '1185226704337141674006093426533180511074316762223073934096998563450566746144':
+      '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
+
+    // WBNB
+    '96015668771000514794597866745001602613849475661094490757698210630013973673':
+      '0x418D75f65a02b3D53B2418FB8E1fe493759c7605'
   };
 
   public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
@@ -198,7 +215,7 @@ export class RhinoFiEthL1DepositContractParser {
       toChain: null,
       fromToken,
       toToken: null,
-      fromAmount: transaction.value.toString(),
+      fromAmount: parsedLog.args.nonQuantizedAmount.toString(),
       toAmount: null,
       sender: transaction.from,
       recipient: null

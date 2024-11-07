@@ -84,6 +84,10 @@ export class ProtocolHelper {
       return false;
     }
 
+    if (!protocolContracts[contractName].deployments[txn.chainId]) {
+      return false;
+    }
+
     // Check if the transaction to address is a listener contract for the given contract name
     const hasContract =
       ethers.getAddress(protocolContracts[contractName].deployments[txn.chainId].address) === ethers.getAddress(txn.to);

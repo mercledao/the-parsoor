@@ -5,7 +5,7 @@ export enum RHINOFI_VERSIONS {
   V1 = 'v1'
 }
 
-export const rhinofiData: IProtocolTestingData = {
+export const rhinofiL2Contracts: IProtocolTestingData = {
   [RHINOFI_VERSIONS.V1]: [
     {
       txnHash: '0x75db22758d0281457d3a1f044fef0b60831b306a512b83c3faa750126b4ca096',
@@ -174,6 +174,79 @@ export const rhinofiData: IProtocolTestingData = {
           toAmount: '2400508811',
           sender: null,
           recipient: '0xf0c4FCDd2f7859Dc309c90d35Aca0b53702d279e'
+        }
+      ]
+    }
+  ]
+};
+
+export const rhiofiEthL1DepositContract: IProtocolTestingData = {
+  [RHINOFI_VERSIONS.V1]: [
+    {
+      txnHash: '0x46928e8075f5caf409388d7706b42b613915de28eff597f4485cf739ff441746',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: null,
+          fromToken: ethers.ZeroAddress,
+          toToken: null,
+          fromAmount: '1050000000000000000',
+          toAmount: null,
+          sender: '0xd1d0f24420825096e39bA6DCC9A50c319C77D77e',
+          recipient: null
+        }
+      ]
+    },
+    {
+      txnHash: '0x959464a7b44f823c8e6369aa8561d9b5327ea0896000d1bea2e9e74347e4fd45',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: null,
+          fromToken: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+          toToken: null,
+          fromAmount: '782481597',
+          toAmount: null,
+          sender: '0x96C171038858D62Aa1E9057Cf7e5135e48914D17',
+          recipient: null
+        }
+      ]
+    },
+    {
+      txnHash: '0xf9a00fcf3257a90743f1d73baee784dd6edf4a5ac7322aaa645ce1aff0064c86',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: null,
+          fromToken: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+          toToken: null,
+          fromAmount: '245009285',
+          toAmount: null,
+          sender: '0x8b401903DBC6af51881aC86Ab667647e82bfBF4d',
+          recipient: null
+        }
+      ]
+    },
+    {
+      txnHash: '0xcfa190b1dca4e8e0f01354f4bcaa8c196836371e4db02844c7ec45772e683631',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: null,
+          fromToken: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
+          toToken: null,
+          fromAmount: '23768745620000000000',
+          toAmount: null,
+          sender: '0x4e888b53eC7A2bAAe3eFE1c3E9f6C219aF6DA4e1',
+          recipient: null
         }
       ]
     }
