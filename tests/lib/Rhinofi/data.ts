@@ -249,6 +249,75 @@ export const rhiofiEthL1DepositContract: IProtocolTestingData = {
           recipient: null
         }
       ]
+    },
+    // Txns for Deposit proxy
+    {
+      txnHash: '0x506804635180af3fb0bd1ce23207d50ce03d52494fef3b68a9ff447ab99eecf2',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: null,
+          fromToken: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+          toToken: null,
+          fromAmount: '1250000000',
+          toAmount: null,
+          sender: '0xb77Fa262a7A8d4AbfbA20218e7f2BB003f275556',
+          recipient: null
+        }
+      ]
+    },
+    {
+      txnHash: '0x995151ab55299b30ac63f0543f74dde57e29f93bf67bd562009bc99466b3b114',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: null,
+          fromToken: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+          toToken: null,
+          fromAmount: '46274957',
+          toAmount: null,
+          sender: '0xfC74deEdbdA57d3E85A9525e973184625553Efe6',
+          recipient: null
+        }
+      ]
+    },
+    {
+      txnHash: '0x4c59f8dc5f82c8faa34d5d88811097af8349d606c402234cf5a759f622a0e7d6',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: null,
+          fromToken: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+          toToken: null,
+          fromAmount: '50000000',
+          toAmount: null,
+          sender: '0x21A575F6DEB5f89dDaE666822A67121614Bf01Ba',
+          recipient: null
+        }
+      ]
+    },
+    {
+      txnHash: '0x71852927fade9d210cf2567a6a421baa647e5d64542eb6a07b93c287f6309d2b',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: null,
+          fromToken: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+          toToken: null,
+          fromAmount: '214616204',
+          toAmount: null,
+          sender: '0x287E643CE0502664338Cb176b67f18A26bC444BB',
+          recipient: null
+        }
+      ]
     }
   ]
 };

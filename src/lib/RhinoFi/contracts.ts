@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from '../../enums';
 import { IProtocolContractDefinitions } from '../../types';
+import L1DepositProxyAbi from './abis/L1DepositProxy.json';
 import RhinoFiDepositAbi from './abis/RhinoFiDeposit.json';
 import TokensAndRampingAKAL1DepositContractAbi from './abis/TokensAndRampingAKAL1DepositContract.json';
 
@@ -9,7 +10,10 @@ enum CONTRACT_ENUM {
   DEPOSIT_CONTRACT = 'DVFDepositContract',
 
   // The deposit contract for the eth l1 chain
-  RHINOFI_ETH_L1_DEPOSIT_CONTRACT = 'RhinoFiEthL1DepositContract'
+  RHINOFI_ETH_L1_DEPOSIT_CONTRACT = 'RhinoFiEthL1DepositContract',
+
+  // The deposit proxy for the l1 chain
+  RHINOFI_L1_DEPOSIT_PROXY = 'RhinoFiL1DepositProxy'
 }
 
 enum EVENT_ENUM {
@@ -96,6 +100,23 @@ const contracts: IProtocolContractDefinitions = {
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: '0x5d22045DAcEAB03B158031eCB7D9d06Fad24609b',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      }
+    },
+    events: {
+      [EVENT_ENUM.L1_DEPOSIT_LOG]: {
+        abi: new ethers.Interface([
+          'event LogDeposit(address depositorEthKey, uint256 starkKey, uint256 vaultId, uint256 assetType, uint256 nonQuantizedAmount, uint256 quantizedAmount)'
+        ])
+      }
+    }
+  },
+
+  [CONTRACT_ENUM.RHINOFI_L1_DEPOSIT_PROXY]: {
+    interface: new ethers.Interface(L1DepositProxyAbi),
+    deployments: {
+      [CHAIN_ID.ETHEREUM]: {
+        address: '0xeD9d63a96c27f87B07115b56b2e3572827f21646',
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
       }
     },

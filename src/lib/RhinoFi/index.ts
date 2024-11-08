@@ -18,7 +18,8 @@ export default class RhinoFi implements IProtocolParserExport {
       const action = DepositContractParser.parseTransaction(transaction);
       actions.push(...action);
     } else if (
-      ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.RHINOFI_ETH_L1_DEPOSIT_CONTRACT, contracts)
+      ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.RHINOFI_ETH_L1_DEPOSIT_CONTRACT, contracts) ||
+      ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.RHINOFI_L1_DEPOSIT_PROXY, contracts)
     ) {
       const action = RhinoFiEthL1DepositContractParser.parseTransaction(transaction);
       actions.push(...action);
