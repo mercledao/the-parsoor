@@ -321,3 +321,76 @@ export const rhiofiEthL1DepositContract: IProtocolTestingData = {
     }
   ]
 };
+
+export const rhinoL1WithdrawalRegistry: IProtocolTestingData = {
+  [RHINOFI_VERSIONS.V1]: [
+    {
+      txnHash: '0x2c2439217453615eacf2fa6826cf4b60070fc4a2c28131925eb6bd55c27d4ee3',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: null,
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: null,
+          toToken: ethers.ZeroAddress,
+          fromAmount: null,
+          toAmount: '1516870000000000',
+          sender: null,
+          recipient: '0x349050877BE9c56f469C755C45EF3184f54500C0'
+        }
+      ]
+    },
+    {
+      txnHash: '0xe0c14693550d24acf06eca9b428c1fbb8e11d3df25caaf85000565d8e36052fd',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: null,
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: null,
+          toToken: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+          fromAmount: null,
+          toAmount: '12683969792',
+          sender: null,
+          recipient: '0xCD4B3EbdF1084FD90096E7c8D7D44d94d185D1Bc'
+        }
+      ]
+    },
+    {
+      txnHash: '0x9f2480471abc27fd0a262799aa1db6f6cc93a0959b18643e8e3014963221a1c0',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: null,
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: null,
+          toToken: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+          fromAmount: null,
+          toAmount: '961008637',
+          sender: null,
+          recipient: '0xDDc8B1D8cda08849D7a20b029885926b7390c92b'
+        }
+      ]
+    },
+    {
+      txnHash: '0x6b14c89678137ef841c81d390b32d3af824a37679d06338e3a944f842d3c9e0b',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: null,
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: null,
+          toToken: ethers.ZeroAddress,
+          fromAmount: null,
+          toAmount: '1615180000000000',
+          sender: null,
+          recipient: '0xC1885dd042001DF44c9662e8B54C217cA331c7cD'
+        }
+      ]
+    }
+  ]
+};

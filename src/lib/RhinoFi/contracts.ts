@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from '../../enums';
 import { IProtocolContractDefinitions } from '../../types';
 import L1DepositProxyAbi from './abis/L1DepositProxy.json';
+import L1WithdrawalRegistryAbi from './abis/L1WithdrawalRegistry.json';
 import RhinoFiDepositAbi from './abis/RhinoFiDeposit.json';
 import TokensAndRampingAKAL1DepositContractAbi from './abis/TokensAndRampingAKAL1DepositContract.json';
 
@@ -13,7 +14,10 @@ enum CONTRACT_ENUM {
   RHINOFI_ETH_L1_DEPOSIT_CONTRACT = 'RhinoFiEthL1DepositContract',
 
   // The deposit proxy for the l1 chain
-  RHINOFI_L1_DEPOSIT_PROXY = 'RhinoFiL1DepositProxy'
+  RHINOFI_L1_DEPOSIT_PROXY = 'RhinoFiL1DepositProxy',
+
+  // The l1 withdrawal registry
+  L1_WITHDRAWAL_REGISTRY = 'TransferRegistry'
 }
 
 enum EVENT_ENUM {
@@ -27,7 +31,10 @@ enum EVENT_ENUM {
   BRIDGED_WITHDRAWAL_WITH_NATIVE = '0x0ec14d41fb8dd758c7a1fc411ce327517caf88a8b9dee8bed60869801990d22c',
 
   // Event for when a deposit is done on the eth l1 chain
-  L1_DEPOSIT_LOG = '0x06724742ccc8c330a39a641ef02a0b419bd09248360680bb38159b0a8c2635d6'
+  L1_DEPOSIT_LOG = '0x06724742ccc8c330a39a641ef02a0b419bd09248360680bb38159b0a8c2635d6',
+
+  // Event for when a withdrawal is registered on the L1
+  L1_WITHDRAWAL_LOG = '0x36c96ccc320eab9b6da1de6cc1e8ebc52a51cb114710b9c7db204cdad3067ce1'
 }
 
 const contracts: IProtocolContractDefinitions = {
@@ -124,6 +131,23 @@ const contracts: IProtocolContractDefinitions = {
       [EVENT_ENUM.L1_DEPOSIT_LOG]: {
         abi: new ethers.Interface([
           'event LogDeposit(address depositorEthKey, uint256 starkKey, uint256 vaultId, uint256 assetType, uint256 nonQuantizedAmount, uint256 quantizedAmount)'
+        ])
+      }
+    }
+  },
+
+  [CONTRACT_ENUM.L1_WITHDRAWAL_REGISTRY]: {
+    interface: new ethers.Interface(L1WithdrawalRegistryAbi),
+    deployments: {
+      [CHAIN_ID.ETHEREUM]: {
+        address: '0xc3CA38091061e3E5358A52d74730F16C60cA9c26',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING]
+      }
+    },
+    events: {
+      [EVENT_ENUM.L1_WITHDRAWAL_LOG]: {
+        abi: new ethers.Interface([
+          'event LogRegisteredTransfer(address recipient, address token, uint256 amount, uint256 salt)'
         ])
       }
     }

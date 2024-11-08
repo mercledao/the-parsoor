@@ -222,3 +222,38 @@ export class RhinoFiEthL1DepositContractParser {
     };
   }
 }
+
+export class RhinofiL1WithdrawalRegistryParser {
+  private static contractDefiniton = contracts[CONTRACT_ENUM.L1_WITHDRAWAL_REGISTRY];
+
+  public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const hasWithdrawalLog = transaction.logs.find((log) => log.topics[0] === EVENT_ENUM.L1_WITHDRAWAL_LOG);
+
+    if (hasWithdrawalLog) {
+      actions.push(this.parseWithdrawal(transaction, hasWithdrawalLog));
+    }
+
+    return actions;
+  }
+
+  private static parseWithdrawal(transaction: ITransaction, withdrawalLog: ITransactionLog): IBridgeInAction {
+    const parsedLog = ProtocolHelper.parseLog(
+      withdrawalLog,
+      this.contractDefiniton.events[EVENT_ENUM.L1_WITHDRAWAL_LOG]
+    );
+
+    return {
+      type: ACTION_ENUM.BRIDGE_IN,
+      fromChain: null,
+      toChain: transaction.chainId,
+      fromToken: null,
+      toToken: parsedLog.args.token.toString(),
+      fromAmount: null,
+      toAmount: parsedLog.args.amount.toString(),
+      sender: null,
+      recipient: parsedLog.args.recipient.toString()
+    };
+  }
+}
