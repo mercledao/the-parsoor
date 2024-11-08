@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 import { ACTION_ENUM } from '../../enums';
 import { ProtocolHelper } from '../../helpers';
-import { IBridgeInAction, IBridgeOutAction, ITransaction, ITransactionAction } from '../../types';
-import { CONTRACT_ENUM, contracts } from './contracts';
+import { IBridgeInAction, IBridgeOutAction, ITransaction, ITransactionAction, ITransactionLog } from '../../types';
+import { CONTRACT_ENUM, contracts, EVENT_ENUM } from './contracts';
 
 enum CONTRACT_FUNCTION_NAMES {
   // Function for depositing tokens to the bridge
@@ -161,6 +161,99 @@ export class DepositContractParser {
 
       sender: transaction.from,
       recipient: null
+    };
+  }
+}
+
+export class RhinoFiEthL1DepositContractParser {
+  private static contractDefiniton = contracts[CONTRACT_ENUM.RHINOFI_ETH_L1_DEPOSIT_CONTRACT];
+  private static assetTypesToTokenAddress = {
+    // ETH
+    '316623735692853304525146192642758839706355829840274185964789512850136103846': ethers.ZeroAddress,
+
+    // USDC
+    '1147032829293317481173155891309375254605214077236177772270270553197624560221':
+      '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+
+    // USDT
+    '1269275113502683198091459784363068703822460788394621599952252545182480283333':
+      '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+
+    // MATIC
+    '1185226704337141674006093426533180511074316762223073934096998563450566746144':
+      '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
+
+    // WBNB
+    '96015668771000514794597866745001602613849475661094490757698210630013973673':
+      '0x418D75f65a02b3D53B2418FB8E1fe493759c7605'
+  };
+
+  public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const hasDepositLog = transaction.logs.find((log) => log.topics[0] === EVENT_ENUM.L1_DEPOSIT_LOG);
+
+    if (hasDepositLog) {
+      actions.push(this.parseDeposit(transaction, hasDepositLog));
+    }
+
+    return actions;
+  }
+
+  private static parseDeposit(transaction: ITransaction, depositLog: ITransactionLog): IBridgeOutAction {
+    const parsedLog = ProtocolHelper.parseLog(depositLog, this.contractDefiniton.events[EVENT_ENUM.L1_DEPOSIT_LOG]);
+
+    const fromToken = this.assetTypesToTokenAddress[parsedLog.args.assetType.toString()];
+
+    if (!fromToken) {
+      throw new Error(`No token found for asset type ${parsedLog.args.assetType.toString()}`);
+    }
+
+    return {
+      type: ACTION_ENUM.BRIDGE_OUT,
+      fromChain: transaction.chainId,
+      toChain: null,
+      fromToken,
+      toToken: null,
+      fromAmount: parsedLog.args.nonQuantizedAmount.toString(),
+      toAmount: null,
+      sender: transaction.from,
+      recipient: null
+    };
+  }
+}
+
+export class RhinofiL1WithdrawalRegistryParser {
+  private static contractDefiniton = contracts[CONTRACT_ENUM.L1_WITHDRAWAL_REGISTRY];
+
+  public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const hasWithdrawalLog = transaction.logs.find((log) => log.topics[0] === EVENT_ENUM.L1_WITHDRAWAL_LOG);
+
+    if (hasWithdrawalLog) {
+      actions.push(this.parseWithdrawal(transaction, hasWithdrawalLog));
+    }
+
+    return actions;
+  }
+
+  private static parseWithdrawal(transaction: ITransaction, withdrawalLog: ITransactionLog): IBridgeInAction {
+    const parsedLog = ProtocolHelper.parseLog(
+      withdrawalLog,
+      this.contractDefiniton.events[EVENT_ENUM.L1_WITHDRAWAL_LOG]
+    );
+
+    return {
+      type: ACTION_ENUM.BRIDGE_IN,
+      fromChain: null,
+      toChain: transaction.chainId,
+      fromToken: null,
+      toToken: parsedLog.args.token.toString(),
+      fromAmount: null,
+      toAmount: parsedLog.args.amount.toString(),
+      sender: null,
+      recipient: parsedLog.args.recipient.toString()
     };
   }
 }
