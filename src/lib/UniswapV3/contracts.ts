@@ -1,13 +1,9 @@
 import { ethers } from 'ethers';
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from '../../enums';
 import { IProtocolContractDefinitions } from '../../types';
+import { CONTRACT_ENUM } from '../Uniswap/contracts';
 import PoolAbi from './abis/Pool.json';
 import RouterAbi from './abis/Router.json';
-
-enum CONTRACT_ENUM {
-  POOL = 'Pool',
-  ROUTER = 'Router'
-}
 
 enum EVENT_ENUM {
   SWAP = 'Swap'
@@ -56,7 +52,7 @@ enum COMMAND_ENUM {
 }
 
 const contracts: IProtocolContractDefinitions = {
-  [CONTRACT_ENUM.POOL]: {
+  [CONTRACT_ENUM.POOL_V3]: {
     interface: new ethers.Interface(PoolAbi.abi),
     deployments: {
       [CHAIN_ID.ARBITRUM]: {
@@ -73,7 +69,7 @@ const contracts: IProtocolContractDefinitions = {
       }
     }
   },
-  [CONTRACT_ENUM.ROUTER]: {
+  [CONTRACT_ENUM.ROUTER_V3]: {
     interface: new ethers.Interface(RouterAbi.abi),
     deployments: {
       [CHAIN_ID.ARBITRUM]: {
