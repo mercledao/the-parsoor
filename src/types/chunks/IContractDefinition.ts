@@ -10,7 +10,7 @@ export type IContractConfig = {
   interface: ethers.Interface;
 
   /** Mapping of chain IDs to contract deployments */
-  deployments: Record<CHAIN_ID, IContractDeployment>;
+  deployments: Partial<Record<CHAIN_ID, IContractDeployment>>;
 
   /** Mapping of event names to their configurations */
   events: Record<string, IContractEventConfig>;
@@ -27,9 +27,6 @@ export type IContractDeployment = {
 
 /** Configuration for a smart contract event */
 export type IContractEventConfig = {
-  /** Topic of the event */
-  signature: string;
-
   /** Interface for the event */
   abi: ethers.Interface;
 };

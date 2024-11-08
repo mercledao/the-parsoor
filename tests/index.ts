@@ -88,6 +88,12 @@ export class ProtocolParserUtils {
         case ACTION_ENUM.BRIDGE_OUT:
           this.assertBridgeOutAction(expectedAction, actualAction as IBridgeOutAction);
           break;
+        case ACTION_ENUM.SINGLE_SWAP:
+          this.assertSingleSwapAction(expectedAction, actualAction as ISingleSwapAction);
+          break;
+        case ACTION_ENUM.MULTI_SWAP:
+          this.assertMultiSwapAction(expectedAction, actualAction as IMultiSwapAction);
+          break;
       }
     }
   }
@@ -113,7 +119,7 @@ export class ProtocolParserUtils {
     expect(actualAction.sender).toBe(expectedAction.sender);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
   }
-
+  
   public assertSwapAction(expectedAction: ISingleSwapAction, actualAction: ISingleSwapAction): void {
     expect(actualAction.fromToken).toBe(expectedAction.fromToken);
     expect(actualAction.toToken).toBe(expectedAction.toToken);
@@ -121,7 +127,15 @@ export class ProtocolParserUtils {
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
   }
-
+  
+  public assertSingleSwapAction(expectedAction: ISingleSwapAction, actualAction: ISingleSwapAction): void {
+    expect(actualAction.fromToken).toBe(expectedAction.fromToken);
+    expect(actualAction.toToken).toBe(expectedAction.toToken);
+    expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
+    expect(actualAction.toAmount).toBe(expectedAction.toAmount);
+    expect(actualAction.recipient).toBe(expectedAction.recipient);
+  }
+    
   public assertMultiSwapAction(expectedAction: IMultiSwapAction, actualAction: IMultiSwapAction): void {
     expect(actualAction.fromTokens).toEqual(expectedAction.fromTokens);
     expect(actualAction.toTokens).toEqual(expectedAction.toTokens);
