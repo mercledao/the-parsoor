@@ -342,31 +342,30 @@ export class UniswapV3Parser {
     return result;
   }
 
-  private static decodeMultiHopPath(path: string): {tokens: string[], fees: number[]} {
-    const result = {
-      tokens: [] as string[],
-      fees: [] as number[]
-    };
-    
-    // Path format: token + fee + token + fee + token + ...
-    // Each token is 20 bytes, each fee is 3 bytes
-    let currentIndex = 0;
-    
-    while (currentIndex < path.length) {
-      // Extract token (20 bytes = 40 hex chars)
-      const token = '0x' + path.slice(currentIndex, currentIndex + 40);
-      result.tokens.push(token.toLowerCase());
-      currentIndex += 40;
+  private static decodeMultiHopPath(pathData: string): { tokens: string[]; fees: number[] } {
+    try {
+      const tokens: string[] = [];
+      const fees: number[] = [];
       
-      // Extract fee if not at end (3 bytes = 6 hex chars)
-      if (currentIndex < path.length) {
-        const fee = parseInt(path.slice(currentIndex, currentIndex + 6), 16);
-        result.fees.push(fee);
-        currentIndex += 6;
+      const path = pathData.startsWith('0x') ? pathData.slice(2) : pathData;
+      
+      let i = 0;
+      while (i < path.length) {
+        tokens.push('0x' + path.slice(i, i + 40));
+        i += 40;
+        
+        if (i < path.length) {
+          const fee = parseInt(path.slice(i, i + 6), 16);
+          fees.push(fee);
+          i += 6;
+        }
       }
+      
+      return { tokens, fees };
+    } catch (error) {
+      console.error('Failed to decode multi-hop path:', error);
+      return { tokens: [], fees: [] };
     }
-    
-    return result;
   }
 
   private static decodeV3Path(path: string): {
@@ -401,20 +400,20 @@ export class UniswapV3Parser {
     recipient: string,
     sender: string
   ): IMultiSwapAction {
-    const decoded = ethers.AbiCoder.defaultAbiCoder().decode(
-      ['bytes', 'uint256', 'uint256'],
-      input
-    );
-    
-    const path = this.decodeV3Path(decoded[0]);
+    const abiCoder = new ethers.AbiCoder();
+    const decoded = abiCoder.decode(['bytes', 'uint256'], input);
+    const path = decoded[0] as string;
+    const amountIn = decoded[1] as bigint;
+
+    const { tokens } = this.decodeMultiHopPath(path);
     
     return {
       type: ACTION_ENUM.MULTI_SWAP,
-      fromTokens: path.tokens.slice(0, -1),
-      toTokens: path.tokens.slice(1),
-      fromAmounts: [decoded[1].toString()],
-      toAmounts: [decoded[2].toString()],
-      recipients: [recipient],
+      fromTokens: [tokens[0]],
+      toTokens: tokens.slice(1),
+      fromAmounts: [amountIn.toString()],
+      toAmounts: new Array(tokens.length - 1).fill('0'),
+      recipients: new Array(tokens.length - 1).fill(recipient),
       sender
     };
   }
