@@ -71,11 +71,39 @@ export class UniswapV3Parser {
         }
 
         switch (commandId) {
-          case COMMAND_ENUM.V3_SWAP_EXACT_IN:
+          case COMMAND_ENUM.V3_SWAP_EXACT_IN: {
+            if (this.isMultiHop(inputs[inputIndex])) {
+              const { recipient, sender } = this.decodeSwapRecipientAndSender(inputs[inputIndex]);
+              const multiHopData = this.parseMultiHopExactInput(
+                inputs[inputIndex],
+                recipient,
+                sender
+              );
+              actions.push(multiHopData);
+            } else {
+              const swapData = this.decodeSwapData(inputs[inputIndex], commandId);
+              if (swapData) {
+                actions.push(swapData);
+              }
+            }
+            inputIndex++;
+            break;
+          }
+
           case COMMAND_ENUM.V3_SWAP_EXACT_OUT: {
-            const swapData = this.decodeSwapData(inputs[inputIndex], commandId);
-            if (swapData) {
-              actions.push(swapData);
+            if (this.isMultiHop(inputs[inputIndex])) {
+              const { recipient, sender } = this.decodeSwapRecipientAndSender(inputs[inputIndex]);
+              const multiHopData = this.parseMultiHopExactOutput(
+                inputs[inputIndex],
+                recipient,
+                sender
+              );
+              actions.push(multiHopData);
+            } else {
+              const swapData = this.decodeSwapData(inputs[inputIndex], commandId);
+              if (swapData) {
+                actions.push(swapData);
+              }
             }
             inputIndex++;
             break;
@@ -155,7 +183,7 @@ export class UniswapV3Parser {
         sender: params[6] as string
       };
 
-      if (isExactIn) {
+       if (isExactIn) {
         swapParams.amountIn = (params[4] as bigint).toString();
         swapParams.amountOutMinimum = (params[5] as bigint).toString();
       } else {
@@ -280,22 +308,30 @@ export class UniswapV3Parser {
           fromTokens: [singleSwap.fromToken],
           toTokens: [singleSwap.toToken],
           fromAmounts: [singleSwap.fromAmount],
-          toAmounts: singleSwap.toAmount ? [singleSwap.toAmount] : undefined,
-          recipients: singleSwap.recipient ? [singleSwap.recipient] : undefined,
+          toAmounts: [singleSwap.toAmount],
+          recipients: [singleSwap.recipient],
           sender: singleSwap.sender
         };
-      } else {
-        currentMultiSwap.fromTokens.push(singleSwap.fromToken);
+        continue;
+      }
+
+      // Check if this swap continues the chain
+      if (currentMultiSwap.toTokens[currentMultiSwap.toTokens.length - 1] === singleSwap.fromToken) {
         currentMultiSwap.toTokens.push(singleSwap.toToken);
         currentMultiSwap.fromAmounts.push(singleSwap.fromAmount);
-        
-        if (currentMultiSwap.toAmounts && singleSwap.toAmount) {
-          currentMultiSwap.toAmounts.push(singleSwap.toAmount);
-        }
-        
-        if (currentMultiSwap.recipients && singleSwap.recipient) {
-          currentMultiSwap.recipients.push(singleSwap.recipient);
-        }
+        currentMultiSwap.toAmounts.push(singleSwap.toAmount);
+        currentMultiSwap.recipients.push(singleSwap.recipient);
+      } else {
+        result.push(currentMultiSwap);
+        currentMultiSwap = {
+          type: ACTION_ENUM.MULTI_SWAP,
+          fromTokens: [singleSwap.fromToken],
+          toTokens: [singleSwap.toToken],
+          fromAmounts: [singleSwap.fromAmount],
+          toAmounts: [singleSwap.toAmount],
+          recipients: [singleSwap.recipient],
+          sender: singleSwap.sender
+        };
       }
     }
 
@@ -304,5 +340,148 @@ export class UniswapV3Parser {
     }
 
     return result;
+  }
+
+  private static decodeMultiHopPath(path: string): {tokens: string[], fees: number[]} {
+    const result = {
+      tokens: [] as string[],
+      fees: [] as number[]
+    };
+    
+    // Path format: token + fee + token + fee + token + ...
+    // Each token is 20 bytes, each fee is 3 bytes
+    let currentIndex = 0;
+    
+    while (currentIndex < path.length) {
+      // Extract token (20 bytes = 40 hex chars)
+      const token = '0x' + path.slice(currentIndex, currentIndex + 40);
+      result.tokens.push(token.toLowerCase());
+      currentIndex += 40;
+      
+      // Extract fee if not at end (3 bytes = 6 hex chars)
+      if (currentIndex < path.length) {
+        const fee = parseInt(path.slice(currentIndex, currentIndex + 6), 16);
+        result.fees.push(fee);
+        currentIndex += 6;
+      }
+    }
+    
+    return result;
+  }
+
+  private static decodeV3Path(path: string): {
+    tokens: string[];
+    fees: number[];
+  } {
+    const result = {
+      tokens: [] as string[],
+      fees: [] as number[]
+    };
+    
+    let currentIndex = 2; // Skip '0x' prefix
+    while (currentIndex < path.length) {
+      // Extract token address (20 bytes)
+      const token = '0x' + path.slice(currentIndex, currentIndex + 40);
+      result.tokens.push(token.toLowerCase());
+      currentIndex += 40;
+      
+      // Extract fee if not at end (3 bytes)
+      if (currentIndex < path.length) {
+        const fee = parseInt(path.slice(currentIndex, currentIndex + 6), 16);
+        result.fees.push(fee);
+        currentIndex += 6;
+      }
+    }
+    
+    return result;
+  }
+
+  private static parseMultiHopExactInput(
+    input: string,
+    recipient: string,
+    sender: string
+  ): IMultiSwapAction {
+    const decoded = ethers.AbiCoder.defaultAbiCoder().decode(
+      ['bytes', 'uint256', 'uint256'],
+      input
+    );
+    
+    const path = this.decodeV3Path(decoded[0]);
+    
+    return {
+      type: ACTION_ENUM.MULTI_SWAP,
+      fromTokens: path.tokens.slice(0, -1),
+      toTokens: path.tokens.slice(1),
+      fromAmounts: [decoded[1].toString()],
+      toAmounts: [decoded[2].toString()],
+      recipients: [recipient],
+      sender
+    };
+  }
+
+  private static parseMultiHopExactOutput(
+    input: string,
+    recipient: string,
+    sender: string
+  ): IMultiSwapAction {
+    const decoded = ethers.AbiCoder.defaultAbiCoder().decode(
+      ['bytes', 'uint256', 'uint256'],
+      input
+    );
+    
+    const path = this.decodeV3Path(decoded[0]);
+    // For exact output, path is encoded in reverse
+    path.tokens.reverse();
+    path.fees.reverse();
+    
+    return {
+      type: ACTION_ENUM.MULTI_SWAP,
+      fromTokens: path.tokens.slice(0, -1),
+      toTokens: path.tokens.slice(1),
+      fromAmounts: [decoded[2].toString()], // amountInMaximum
+      toAmounts: [decoded[1].toString()], // amountOut
+      recipients: [recipient],
+      sender
+    };
+  }
+
+  private static isMultiHop(input: string): boolean {
+    try {
+      const abiCoder = new ethers.AbiCoder();
+      const decoded = abiCoder.decode(['bytes'], input)[0] as string;
+      // A multihop path must be at least 2 tokens (40 bytes) + 1 fee (3 bytes)
+      return decoded.length >= 86; // 43 bytes * 2 hex chars per byte
+    } catch {
+      return false;
+    }
+  }
+
+  private static decodeSwapRecipientAndSender(input: string): { recipient: string; sender: string } {
+    try {
+      const abiCoder = new ethers.AbiCoder();
+      const params = abiCoder.decode(
+        [
+          'address', // recipient
+          'address', // tokenIn
+          'address', // tokenOut
+          'uint24', // fee
+          'uint256', // amount
+          'uint256', // amountLimit
+          'address'  // sender
+        ],
+        input
+      ) as unknown[];
+
+      return {
+        recipient: params[0] as string,
+        sender: params[6] as string
+      };
+    } catch (error) {
+      console.error('Failed to decode recipient and sender:', error);
+      return {
+        recipient: ethers.ZeroAddress,
+        sender: ethers.ZeroAddress
+      };
+    }
   }
 }
