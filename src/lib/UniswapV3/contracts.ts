@@ -4,6 +4,8 @@ import { IProtocolContractDefinitions } from '../../types';
 import { CONTRACT_ENUM } from '../Uniswap/contracts';
 import PoolAbi from './abis/Pool.json';
 import RouterAbi from './abis/Router.json';
+import SwapRouter01Abi from './abis/SwapRouter01.json';
+import SwapRouter02Abi from './abis/SwapRouter02.json';
 
 enum EVENT_ENUM {
   SWAP = 'Swap'
@@ -71,6 +73,26 @@ const contracts: IProtocolContractDefinitions = {
   },
   [CONTRACT_ENUM.ROUTER_V3]: {
     interface: new ethers.Interface(RouterAbi.abi),
+    deployments: {
+      [CHAIN_ID.ARBITRUM]: {
+        address: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING]
+      }
+    },
+    events: {}
+  },
+  'SwapRouter01': {
+    interface: new ethers.Interface(SwapRouter01Abi.abi),
+    deployments: {
+      [CHAIN_ID.ARBITRUM]: {
+        address: '0xE592427A0AEce92De3Edee1F18E0157C05861564',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING]
+      }
+    },
+    events: {}
+  },
+  'SwapRouter02': {
+    interface: new ethers.Interface(SwapRouter02Abi.abi),
     deployments: {
       [CHAIN_ID.ARBITRUM]: {
         address: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
