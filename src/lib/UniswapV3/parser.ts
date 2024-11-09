@@ -24,7 +24,7 @@ export class UniswapV3Parser {
     }
     const actions: ITransactionAction[] = [];
 
-    if (!ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER, contracts)) {
+    if (!ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V3, contracts)) {
       return actions;
     }
 
@@ -42,7 +42,7 @@ export class UniswapV3Parser {
 
   private static async parseRouterCalldata(transaction: ITransaction): Promise<ITransactionAction[]> {
     try {
-      const decodedData = contracts[CONTRACT_ENUM.ROUTER].interface.parseTransaction({
+      const decodedData = contracts[CONTRACT_ENUM.ROUTER_V3].interface.parseTransaction({
         data: transaction.data
       });
 

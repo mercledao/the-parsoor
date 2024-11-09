@@ -31,7 +31,7 @@ export default class Uniswap implements IProtocolParserExport {
     // Try V2 parsing first
     if (ProtocolHelper.txnToIsListenerContract(
       transaction,
-      CONTRACT_ENUM.ROUTER,
+      CONTRACT_ENUM.ROUTER_V2,
       v2Contracts
     )) {
       const v2Actions = UniswapParser.parseTransaction(transaction);

@@ -24,7 +24,7 @@ export class UniswapParser {
 
     const parsedTxn = ProtocolHelper.parseTransaction(
       transaction,
-      CONTRACT_ENUM.ROUTER,
+      CONTRACT_ENUM.ROUTER_V2,
       contracts
     );
 
