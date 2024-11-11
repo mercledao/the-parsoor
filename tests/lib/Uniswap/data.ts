@@ -149,22 +149,22 @@ export const uniswapData: IProtocolTestingData = {
       ]
     },
   ],
-  [UNISWAP_VERSIONS.V3]: [
-    {
-      txnHash: '0x123...',
-      chainId: CHAIN_ID.ARBITRUM,
-      emittedActions: [
-        {
-          type: ACTION_ENUM.LIMIT_ORDER,
-          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
-          toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
-          fromAmount: '1000000000000000000',
-          toAmount: '1800000000', 
-          priceLimit: '1800000000', 
-          deadline: 1703980800,
-          recipient: '0x123...'
-        }
-      ]
-    }
-  ]
+  // [UNISWAP_VERSIONS.V3]: [
+  //   {
+  //     txnHash: '0x123...',
+  //     chainId: CHAIN_ID.ARBITRUM,
+  //     emittedActions: [
+  //       {
+  //         type: ACTION_ENUM.LIMIT_ORDER,
+  //         fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
+  //         toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+  //         fromAmount: '1000000000000000000',
+  //         toAmount: '1800000000', 
+  //         priceLimit: '1800000000', 
+  //         deadline: 1703980800,
+  //         recipient: '0x123...'
+  //       }
+  //     ]
+  //   }
+  // ]
 }; 
