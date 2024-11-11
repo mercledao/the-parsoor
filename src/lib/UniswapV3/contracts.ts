@@ -50,7 +50,11 @@ enum COMMAND_ENUM {
   NOOP = 0x17,
   
   // Timestamp Commands
-  TIMESTAMP = 0x18
+  TIMESTAMP = 0x18,
+  
+  // Limit Order Commands
+  LIMIT_ORDER = 0x19,
+  CANCEL_LIMIT_ORDER = 0x1a
 }
 
 const contracts: IProtocolContractDefinitions = {

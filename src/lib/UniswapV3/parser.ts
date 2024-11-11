@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { ACTION_ENUM } from '../../enums';
 import { ProtocolHelper } from '../../helpers';
-import { IMultiSwapAction, ISingleSwapAction, ITransaction, ITransactionAction } from '../../types';
+import { ILimitOrderAction, IMultiSwapAction, ISingleSwapAction, ITransaction, ITransactionAction } from '../../types';
 import { COMMAND_ENUM, CONTRACT_ENUM, contracts } from './contracts';
 
 interface V3SwapParams {
@@ -142,6 +142,15 @@ export class UniswapV3Parser {
           case COMMAND_ENUM.TIMESTAMP:
             inputIndex++;
             break;
+
+          case COMMAND_ENUM.LIMIT_ORDER: {
+            const limitOrderData = this.parseLimitOrder(inputs[inputIndex]);
+            if (limitOrderData) {
+              actions.push(limitOrderData);
+            }
+            inputIndex++;
+            break;
+          }
 
           default:
             console.warn(`Unknown command ID: ${commandId}`);
@@ -481,6 +490,38 @@ export class UniswapV3Parser {
         recipient: ethers.ZeroAddress,
         sender: ethers.ZeroAddress
       };
+    }
+  }
+
+  private static parseLimitOrder(input: string): ILimitOrderAction | null {
+    try {
+      const abiCoder = new ethers.AbiCoder();
+      const decoded = abiCoder.decode(
+        [
+          'address', // recipient
+          'address', // tokenIn
+          'address', // tokenOut
+          'uint256', // amountIn
+          'uint256', // minAmountOut
+          'uint256', // priceLimit
+          'uint256'  // deadline
+        ],
+        input
+      ) as unknown[];
+
+      return {
+        type: ACTION_ENUM.LIMIT_ORDER,
+        fromToken: decoded[1] as string,
+        toToken: decoded[2] as string,
+        fromAmount: (decoded[3] as bigint).toString(),
+        toAmount: (decoded[4] as bigint).toString(),
+        priceLimit: (decoded[5] as bigint).toString(),
+        deadline: Number(decoded[6]),
+        recipient: decoded[0] as string
+      };
+    } catch (error) {
+      console.error('Failed to decode limit order data:', error);
+      return null;
     }
   }
 }

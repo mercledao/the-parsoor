@@ -1,6 +1,6 @@
 import { ACTION_ENUM, CHAIN_ID } from '../../enums';
 
-export type ITransactionAction = ISingleSwapAction | IMultiSwapAction | IBridgeInAction | IBridgeOutAction;
+export type ITransactionAction = ISingleSwapAction | IMultiSwapAction | IBridgeInAction | IBridgeOutAction | ILimitOrderAction;
 
 export type ISingleSwapAction = {
   type: ACTION_ENUM.SINGLE_SWAP;
@@ -128,4 +128,36 @@ export type IBridgeOutAction = {
    * The recipient of the bridged funds
    */
   recipient: string | null;
+};
+
+export type ILimitOrderAction = {
+  type: ACTION_ENUM.LIMIT_ORDER;
+  /**
+   * The token being sold
+   */
+  fromToken: string;
+  /**
+   * The token being bought
+   */
+  toToken: string;
+  /**
+   * The amount being sold
+   */
+  fromAmount: string;
+  /**
+   * The minimum amount to receive
+   */
+  toAmount: string;
+  /**
+   * The price limit for execution
+   */
+  priceLimit: string;
+  /**
+   * The timestamp after which the order expires
+   */
+  deadline: number;
+  /**
+   * The recipient of the bought tokens
+   */
+  recipient: string;
 };
