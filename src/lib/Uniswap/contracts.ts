@@ -152,6 +152,22 @@ export const contracts: IProtocolContractDefinitions = {
       [CHAIN_ID.ARBITRUM]: {
         address: '0xE592427A0AEce92De3Edee1F18E0157C05861564',
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING]
+      },
+      [CHAIN_ID.ETHEREUM]: {
+        address: '0xE592427A0AEce92De3Edee1F18E0157C05861564',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING]
+      },
+      [CHAIN_ID.OPTIMISM]: {
+        address: '0xE592427A0AEce92De3Edee1F18E0157C05861564', 
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING]
+      },
+      [CHAIN_ID.POLYGON]: {
+        address: '0xE592427A0AEce92De3Edee1F18E0157C05861564',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING]
+      },
+      [CHAIN_ID.BASE]: {
+        address: '0xE592427A0AEce92De3Edee1F18E0157C05861564',
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING]
       }
     },
     events: {}
