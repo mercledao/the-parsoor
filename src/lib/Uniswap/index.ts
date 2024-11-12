@@ -6,9 +6,7 @@ import {
   ITransaction,
   ITransactionAction,
 } from "../../types";
-import { contracts as v3Contracts } from "../UniswapV3/contracts";
-import { UniswapV3Parser } from "../UniswapV3/parser";
-import { CONTRACT_ENUM, contracts as v2Contracts } from "./contracts";
+import { CONTRACT_ENUM, contracts } from "./contracts";
 import { UniswapParser } from "./parser";
 
 export default class Uniswap implements IProtocolParserExport {
@@ -17,10 +15,7 @@ export default class Uniswap implements IProtocolParserExport {
 
   constructor() {
     this.protocolIdentifier = protocols.uniswap.identifier;
-    this.combinedContracts = {
-      ...v2Contracts,
-      ...v3Contracts
-    };
+    this.combinedContracts = contracts;
   }
 
   public async parseTransaction(
@@ -32,14 +27,14 @@ export default class Uniswap implements IProtocolParserExport {
     if (ProtocolHelper.txnToIsListenerContract(
       transaction,
       CONTRACT_ENUM.ROUTER_V2,
-      v2Contracts
+      contracts
     )) {
-      const v2Actions = UniswapParser.parseTransaction(transaction);
+      const v2Actions = UniswapParser.parseV2Transaction(transaction);
       actions.push(...v2Actions);
     }
 
     // Try V3 parsing
-    const v3Actions = await UniswapV3Parser.parseTransaction(transaction);
+    const v3Actions = await UniswapParser.parseV3Transaction(transaction);
     if (v3Actions.length > 0) {
       actions.push(...v3Actions);
     }
