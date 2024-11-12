@@ -62,7 +62,7 @@ export enum COMMAND_ENUM {
 }
 
 export enum EVENT_ENUM {
-  SWAP = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822'
+  SWAP = '0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67'
 }
 
 export const contracts: IProtocolContractDefinitions = {
@@ -130,7 +130,6 @@ export const contracts: IProtocolContractDefinitions = {
     },
     events: {
       [EVENT_ENUM.SWAP]: {
-        signature: '0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67',
         abi: new ethers.Interface([
           'event Swap(address indexed sender, address indexed recipient, int256 amount0, int256 amount1, uint160 sqrtPriceX96, uint128 liquidity, int24 tick)'
         ])

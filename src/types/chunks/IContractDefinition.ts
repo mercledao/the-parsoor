@@ -24,11 +24,8 @@ export type IContractDeployment = {
   /** Types of transactions to listen for */
   listenForTransactions: LISTEN_FOR_TRANSACTIONS[] | null;
 };
-
 /** Configuration for a smart contract event */
 export type IContractEventConfig = {
   /** Interface for the event */
   abi: ethers.Interface;
-  /** Optional signature for the event */
-  signature?: string;
 };
