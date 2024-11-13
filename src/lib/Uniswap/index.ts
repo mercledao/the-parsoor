@@ -23,19 +23,27 @@ export default class Uniswap implements IProtocolParserExport {
   ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
 
+    // Check if transaction is valid
+    if (!transaction?.to || !transaction?.data) {
+      return actions;
+    }
+
     // Try V2 parsing first
     if (ProtocolHelper.txnToIsListenerContract(
       transaction,
       CONTRACT_ENUM.ROUTER_V2,
       contracts
     )) {
-      const v2Actions = UniswapParser.parseV2Transaction(transaction);
-      actions.push(...v2Actions);
+      const v2Actions = await UniswapParser.parseV2Transaction(transaction);
+      if (v2Actions.length > 0) {
+        return v2Actions; // Return if V2 parsing successful
+      }
     }
 
+    // Try V3 parsing if V2 failed
     const v3Actions = await UniswapParser.parseV3Transaction(transaction);
     if (v3Actions.length > 0) {
-      actions.push(...v3Actions);
+      return v3Actions;
     }
 
     return actions;

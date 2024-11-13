@@ -98,7 +98,7 @@ export const uniswapData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: '0x250f93c92AEbF7304c9e7e347D1acA8C0212Edea', 
+          fromToken: '0x0000000000000000000000000000000000000000', 
           toToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
           fromAmount: '64825425796635640', 
           toAmount: '1845000000000000',                   
@@ -112,10 +112,10 @@ export const uniswapData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
+          fromToken: '0x0000000000000000000000000000000000000000', 
           toToken: '0x250f93c92AEbF7304c9e7e347D1acA8C0212Edea', 
           fromAmount: '6093902262353599', 
-          toAmount: '0',                   
+          toAmount: '200000000000000000',                   
           recipient: '0xB047A319827D6f00999091390D6aaD3cd256a59A',
         }
       ]
@@ -140,7 +140,7 @@ export const uniswapData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: '0xEd7d16E3aD3D98E623C1dF356A810867f44F4D8d', 
+          fromToken: '0x0000000000000000000000000000000000000000', 
           toToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
           fromAmount: '100000000000000000000',
           toAmount: '3112638000000000',                   

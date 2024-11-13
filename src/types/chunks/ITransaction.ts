@@ -36,3 +36,11 @@ export type ITransactionLog = {
   /** Data of the log */
   data: string;
 };
+
+export interface IParsedTransaction {
+  name: string;
+  args: {
+    params?: any;
+    [key: string]: any;
+  };
+}
