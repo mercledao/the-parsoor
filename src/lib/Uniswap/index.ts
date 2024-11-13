@@ -33,7 +33,6 @@ export default class Uniswap implements IProtocolParserExport {
       actions.push(...v2Actions);
     }
 
-    // Try V3 parsing
     const v3Actions = await UniswapParser.parseV3Transaction(transaction);
     if (v3Actions.length > 0) {
       actions.push(...v3Actions);

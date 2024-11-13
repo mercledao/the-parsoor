@@ -99,7 +99,7 @@ export const uniswapData: IProtocolTestingData = {
         {
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0x250f93c92AEbF7304c9e7e347D1acA8C0212Edea', 
-          toToken: '0x0000000000000000000000000000000000000000', 
+          toToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
           fromAmount: '64825425796635640', 
           toAmount: '1845000000000000',                   
           recipient: '0xC8b19E53D9366f68811C6c851A2c3aC1cF14AF96',
@@ -112,10 +112,10 @@ export const uniswapData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: '0x0000000000000000000000000000000000000000', 
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
           toToken: '0x250f93c92AEbF7304c9e7e347D1acA8C0212Edea', 
           fromAmount: '6093902262353599', 
-          toAmount: '200000000000000000',                   
+          toAmount: '0',                   
           recipient: '0xB047A319827D6f00999091390D6aaD3cd256a59A',
         }
       ]
@@ -141,7 +141,7 @@ export const uniswapData: IProtocolTestingData = {
         {
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0xEd7d16E3aD3D98E623C1dF356A810867f44F4D8d', 
-          toToken: '0x0000000000000000000000000000000000000000', 
+          toToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
           fromAmount: '100000000000000000000',
           toAmount: '3112638000000000',                   
           recipient: '0x74d90f1dcb8EBA0B3855601747A3a905f02C157B',
@@ -149,22 +149,34 @@ export const uniswapData: IProtocolTestingData = {
       ]
     },
   ],
-  // [UNISWAP_VERSIONS.V3]: [
-  //   {
-  //     txnHash: '0x123...',
-  //     chainId: CHAIN_ID.ARBITRUM,
-  //     emittedActions: [
-  //       {
-  //         type: ACTION_ENUM.LIMIT_ORDER,
-  //         fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 
-  //         toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
-  //         fromAmount: '1000000000000000000',
-  //         toAmount: '1800000000', 
-  //         priceLimit: '1800000000', 
-  //         deadline: 1703980800,
-  //         recipient: '0x123...'
-  //       }
-  //     ]
-  //   }
-  // ]
+  [UNISWAP_VERSIONS.V3]: [
+    {
+      txnHash: '0x808903c2dc70158d0a6d3ba886823634a7cdb4cca7f7896b6175ff876faa8228',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          fromAmount: '249735963111308745',
+          toAmount: '814548008',
+          recipient: '0x8cC02c2381b7C55E18DccfEA917F0677A5671931'
+        }
+      ]
+    },
+    {
+      txnHash: '0xfd4c2a3482ad7e1c392331b3028eddd1f46b4932b506930557b47c96880e1c3f',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toToken: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+          fromAmount: '3195354772034712193',
+          toAmount: '10421085302',
+          recipient: '0x4700192F8a4A00f009d87A515ff2d13E5cAb8364'
+        }
+      ]
+    }
+  ]
 }; 

@@ -15,7 +15,7 @@ describe('UniswapParser', () => {
     utils.isValidProtocol();
   });
 
-  it('should parse the data correctly', async () => {
+  it('should parse V2 transactions correctly', async () => {
     const v2Transactions = uniswapData[UNISWAP_VERSIONS.V2];
 
     for (const transaction of v2Transactions) {
@@ -24,7 +24,25 @@ describe('UniswapParser', () => {
 
       console.log(
         chalk.green(
-          'Successfully parsed transaction with actions:',
+          'Successfully parsed V2 transaction with actions:',
+          actions.map((action) => action.type).join(',')
+        ),
+        'and hash:',
+        transaction.txnHash
+      );
+    }
+  });
+
+  it('should parse V3 transactions correctly', async () => {
+    const v3Transactions = uniswapData[UNISWAP_VERSIONS.V3];
+
+    for (const transaction of v3Transactions) {
+      const actions = await utils.fetchAndParseTestTxn(transaction);
+      utils.assertTestTransactionForData(transaction, actions);
+
+      console.log(
+        chalk.green(
+          'Successfully parsed V3 transaction with actions:',
           actions.map((action) => action.type).join(',')
         ),
         'and hash:',
