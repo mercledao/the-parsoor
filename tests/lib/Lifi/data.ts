@@ -18,8 +18,8 @@ export const lifiData: IProtocolTestingData = {
           toChain: CHAIN_ID.OPTIMISM,
           fromToken: ethers.ZeroAddress,
           toToken: ethers.ZeroAddress,
-          fromAmount: '66087883763464868',
-          toAmount: '66083849681558975',
+          fromAmount: '4034081905893',
+          toAmount: '4034081905893',
           sender: '0x21f3f177Caa340da19d64a6d4603c493e1061fCe',
           recipient: '0x21f3f177Caa340da19d64a6d4603c493e1061fCe'
         }
