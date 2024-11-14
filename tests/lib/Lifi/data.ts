@@ -32,9 +32,9 @@ export const lifiData: IProtocolTestingData = {
         {
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: ethers.ZeroAddress,
-          toToken: '0xE37e799D1c305C057d5E26f9B411C27AD35E21d9',
+          toToken: '0x111111125421ca6dc452d289314280a0f8842a65',
           fromAmount: '9114770000000000',
-          toAmount: '52928284907437591',
+          toAmount: '115792089237316195423570985008687907853269984665640564039457531079628222202345',
           sender: '0xdB6D9D4Ae06b843639aB5Ea567aF30ECE0374003',
           recipient: '0xdB6D9D4Ae06b843639aB5Ea567aF30ECE0374003'
         }
