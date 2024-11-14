@@ -140,7 +140,7 @@ export class UniswapParser {
     
     for (let i = 0; i < cleanPath.length; i += 40) {
       const token = '0x' + cleanPath.slice(i, i + 40);
-      tokens.push(token.toLowerCase()); // Normalize addresses to lowercase
+      tokens.push(token.toLowerCase());
     }
     
     return tokens;
@@ -201,6 +201,4 @@ export class UniswapParser {
       recipient: params.recipient || transaction.from
     };
   }
-
-  // Helper methods follow...
 }

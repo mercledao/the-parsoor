@@ -177,6 +177,34 @@ export const uniswapData: IProtocolTestingData = {
           recipient: '0x4700192F8a4A00f009d87A515ff2d13E5cAb8364'
         }
       ]
-    }
+    },
+    {
+      txnHash: '0x4bc7ada97603198598a42ecf2e866bdb46741126a3d341682b77bd3a4dbb962d',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          fromAmount: '198014821910499531',
+          toAmount: '649285797',
+          recipient: '0x8cC02c2381b7C55E18DccfEA917F0677A5671931'
+        }
+      ]
+    },
+    {
+      txnHash: '0xc97ae254e1af0cc838cc3b5e5b818c887bb8e4ff8b01ca3171f465885feaac76',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+          toToken: '0x56f20faebb00',
+          fromAmount: '100000000',
+          toAmount: '4631625404931040000000000',
+          recipient: '0x622661aB4B6aB93c659e751F47eBB0c6e6ad9F48'
+        }
+      ]
+    },
   ]
 }; 
