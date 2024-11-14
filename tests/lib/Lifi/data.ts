@@ -121,5 +121,20 @@ export const lifiData: IProtocolTestingData = {
           }
         ]
       },
+      {
+        txnHash: '0xbd5166de17306a5f36d7e0b544e41a23dd8da94ffda24d4c410641a3c88c342d',
+        chainId: CHAIN_ID.ARBITRUM,
+        emittedActions: [
+          {
+            type: ACTION_ENUM.SINGLE_SWAP,
+            fromToken: ethers.ZeroAddress,
+            toToken: '0x111111125421ca6dc452d289314280a0f8842a65',
+            fromAmount: '516735602',
+            toAmount: '115792089237316195423570985008687907853269984665640564039457584007912613162817',
+            sender: '0xc7E282C2503Aa01b73bbD7Ad020A241cAff4b215',
+            recipient: '0xc7E282C2503Aa01b73bbD7Ad020A241cAff4b215'
+          }
+        ]
+      },
   ]
 };

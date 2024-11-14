@@ -1,5 +1,5 @@
 import { protocols } from '../config';
-import Lifi from './Lifi';
+import Lifi from './LiFi';
 import RhinoFi from './RhinoFi';
 import Uniswap from './Uniswap';
 
