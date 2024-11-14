@@ -12,5 +12,11 @@ export const protocols: IProtocolDefinitionMap = {
     name: 'Uniswap',
     twitter: 'https://x.com/Uniswap',
     logo: 'https://assets.coingecko.com/coins/images/12504/large/uni.jpg?1600306401'
+  },
+  lifi: {
+    identifier: 'lifi',
+    name: 'LiFi',
+    twitter: 'https://x.com/li.fi',
+    logo: 'https://assets.coingecko.com/coins/images/25169/large/rhinofi.png?1748888486'
   }
 };

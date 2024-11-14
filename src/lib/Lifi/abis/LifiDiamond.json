@@ -1,0 +1,125 @@
+{
+    "events": {
+        "BridgeStarted": {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "name": "transactionId",
+                    "type": "bytes32"
+                },
+                {
+                    "indexed": false,
+                    "name": "integrator",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "name": "referrer",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "name": "fromToken",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "name": "toToken",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "name": "fromAmount",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "toAmount",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "sender",
+                    "type": "address"
+                }
+            ],
+            "name": "BridgeStarted",
+            "type": "event"
+        },
+        "SwapStarted": {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "name": "transactionId",
+                    "type": "bytes32"
+                },
+                {
+                    "indexed": false,
+                    "name": "integrator",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "name": "referrer",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "name": "fromToken",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "name": "toToken",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "name": "fromAmount",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "toAmount",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "sender",
+                    "type": "address"
+                }
+            ],
+            "name": "SwapStarted",
+            "type": "event"
+        },
+        "BridgeCompleted": {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "name": "transactionId",
+                    "type": "bytes32"
+                },
+                {
+                    "indexed": false,
+                    "name": "toToken",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "name": "toAmount",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "recipient",
+                    "type": "address"
+                }
+            ],
+            "name": "BridgeCompleted",
+            "type": "event"
+        }
+    }
+}
