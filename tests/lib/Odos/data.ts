@@ -256,3 +256,136 @@ export const odosRouter: IProtocolTestingData = {
     },
   ],
 };
+
+export const odosLimitOrderRouter: IProtocolTestingData = {
+  [ODOS_VERSIONS.V1]: [
+    {
+      txnHash:
+        "0x69ab7398ebec59d2812fddcc771c206ca140509b4aeb65dfb043bdb97c13e997",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+          toToken: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          fromAmount: "1000000000000000",
+          toAmount: "3160000",
+          sender: "0x4726464FB17727cb6C7aAab2451F7229C94BfdC4",
+          recipient: "0x4726464FB17727cb6C7aAab2451F7229C94BfdC4",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xfe54a02df9c113c825b3c6fe7a2282d00262da40c978d7f29b0bd559756340b1",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+          toToken: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          fromAmount: "1000000000000035",
+          toAmount: "3125000",
+          sender: "0x4726464FB17727cb6C7aAab2451F7229C94BfdC4",
+          recipient: "0x4726464FB17727cb6C7aAab2451F7229C94BfdC4",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x4eed06ebb026327dbc9d182936a4ebb210e3488ce248d567cad07ed56c92101b",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          toToken: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+          fromAmount: "299919900",
+          toAmount: "299569036",
+          sender: "0xC265A526f733d4554740Ea7D6c846E7263020685",
+          recipient: "0xC265A526f733d4554740Ea7D6c846E7263020685",
+        },
+      ],
+    },
+
+    //Multi swaps
+    {
+      txnHash:
+        "0x410319dd773b67b0a88333a1ebda8034eab1e42ac34300375cbccc029985811a",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.MULTI_SWAP,
+          fromTokens: [
+            "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+            "0x912CE59144191C1204E64559FE8253a0e49E6548",
+            "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          ],
+          toTokens: ["0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34"],
+          fromAmounts: [
+            "528159938064755477174",
+            "6121452468756287510",
+            "2578089265",
+          ],
+          toAmounts: ["4348570021966260994048"],
+          sender: "0x814d522F6c4bCD22F1EFC02ae7Bb4E08c5fDeA30",
+          recipients: ["0x2651D865cE09348dDc68B602550F9c9027a30d0B"],
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xd200b48474d4ea0520dee68dde48d121bfbba59963e3eef2ece2debc9496e161",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.MULTI_SWAP,
+          fromTokens: [
+            "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+            "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4",
+            "0x912CE59144191C1204E64559FE8253a0e49E6548",
+          ],
+          toTokens: ["0xaf88d065e77c8cC2239327C5EDb3A432268e5831"],
+          fromAmounts: [
+            "2077155531669714151",
+            "1641986538693259497",
+            "155259299999999996",
+          ],
+          toAmounts: ["24228523"],
+          sender: "0x814d522F6c4bCD22F1EFC02ae7Bb4E08c5fDeA30",
+          recipients: ["0xf95Bd53fD24f5bb3d2899B7fe7474Efb5AD7356a"],
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x1700c96255d9ecc5dea171237e8d6ccedd3b65e03f6640ae973d1e2e764b0d43",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.MULTI_SWAP,
+          fromTokens: [
+            "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4",
+            "0xD74f5255D557944cf7Dd0E45FF521520002D5748",
+            "0x289ba1701C2F088cf0faf8B3705246331cB8A839",
+            "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+            "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
+            "0x64343594Ab9b56e99087BfA6F2335Db24c2d1F17",
+          ],
+          toTokens: ["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"],
+          fromAmounts: [
+            "99999999999999694",
+            "1277748220790544125",
+            "100000000000000000",
+            "943839",
+            "544650",
+            "500000000000000000",
+          ],
+          toAmounts: ["1821135904897862"],
+          sender: "0xF629232dE2B4B64151A5ee0a9aB45975f15544FD",
+          recipients: ["0xF629232dE2B4B64151A5ee0a9aB45975f15544FD"],
+        },
+      ],
+    },
+  ],
+};

@@ -75,7 +75,7 @@ export default class LimitOrderRouterParser {
         amount.toString()
       ),
       sender: parsedLog.args.orderOwner,
-      recipients: new Array(parsedLog.args.filledInputAmounts.length).fill(
+      recipients: new Array(parsedLog.args.outputTokens.length).fill(
         parsedLog.args.orderOwner
       ),
     };
