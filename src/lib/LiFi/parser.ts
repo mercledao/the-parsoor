@@ -1,12 +1,16 @@
-import { ethers } from 'ethers';
-import { ACTION_ENUM, CHAIN_ID } from '../../enums';
-import { ITransaction, ITransactionAction } from '../../types';
+import { ethers } from "ethers";
+import { ACTION_ENUM, CHAIN_ID } from "../../enums";
+import { ITransaction, ITransactionAction } from "../../types";
 
 export class LifiParser {
-  private static readonly BRIDGE_EVENT = '0x15955c5a4cc61b8fbb05301bce47fd31c0e6f935e1ab97fdac9b134c887bb074';
-  private static readonly SWAP_EVENT = '0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67';
+  private static readonly BRIDGE_EVENT =
+    "0x15955c5a4cc61b8fbb05301bce47fd31c0e6f935e1ab97fdac9b134c887bb074";
+  private static readonly SWAP_EVENT =
+    "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67";
 
-  public static async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
+  public static async parseTransaction(
+    transaction: ITransaction
+  ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
     const logs = transaction.logs;
 
@@ -17,7 +21,7 @@ export class LifiParser {
           actions.push(action);
         }
       } catch (e) {
-        console.error('Error processing log:', e);
+        console.error("Error processing log:", e);
         continue;
       }
     }
@@ -25,7 +29,10 @@ export class LifiParser {
     return actions;
   }
 
-  private static async parseLog(log: any, transaction: ITransaction): Promise<ITransactionAction | null> {
+  private static async parseLog(
+    log: any,
+    transaction: ITransaction
+  ): Promise<ITransactionAction | null> {
     switch (log.topics[0]) {
       case this.BRIDGE_EVENT:
         return this.parseBridgeEvent(log, transaction);
@@ -36,9 +43,12 @@ export class LifiParser {
     }
   }
 
-  private static async parseBridgeEvent(log: any, transaction: ITransaction): Promise<ITransactionAction> {
+  private static async parseBridgeEvent(
+    log: any,
+    transaction: ITransaction
+  ): Promise<ITransactionAction> {
     const bridgeData = ethers.AbiCoder.defaultAbiCoder().decode(
-      ['uint256', 'uint256', 'uint256', 'bytes'],
+      ["uint256", "uint256", "uint256", "bytes"],
       log.data
     );
 
@@ -51,17 +61,20 @@ export class LifiParser {
       fromAmount: bridgeData[2].toString(),
       toAmount: bridgeData[2].toString(),
       sender: transaction.from,
-      recipient: transaction.from
+      recipient: transaction.from,
     };
   }
 
-  private static async parseSwapEvent(log: any, transaction: ITransaction): Promise<ITransactionAction> {
+  private static async parseSwapEvent(
+    log: any,
+    transaction: ITransaction
+  ): Promise<ITransactionAction> {
     const swapData = ethers.AbiCoder.defaultAbiCoder().decode(
-      ['uint256', 'uint256'],
+      ["uint256", "uint256"],
       log.data
     );
 
-    const toToken = '0x' + log.topics[2].slice(26);
+    const toToken = "0x" + log.topics[2].slice(26);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -70,7 +83,7 @@ export class LifiParser {
       fromAmount: swapData[0].toString(),
       toAmount: swapData[1].toString(),
       sender: transaction.from,
-      recipient: transaction.from
+      recipient: transaction.from,
     };
   }
 }
