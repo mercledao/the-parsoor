@@ -50,7 +50,7 @@ export const contracts: IProtocolContractDefinitions = {
         address: "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
       },
-      [CHAIN_ID.ZKSYNC]: {
+      [CHAIN_ID.ZKSYNC_ERA]: {
         address: "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
       },
