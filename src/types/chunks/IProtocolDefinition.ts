@@ -5,4 +5,5 @@ export type IProtocolDefinition = {
   name: string;
   twitter?: string;
   logo?: string;
+  website?: string;
 };
