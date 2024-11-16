@@ -7,6 +7,7 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
+import LimitOrderRouterParser from "./parsers/LimitOrderRouter";
 import RouterV1Parser from "./parsers/RouterV1";
 import RouterV2Parser from "./parsers/RouterV2";
 
@@ -38,6 +39,14 @@ export default class Odos implements IProtocolParserExport {
       )
     ) {
       actions.push(...RouterV1Parser.parseTransaction(transaction));
+    } else if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.LIMIT_ORDER_ROUTER,
+        contracts
+      )
+    ) {
+      actions.push(...LimitOrderRouterParser.parseTransaction(transaction));
     }
 
     return actions;
