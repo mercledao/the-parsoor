@@ -1,11 +1,13 @@
 import { protocols } from "../../config";
+import { ProtocolHelper } from "../../helpers";
 import {
   IProtocolContractDefinitions,
   IProtocolParserExport,
   ITransaction,
   ITransactionAction,
 } from "../../types";
-import { contracts } from "./contracts";
+import { CONTRACT_ENUM, contracts } from "./contracts";
+import RouterV2Parser from "./parsers/RouterV2";
 
 export default class Odos implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
@@ -18,6 +20,16 @@ export default class Odos implements IProtocolParserExport {
     transaction: ITransaction
   ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
+
+    if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.V2_ROUTER,
+        contracts
+      )
+    ) {
+      actions.push(...RouterV2Parser.parseTransaction(transaction));
+    }
 
     return actions;
   }
