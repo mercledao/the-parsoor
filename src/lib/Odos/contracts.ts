@@ -82,14 +82,14 @@ const contracts: IProtocolContractDefinitions = {
     },
     events: {
       [EVENT_ENUM.V2_SINGLE_SWAP]: {
-        abi: new ethers.Interface(
-          "event Swap(address sender,uint256 inputAmount,address inputToken,uint256 amountOut,address outputToken,int256 slippage,uint32 referralCode)"
-        ),
+        abi: new ethers.Interface([
+          "event Swap(address sender,uint256 inputAmount,address inputToken,uint256 amountOut,address outputToken,int256 slippage,uint32 referralCode)",
+        ]),
       },
       [EVENT_ENUM.V2_MULTI_SWAP]: {
-        abi: new ethers.Interface(
-          "event SwapMulti(address sender,uint256[] amountsIn,address[] tokensIn,uint256[] amountsOut,address[] tokensOut,uint32 referralCode)"
-        ),
+        abi: new ethers.Interface([
+          "event SwapMulti(address sender,uint256[] amountsIn,address[] tokensIn,uint256[] amountsOut,address[] tokensOut,uint32 referralCode)",
+        ]),
       },
     },
   },
@@ -132,9 +132,9 @@ const contracts: IProtocolContractDefinitions = {
     },
     events: {
       [EVENT_ENUM.V1_SWAP]: {
-        abi: new ethers.Interface(
-          "event Swapped(address sender,uint256[] amountsIn,address[] tokensIn,uint256[] amountsOut,address[] outputs,uint256 valueOutQuote)"
-        ),
+        abi: new ethers.Interface([
+          "event Swapped(address sender,uint256[] amountsIn,address[] tokensIn,uint256[] amountsOut,address[] outputs,uint256 valueOutQuote)",
+        ]),
       },
     },
   },
@@ -197,14 +197,14 @@ const contracts: IProtocolContractDefinitions = {
     },
     events: {
       [EVENT_ENUM.LIMIT_ORDER_FILL]: {
-        abi: new ethers.Interface(
-          "event LimitOrderFilled(bytes32 indexed orderHash,address indexed orderOwner,address inputToken,address outputToken,uint256 orderInputAmount,uint256 orderOutputAmount,uint256 filledInputAmount,uint256 filledOutputAmount,uint256 surplus,uint32 referralCode,uint256 orderType)"
-        ),
+        abi: new ethers.Interface([
+          "event LimitOrderFilled(bytes32 indexed orderHash,address indexed orderOwner,address inputToken,address outputToken,uint256 orderInputAmount,uint256 orderOutputAmount,uint256 filledInputAmount,uint256 filledOutputAmount,uint256 surplus,uint32 referralCode,uint256 orderType)",
+        ]),
       },
       [EVENT_ENUM.MULTI_LIMIT_ORDER_FILL]: {
-        abi: new ethers.Interface(
-          "event MultiLimitOrderFilled(bytes32 indexed orderHash,address indexed orderOwner,address[] inputTokens,address[] outputTokens,uint256[] orderInputAmounts,uint256[] orderOutputAmounts,uint256[] filledInputAmounts,uint256[] filledOutputAmounts,uint256[] surplus,uint32 referralCode,uint256 orderType)"
-        ),
+        abi: new ethers.Interface([
+          "event MultiLimitOrderFilled(bytes32 indexed orderHash,address indexed orderOwner,address[] inputTokens,address[] outputTokens,uint256[] orderInputAmounts,uint256[] orderOutputAmounts,uint256[] filledInputAmounts,uint256[] filledOutputAmounts,uint256[] surplus,uint32 referralCode,uint256 orderType)",
+        ]),
       },
     },
   },

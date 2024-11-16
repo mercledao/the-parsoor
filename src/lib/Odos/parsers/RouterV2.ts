@@ -52,6 +52,7 @@ export default class RouterV2Parser {
       toTokens: parsedLog.args.tokensOut,
       fromAmounts: parsedLog.args.amountsIn.map((amount) => amount.toString()),
       toAmounts: parsedLog.args.amountsOut.map((amount) => amount.toString()),
+      sender: parsedLog.args.sender,
     };
   }
 

@@ -1,0 +1,35 @@
+import chalk from "chalk";
+import { ProtocolParserUtils } from "../..";
+import { protocols } from "../../../src";
+import { ODOS_VERSIONS, odosRouter } from "./data";
+
+describe("OdosParser", () => {
+  let utils: ProtocolParserUtils;
+
+  beforeAll(async () => {
+    utils = new ProtocolParserUtils(protocols.odos.identifier);
+    await utils.initialize();
+  });
+
+  it("is correctly defined", () => {
+    utils.isValidProtocol();
+  });
+
+  it("should parse v2 router correctly", async () => {
+    const v2Transactions = odosRouter[ODOS_VERSIONS.V2];
+
+    for (const transaction of v2Transactions) {
+      const actions = await utils.fetchAndParseTestTxn(transaction);
+      utils.assertTestTransactionForData(transaction, actions);
+
+      console.log(
+        chalk.green(
+          "Successfully parsed transaction with actions :",
+          actions.map((action) => action.type).join(",")
+        ),
+        " and hash : ",
+        transaction.txnHash
+      );
+    }
+  });
+});
