@@ -3,6 +3,7 @@ import { ACTION_ENUM, CHAIN_ID, IProtocolTestingData } from "../../../src";
 
 export enum ODOS_VERSIONS {
   V2 = "v2",
+  V1 = "v1",
 }
 
 export const odosRouter: IProtocolTestingData = {
@@ -167,6 +168,89 @@ export const odosRouter: IProtocolTestingData = {
           fromAmounts: ["1900000000000000000"],
           toAmounts: ["109161039261938683135", "49579067335875"],
           sender: "0x814d522F6c4bCD22F1EFC02ae7Bb4E08c5fDeA30",
+        },
+      ],
+    },
+  ],
+
+  [ODOS_VERSIONS.V1]: [
+    {
+      txnHash:
+        "0x98805f922be9de669ddbb7c398db3c1bfb692530ad32fa72b40ac5aba49b895e",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+          toToken: ethers.ZeroAddress,
+          fromAmount: "3282173126386920",
+          toAmount: "3282173126386919",
+          sender: "0xcC91A1Fa81d7c4b10C4ECe01AbEb3EeE55e5373c",
+          recipient: "0xcC91A1Fa81d7c4b10C4ECe01AbEb3EeE55e5373c",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x0b3aca417ce92325a95b11d5a429d3da2d723fbd63fb1c06a27ed51738f4b840",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x912CE59144191C1204E64559FE8253a0e49E6548",
+          toToken: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+          fromAmount: "15000000000000000000",
+          toAmount: "8360180131868953",
+          sender: "0x962dE35217e9D4D0D79e8106A3d5eA121FE71685",
+          recipient: "0x962dE35217e9D4D0D79e8106A3d5eA121FE71685",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x29e42fbb02cd06a61a444d886fb87e62090393b2f5cd70529d9ff5c3a3b4c286",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x912CE59144191C1204E64559FE8253a0e49E6548",
+          toToken: "0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",
+          fromAmount: "10000000000000000000",
+          toAmount: "1450497989088006050732",
+          sender: "0x962dE35217e9D4D0D79e8106A3d5eA121FE71685",
+          recipient: "0x962dE35217e9D4D0D79e8106A3d5eA121FE71685",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x0427c67c6c28a539af9ade74fac4af0fed301887c5b9a3999314409ca082c8db",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x4945970EfeEc98D393b4b979b9bE265A3aE28A8B",
+          toToken: "0x912CE59144191C1204E64559FE8253a0e49E6548",
+          fromAmount: "1111905552154044133",
+          toAmount: "48381251886414020608",
+          sender: "0x962dE35217e9D4D0D79e8106A3d5eA121FE71685",
+          recipient: "0x962dE35217e9D4D0D79e8106A3d5eA121FE71685",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xd18b782f6feba5a2b2f0c3590cbb418bff39b5268fc8bdedc082cac203804130",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+          toToken: "0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979",
+          fromAmount: "999587632",
+          toAmount: "150221689041443930915013",
+          sender: "0x1587c94817bfaA7172F6c82e03bB2Ac3a5aD6102",
+          recipient: "0x1587c94817bfaA7172F6c82e03bB2Ac3a5aD6102",
         },
       ],
     },

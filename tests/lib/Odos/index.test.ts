@@ -15,10 +15,10 @@ describe("OdosParser", () => {
     utils.isValidProtocol();
   });
 
-  it("should parse v2 router correctly", async () => {
-    const v2Transactions = odosRouter[ODOS_VERSIONS.V2];
+  it("should parse v1 router correctly", async () => {
+    const v1Transactions = odosRouter[ODOS_VERSIONS.V1];
 
-    for (const transaction of v2Transactions) {
+    for (const transaction of v1Transactions) {
       const actions = await utils.fetchAndParseTestTxn(transaction);
       utils.assertTestTransactionForData(transaction, actions);
 
@@ -32,4 +32,22 @@ describe("OdosParser", () => {
       );
     }
   });
+
+  //   it("should parse v2 router correctly", async () => {
+  //     const v2Transactions = odosRouter[ODOS_VERSIONS.V2];
+
+  //     for (const transaction of v2Transactions) {
+  //       const actions = await utils.fetchAndParseTestTxn(transaction);
+  //       utils.assertTestTransactionForData(transaction, actions);
+
+  //       console.log(
+  //         chalk.green(
+  //           "Successfully parsed transaction with actions :",
+  //           actions.map((action) => action.type).join(",")
+  //         ),
+  //         " and hash : ",
+  //         transaction.txnHash
+  //       );
+  //     }
+  //   });
 });

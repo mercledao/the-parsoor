@@ -133,7 +133,7 @@ const contracts: IProtocolContractDefinitions = {
     events: {
       [EVENT_ENUM.V1_SWAP]: {
         abi: new ethers.Interface([
-          "event Swapped(address sender,uint256[] amountsIn,address[] tokensIn,uint256[] amountsOut,address[] outputs,uint256 valueOutQuote)",
+          "event Swapped(address sender,uint256[] amountsIn,address[] tokensIn,uint256[] amountsOut,(address tokenAddress,uint256 relativeValue,address receiver)[] outputs,uint256 valueOutQuote)",
         ]),
       },
     },

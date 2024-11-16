@@ -10,7 +10,7 @@ import {
 } from "../../../types";
 import { CONTRACT_ENUM, contracts, EVENT_ENUM } from "../contracts";
 
-export default class RouterV2Parser {
+export default class RouterV1Parser {
   private static v1ContractDefinition = contracts[CONTRACT_ENUM.V1_ROUTER];
 
   public static parseTransaction(
@@ -62,6 +62,7 @@ export default class RouterV2Parser {
         amount.toString()
       ),
       sender: multiSwapLog.args.sender,
+      recipients: multiSwapLog.args.outputs.map((output) => output[2]),
     };
   }
 
@@ -71,9 +72,10 @@ export default class RouterV2Parser {
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: singleSwapLog.args.tokensIn[0],
-      toToken: singleSwapLog.args.outputs[0],
+      toToken: singleSwapLog.args.outputs[0][0],
       fromAmount: singleSwapLog.args.amountsIn[0].toString(),
       toAmount: singleSwapLog.args.amountsOut[0].toString(),
+      recipient: singleSwapLog.args.outputs[0][2],
       sender: singleSwapLog.args.sender,
     };
   }
