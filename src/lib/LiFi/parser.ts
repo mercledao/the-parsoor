@@ -15,14 +15,9 @@ export class LifiParser {
     const logs = transaction.logs;
 
     for (const log of logs) {
-      try {
-        const action = await this.parseLog(log, transaction);
-        if (action) {
-          actions.push(action);
-        }
-      } catch (e) {
-        console.error("Error processing log:", e);
-        continue;
+      const action = await this.parseLog(log, transaction);
+      if (action) {
+        actions.push(action);
       }
     }
 
