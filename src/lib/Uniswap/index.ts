@@ -23,17 +23,14 @@ export default class Uniswap implements IProtocolParserExport {
       return [];
     }
 
-    // Try V2
     if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V2, contracts)) {
       return await UniswapParser.parseV2Transaction(transaction);
     }
 
-    // Try Router01
     if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V3_01, contracts)) {
       return await UniswapParser.parseV3Transaction(transaction, CONTRACT_ENUM.ROUTER_V3_01);
     }
 
-    // Try Router02
     if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V3_02, contracts)) {
       return await UniswapParser.parseV3Transaction(transaction, CONTRACT_ENUM.ROUTER_V3_02);
     }

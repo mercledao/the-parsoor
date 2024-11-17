@@ -148,6 +148,34 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         }
       ]
     },
+    {
+      txnHash: '0x3ade8d90e67795e047d8fab4e209b248c9210a2a78d94b23fdfb0d027f9e3c64',
+      chainId: CHAIN_ID.POLYGON,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xC1ab7e48FaFEE6b2596c65261392E59690cE7742', 
+          toToken: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', 
+          fromAmount: '257218026025151234048',
+          toAmount: '7351619',                   
+          recipient: '0x38aECeE5534E8386fCC809B6a2463274034E45BE',
+        }
+      ]
+    },
+    {
+      txnHash: '0x912b6a508736d2062801469b4c8624720117594823601bb8dd1680a4d0ed955f',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 
+          toToken: '0x6f259637dcD74C767781E37Bc6133cd6A68aa161', 
+          fromAmount: '190597470000000000',
+          toAmount: '984425924510000000000',                   
+          recipient: '0x4c5f6AD6628D205259443ebcF6cc4cDD7D6cbf81',
+        }
+      ]
+    },
   ],
   [UNISWAP_VERSIONS.V3]: [
     {
@@ -219,6 +247,160 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
           recipient: '0xf5213a6a2f0890321712520b8048D9886c1A9900'
         }
       ]
-    }
+    },
+    {
+      txnHash: '0x808903c2dc70158d0a6d3ba886823634a7cdb4cca7f7896b6175ff876faa8228',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          fromAmount: '249735963111308745',
+          toAmount: '814548008',
+          recipient: '0x8cC02c2381b7C55E18DccfEA917F0677A5671931'
+        }
+      ]
+    },
+    {
+      txnHash: '0xfd4c2a3482ad7e1c392331b3028eddd1f46b4932b506930557b47c96880e1c3f',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toToken: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+          fromAmount: '3195354772034712193',
+          toAmount: '10421085302',
+          recipient: '0x4700192F8a4A00f009d87A515ff2d13E5cAb8364'
+        }
+      ]
+    },
+    {
+      txnHash: '0x4bc7ada97603198598a42ecf2e866bdb46741126a3d341682b77bd3a4dbb962d',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          fromAmount: '198014821910499531',
+          toAmount: '649285797',
+          recipient: '0x8cC02c2381b7C55E18DccfEA917F0677A5671931'
+        }
+      ]
+    },
+    {
+      txnHash: '0xc97ae254e1af0cc838cc3b5e5b818c887bb8e4ff8b01ca3171f465885feaac76',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+          toToken: '0x56f20faebb00',
+          fromAmount: '100000000',
+          toAmount: '4631625404931040000000000',
+          recipient: '0x622661aB4B6aB93c659e751F47eBB0c6e6ad9F48'
+        }
+      ]
+    },
+    {
+      txnHash: '0x7d5bbc8d5f4696ef5218431a52f35ec22382b686e96bb28fc87173f9bcdd380c',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          fromAmount: '157565355902247914',
+          toAmount: '507391647',
+          recipient: '0x8cC02c2381b7C55E18DccfEA917F0677A5671931'
+        }
+      ]
+    },
+    {
+      txnHash: '0x26c0fdec707c89266e1b910c21bcca4832878c5a4d41c4bf184c7b2e0f290d05',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+          toToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          fromAmount: '17643266650',
+          toAmount: '5474734423288470859',
+          recipient: '0x4700192F8a4A00f009d87A515ff2d13E5cAb8364'
+        }
+      ]
+    },
+    {
+      txnHash: '0xce06ca4d41c2273ea5b52bbb30af2de01c5f85702d7ab243ea74c557ad2a1e2b',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          toToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          fromAmount: '345227861',
+          toAmount: '107142124347089547',
+          recipient: '0x8cC02c2381b7C55E18DccfEA917F0677A5671931'
+        }
+      ]
+    },
+    {
+      txnHash: '0x9db648e6c8e355a57bd41e1dfbed9d459279f6ea34f5bc5312b59d3f767ef2e9',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+          toToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          fromAmount: '7113694470',
+          toAmount: '2208157196958065022',
+          recipient: '0x4700192F8a4A00f009d87A515ff2d13E5cAb8364'
+        }
+      ]
+    },
+    {
+      txnHash: '0x0e9b942cc451b75b64e775800f6bc551c657d8f0e52fd10cc143afb04de380f4',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          toToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          fromAmount: '390736730',
+          toAmount: '121313909918343605',
+          recipient: '0x8cC02c2381b7C55E18DccfEA917F0677A5671931'
+        }
+      ]
+    },
+    {
+      txnHash: '0xff3659d42caef99481a18ab595191d39dac2c2a9972e0dd82b08d4bfe5a1f9e2',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+          toToken: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          fromAmount: '980857349820434283036',
+          toAmount: '614384216',
+          recipient: '0x74D2eD497F17a620e758d3797A978264611907F7'
+        }
+      ]
+    },
+    {
+      txnHash: '0xe7e910339434465833fab04a706942ce85ab01766c32dc276e1d997a30997e24',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          toToken: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+          fromAmount: '2135765915416840280',
+          toAmount: '6872592005',
+          recipient: '0x4700192F8a4A00f009d87A515ff2d13E5cAb8364'
+        }
+      ]
+    },
   ]
 }; 
