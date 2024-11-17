@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
 import PoolAbi from "./abis/Pool.json";
-import RouterAbi from "./abis/Router.json";
 import SwapRouter01Abi from "./abis/SwapRouter01.json";
 import SwapRouter02Abi from "./abis/SwapRouter02.json";
 import UniswapUniversalRouterABI from "./abis/UniswapUniversalRouter.json";
@@ -12,7 +11,8 @@ export enum CONTRACT_ENUM {
   POOL_V2 = "PoolV2",
   ROUTER_V2 = "RouterV2",
   POOL_V3 = "PoolV3",
-  ROUTER_V3 = "RouterV3",
+  ROUTER_V3_01 = "RouterV3_01",
+  ROUTER_V3_02 = "RouterV3_02",
   UNIVERSAL_ROUTER = "UniversalRouter",
 }
 
@@ -62,7 +62,7 @@ export enum COMMAND_ENUM {
 }
 
 export enum EVENT_ENUM {
-  SWAP = "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
+  SWAP = "0xfb88e312bc8f158089ab52fe745b8e72d7f8c0a6cdbf33c69e53c04ba0367efd",
 }
 
 export const contracts: IProtocolContractDefinitions = {
@@ -123,22 +123,26 @@ export const contracts: IProtocolContractDefinitions = {
     },
   },
   [CONTRACT_ENUM.UNIVERSAL_ROUTER]: {
-    interface: new ethers.Interface(UniswapUniversalRouterABI.abi),
+    interface: new ethers.Interface(UniswapUniversalRouterABI),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.ARBITRUM]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+        address: "0x5E325eDA8064b456f4781070C0738d849c824258",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.BLAST]: {
+        address: "0x643770E279d5D0733F21d6DC03A8efbABf3255B4",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.OPTIMISM]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+        address: "0xCb1355ff08Ab38bBCE60111F1bb2B784bE25D7e8",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.POLYGON]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+        address: "0xec7BE89e9d109e7e3Fec59c222CF297125FEFda2",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.BASE]: {
@@ -146,27 +150,27 @@ export const contracts: IProtocolContractDefinitions = {
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.BSC]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+        address: "0x4Dae2f939ACf50408e13d58534Ff8c2776d45265",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.AVALANCHE]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+        address: "0x4Dae2f939ACf50408e13d58534Ff8c2776d45265",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.ZKSYNC_ERA]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+        address: "0x28731BCC616B5f51dD52CF2e4dF0E78dD1136C06",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
-      [CHAIN_ID.POLYGON_ZK]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+      [CHAIN_ID.CELO]: {
+        address: "0x643770E279d5D0733F21d6DC03A8efbABf3255B4",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
-      [CHAIN_ID.LINEA]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+      [CHAIN_ID.WORLDCHAIN]: {
+        address: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
-      [CHAIN_ID.SCROLL]: {
-        address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+      [CHAIN_ID.ZORA]: {
+        address: "0x2986d9721A49838ab4297b695858aF7F17f38014",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
     },
@@ -188,18 +192,8 @@ export const contracts: IProtocolContractDefinitions = {
       },
     },
   },
-  [CONTRACT_ENUM.ROUTER_V3]: {
-    interface: new ethers.Interface(RouterAbi.abi),
-    deployments: {
-      [CHAIN_ID.ARBITRUM]: {
-        address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
-      },
-    },
-    events: {},
-  },
-  SwapRouter01: {
-    interface: new ethers.Interface(SwapRouter01Abi.abi),
+  [CONTRACT_ENUM.ROUTER_V3_01]: {
+    interface: new ethers.Interface(SwapRouter01Abi),
     deployments: {
       [CHAIN_ID.ARBITRUM]: {
         address: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
@@ -217,18 +211,58 @@ export const contracts: IProtocolContractDefinitions = {
         address: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
       },
-      [CHAIN_ID.BASE]: {
-        address: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
-      },
     },
     events: {},
   },
-  SwapRouter02: {
-    interface: new ethers.Interface(SwapRouter02Abi.abi),
+  [CONTRACT_ENUM.ROUTER_V3_02]: {
+    interface: new ethers.Interface(SwapRouter02Abi),
     deployments: {
+      [CHAIN_ID.AVALANCHE]: {
+        address: "0xbb00FF08d01D300023C629E8fFfFcb65A5a578cE",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.ETHEREUM]: {
+        address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
       [CHAIN_ID.ARBITRUM]: {
         address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.BSC]: {
+        address: "0xB971eF87ede563556b2ED4b1C0b0019111Dd85d2",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.BASE]: {
+        address: "0x2626664c2603336E57B271c5C0b26F421741e481",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.BLAST]: {
+        address: "0x549FEB8c9bd4c12Ad2AB27022dA12492aC452B66",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.CELO]: {
+        address: "0x5615CDAb10dc425a742d643d949a7F474C01abc4",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.OPTIMISM]: {
+        address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.POLYGON]: {
+        address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.WORLDCHAIN]: {
+        address: "0x091AD9e2e6e5eD44c1c66dB50e49A601F9f36cF6",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.ZKSYNC_ERA]: {
+        address: "0x99c56385daBCE3E81d8499d0b8d0257aBC07E8A3",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+      },
+      [CHAIN_ID.ZORA]: {
+        address: "0x7De04c96BE5159c3b5CeffC82aa176dc81281557",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
       },
     },

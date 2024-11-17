@@ -18,31 +18,27 @@ export default class Uniswap implements IProtocolParserExport {
     this.combinedContracts = contracts;
   }
 
-  public async parseTransaction(
-    transaction: ITransaction
-  ): Promise<ITransactionAction[]> {
-    const actions: ITransactionAction[] = [];
-
+  public async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
     if (!transaction?.to || !transaction?.data) {
-      return actions;
-    }
-    if (ProtocolHelper.txnToIsListenerContract(
-      transaction,
-      CONTRACT_ENUM.ROUTER_V2,
-      contracts
-    )) {
-      const v2Actions = await UniswapParser.parseV2Transaction(transaction);
-      if (v2Actions.length > 0) {
-        return v2Actions;
-      }
+      return [];
     }
 
-    const v3Actions = await UniswapParser.parseV3Transaction(transaction);
-    if (v3Actions.length > 0) {
-      return v3Actions;
+    // Try V2
+    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V2, contracts)) {
+      return await UniswapParser.parseV2Transaction(transaction);
     }
 
-    return actions;
+    // Try Router01
+    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V3_01, contracts)) {
+      return await UniswapParser.parseV3Transaction(transaction, CONTRACT_ENUM.ROUTER_V3_01);
+    }
+
+    // Try Router02
+    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V3_02, contracts)) {
+      return await UniswapParser.parseV3Transaction(transaction, CONTRACT_ENUM.ROUTER_V3_02);
+    }
+
+    return [];
   }
 
   public getProtocolContracts(): IProtocolContractDefinitions {

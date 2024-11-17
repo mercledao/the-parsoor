@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { protocols } from '../../../src';
+import { IProtocolTestTransaction, protocols } from '../../../src';
 import { ProtocolParserUtils } from '../../index';
 import { UNISWAP_VERSIONS, uniswapData } from './data';
 
@@ -17,37 +17,27 @@ describe('UniswapParser', () => {
 
   it('should parse V2 transactions correctly', async () => {
     const v2Transactions = uniswapData[UNISWAP_VERSIONS.V2];
-
-    for (const transaction of v2Transactions) {
-      const actions = await utils.fetchAndParseTestTxn(transaction);
-      utils.assertTestTransactionForData(transaction, actions);
-
-      console.log(
-        chalk.green(
-          'Successfully parsed V2 transaction with actions:',
-          actions.map((action) => action.type).join(',')
-        ),
-        'and hash:',
-        transaction.txnHash
-      );
-    }
+    await testTransactions(v2Transactions, 'V2');
   });
 
   it('should parse V3 transactions correctly', async () => {
     const v3Transactions = uniswapData[UNISWAP_VERSIONS.V3];
+    await testTransactions(v3Transactions, 'V3');
+  });
 
-    for (const transaction of v3Transactions) {
+  async function testTransactions(transactions: IProtocolTestTransaction[], version: string) {
+    for (const transaction of transactions) {
       const actions = await utils.fetchAndParseTestTxn(transaction);
       utils.assertTestTransactionForData(transaction, actions);
 
       console.log(
         chalk.green(
-          'Successfully parsed V3 transaction with actions:',
+          `Successfully parsed ${version} transaction with actions:`,
           actions.map((action) => action.type).join(',')
         ),
         'and hash:',
         transaction.txnHash
       );
     }
-  });
+  }
 });

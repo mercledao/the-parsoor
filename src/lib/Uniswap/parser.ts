@@ -65,21 +65,24 @@ export class UniswapParser {
     return actions;
   }
 
-  public static async parseV3Transaction(transaction: ITransaction): Promise<ITransactionAction[]> {
+  public static async parseV3Transaction(transaction: ITransaction, routerType: CONTRACT_ENUM): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
 
     try {
-      const parsedTxn = await this.getParsedV3Transaction(transaction);
+      const isRouterV3 = ProtocolHelper.txnToIsListenerContract(transaction, routerType, contracts);
+      if (!isRouterV3) return actions;
+
+      const parsedTxn = contracts[routerType].interface.parseTransaction({ data: transaction.data });
       if (!parsedTxn) return actions;
 
-      if (parsedTxn.name.toLowerCase() === this.MULTICALL) {
-        return this.handleMulticall(parsedTxn, transaction);
+      if (parsedTxn.name.toLowerCase() === this.MULTICALL.toLowerCase()) {
+        return this.handleMulticall(parsedTxn, transaction, routerType);
       }
 
       const action = await this.createV3SwapAction(parsedTxn, transaction);
       if (action) actions.push(action);
     } catch (error) {
-      console.error('Failed to parse V3 transaction:', error, transaction.hash);
+      console.error(`Failed to parse V3 ${routerType} transaction:`, error, transaction.hash);
     }
 
     return actions;
@@ -98,30 +101,13 @@ export class UniswapParser {
       : args.amountOut.toString();
   }
 
-  private static async getParsedV3Transaction(transaction: ITransaction): Promise<IParsedTransaction | null> {
-    const isRouterV3 = ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V3, contracts);
-    const isSwapRouter02 = ProtocolHelper.txnToIsListenerContract(transaction, 'SwapRouter02', contracts);
-
-    if (!isRouterV3 && !isSwapRouter02) return null;
-
-    let parsedTxn;
-    if (isSwapRouter02) {
-      parsedTxn = contracts['SwapRouter02'].interface.parseTransaction({ data: transaction.data });
-    }
-    if (!parsedTxn && isRouterV3) {
-      parsedTxn = contracts[CONTRACT_ENUM.ROUTER_V3].interface.parseTransaction({ data: transaction.data });
-    }
-
-    return parsedTxn;
-  }
-
-  private static async handleMulticall(parsedTxn: any, transaction: ITransaction): Promise<ITransactionAction[]> {
+  private static async handleMulticall(parsedTxn: any, transaction: ITransaction, routerType: CONTRACT_ENUM): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
     const decodedCalls = parsedTxn.args.data || parsedTxn.args;
 
     for (const call of decodedCalls) {
       try {
-        const decodedCall = contracts[CONTRACT_ENUM.ROUTER_V3].interface.parseTransaction({ data: call });
+        const decodedCall = contracts[routerType].interface.parseTransaction({ data: call });
         const action = await this.createV3SwapAction(decodedCall, transaction);
         if (action) actions.push(action);
       } catch (error) {
