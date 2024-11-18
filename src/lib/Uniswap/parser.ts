@@ -58,7 +58,6 @@ export class UniswapParser {
   private static readonly EXACT_OUTPUT_SINGLE = "exactOutputSingle";
   private static readonly EXACT_INPUT = "exactInput";
   private static readonly EXACT_OUTPUT = "exactOutput";
-  private static readonly MULTICALL = "multicall";
 
   public static async parseV2Transaction(transaction: ITransaction): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
@@ -102,10 +101,6 @@ export class UniswapParser {
     const parsedTxn = contracts[routerType].interface.parseTransaction({ data: transaction.data });
     if (!parsedTxn) return actions;
 
-    if (parsedTxn.name.toLowerCase() === this.MULTICALL.toLowerCase()) {
-      return this.handleMulticall(parsedTxn, transaction, routerType);
-    }
-
     const action = await this.createV3SwapAction(parsedTxn, transaction);
     if (action) actions.push(action);
 
@@ -123,19 +118,6 @@ export class UniswapParser {
     return isExactInput
       ? (args.amountOutMin?.toString() || '0')
       : args.amountOut.toString();
-  }
-
-  private static async handleMulticall(parsedTxn: any, transaction: ITransaction, routerType: CONTRACT_ENUM): Promise<ITransactionAction[]> {
-    const actions: ITransactionAction[] = [];
-    const decodedCalls = parsedTxn.args.data || parsedTxn.args;
-
-    for (const call of decodedCalls) {
-      const decodedCall = contracts[routerType].interface.parseTransaction({ data: call });
-      const action = await this.createV3SwapAction(decodedCall, transaction);
-      if (action) actions.push(action);
-    }
-
-    return actions;
   }
 
   public static decodeV3Path(path: string): string[] {
