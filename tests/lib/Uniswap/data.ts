@@ -297,7 +297,7 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         {
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
-          toToken: '0x56f20faebb00',
+          toToken: '0x25d887ce7a35172c62febfd67a1856f20faebb00',
           fromAmount: '100000000',
           toAmount: '4631625404931040000000000',
           recipient: '0x622661aB4B6aB93c659e751F47eBB0c6e6ad9F48'
@@ -399,6 +399,90 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
           fromAmount: '2135765915416840280',
           toAmount: '6872592005',
           recipient: '0x4700192F8a4A00f009d87A515ff2d13E5cAb8364'
+        }
+      ]
+    },
+    {
+      txnHash: '0x7c2076f0384560ea43dd62c00883caafd83ec116a4558645a7936442b580f21c',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+          toToken: '0xe0ee18eacafddaeb38f8907c74347c44385578ab',
+          fromAmount: '100000000',
+          toAmount: '257702794499150230000',
+          recipient: '0x622661aB4B6aB93c659e751F47eBB0c6e6ad9F48'
+        }
+      ]
+    },
+    {
+      txnHash: '0x5a69d6e534d7d6f5056762118c847c85d593b52b6464d3858db97232d556fad7',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xb50721bcf8d664c30412cfbc6cf7a15145234ad1',
+          toToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+          fromAmount: '51951340000000000000',
+          toAmount: '34420692',
+          recipient: '0x5B903170E2616573C6fa60e5c21FE9Df091C5625'
+        }
+      ]
+    },
+    {
+      txnHash: '0x8dfd06e3afa52b792ee0cbb50ac880612859d5b715aaf58982dc0d3bf63cd4d2',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0x429fed88f10285e61b12bdf00848315fbdfcc341',
+          toToken: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+          fromAmount: '5549761495301561195627',
+          toAmount: '0',
+          recipient: '0x0000000000000000000000000000000000000002'
+        }
+      ]
+    },
+    {
+      txnHash: '0xaf6204e746f5d44cf399984ea1c60fa1346a6e3ce3ac1e94b93969d537dd062b',
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+          toToken: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+          fromAmount: '498000000',
+          toAmount: '0',
+          recipient: '0x0000000000000000000000000000000000000002'
+        }
+      ]
+    },
+    {
+      txnHash: '0xfe00a139f8dff3ef27bc035ed52cfb4a7d4192347413164aa3b0bec259e1caca',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xabd4c63d2616a5201454168269031355f4764337',
+          toToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+          fromAmount: '519622052050000000000',
+          toAmount: '0',
+          recipient: '0x0000000000000000000000000000000000000002'
+        }
+      ]
+    },
+    {
+      txnHash: '0x9d9e797ce3fff2b906aef76d0e4665d06ce98180cc2c4dafd81a1451aefc48f8',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xf815c0616e810ee572D877D51798d4E59c301f40',
+          toToken: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+          fromAmount: '72098896692240926',
+          toAmount: '0',
+          recipient: '0x0000000000000000000000000000000000000002'
         }
       ]
     },

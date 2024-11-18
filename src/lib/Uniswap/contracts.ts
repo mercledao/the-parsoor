@@ -21,44 +21,38 @@ export enum COMMAND_ENUM {
   V3_SWAP_EXACT_IN = 0x00,
   V3_SWAP_EXACT_OUT = 0x01,
 
-  // V2 Swap Commands
-  V2_SWAP_EXACT_IN = 0x02,
-  V2_SWAP_EXACT_OUT = 0x03,
-
   // Permit2 Commands
+  PERMIT2_TRANSFER_FROM = 0x02,
+  PERMIT2_PERMIT_BATCH = 0x03,
+  SWEEP = 0x04,
+  TRANSFER = 0x05,
+  PAY_PORTION = 0x06,
+
+  // V2 Swap Commands
+  V2_SWAP_EXACT_IN = 0x08,
+  V2_SWAP_EXACT_OUT = 0x09,
+
   PERMIT2_PERMIT = 0x0a,
-  PERMIT2_TRANSFER_FROM = 0x0b,
+  WRAP_ETH = 0x0b,
+  UNWRAP_WETH = 0x0c,
 
-  // Wrap/Unwrap Commands
-  WRAP_ETH = 0x0c,
-  UNWRAP_WETH = 0x0d,
+  PERMIT2_TRANSFER_FROM_BATCH = 0x0d,
 
-  // Sweep Commands
-  SWEEP = 0x0e,
-  TRANSFER = 0x0f,
-
-  // Payment Commands
-  PAY_PORTION = 0x10,
-
-  // V3 LP Commands
-  V3_MINT = 0x11,
-  V3_COLLECT = 0x12,
-  V3_BURN = 0x13,
-
-  // V2 LP Commands
-  V2_MINT = 0x14,
-  V2_BURN = 0x15,
-
-  // Routing Commands
-  ROUTE = 0x16,
-  NOOP = 0x17,
-
-  // Timestamp Commands
-  TIMESTAMP = 0x18,
-
-  // Limit Order Commands
-  LIMIT_ORDER = 0x19,
-  CANCEL_LIMIT_ORDER = 0x1a,
+  // NFT Commands
+  SEAPORT = 0x0e,
+  LOOKS_RARE_721 = 0x0f,
+  NFTX = 0x10,
+  CRYPTOPUNKS = 0x11,
+  LOOKS_RARE_1155 = 0x12,
+  OWNER_CHECK_721 = 0x13,
+  OWNER_CHECK_1155 = 0x14,
+  SWEEP_ERC721 = 0x15,
+  X2Y2_721 = 0x16,
+  SUDOSWAP = 0x17,
+  NFT20 = 0x18,
+  X2Y2_1155 = 0x19,
+  FOUNDATION = 0x1a,
+  SWEEP_ERC1155 = 0x1b
 }
 
 export enum EVENT_ENUM {

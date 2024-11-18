@@ -7,7 +7,7 @@ import {
   ITransaction,
   ITransactionAction
 } from "../../types";
-import { CONTRACT_ENUM, contracts } from "./contracts";
+import { COMMAND_ENUM, CONTRACT_ENUM, contracts } from "./contracts";
 
 interface IV3SwapParams {
   tokenIn: string;
@@ -19,6 +19,40 @@ interface IV3SwapParams {
   recipient?: string;
   path?: string;
 }
+
+interface CommandConfig {
+  decodeFormat: Array<string>;
+  processPath: (path: any) => string[];
+  getTokenOrder: (path: string[], isExactIn: boolean) => { fromToken: string; toToken: string };
+  getAmountOrder: (amounts: any[], isExactIn: boolean) => { fromAmount: string; toAmount: string };
+}
+
+const COMMAND_CONFIGS: Partial<Record<COMMAND_ENUM, CommandConfig>> = {
+  [COMMAND_ENUM.V3_SWAP_EXACT_IN]: {
+    decodeFormat: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
+    processPath: (pathBytes: string) => UniswapParser.decodeV3Path(pathBytes),
+    getTokenOrder: (path) => ({ fromToken: path[0], toToken: path[path.length - 1] }),
+    getAmountOrder: (amounts) => ({ fromAmount: amounts[1].toString(), toAmount: amounts[2].toString() })
+  },
+  [COMMAND_ENUM.V3_SWAP_EXACT_OUT]: {
+    decodeFormat: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
+    processPath: (pathBytes: string) => UniswapParser.decodeV3Path(pathBytes),
+    getTokenOrder: (path) => ({ fromToken: path[path.length - 1], toToken: path[0] }),
+    getAmountOrder: (amounts) => ({ fromAmount: amounts[2].toString(), toAmount: amounts[1].toString() })
+  },
+  [COMMAND_ENUM.V2_SWAP_EXACT_IN]: {
+    decodeFormat: ['address', 'uint256', 'uint256', 'address[]', 'bool'],
+    processPath: (path: string[]) => path,
+    getTokenOrder: (path) => ({ fromToken: path[0], toToken: path[path.length - 1] }),
+    getAmountOrder: (amounts) => ({ fromAmount: amounts[1].toString(), toAmount: amounts[2].toString() })
+  },
+  [COMMAND_ENUM.V2_SWAP_EXACT_OUT]: {
+    decodeFormat: ['address', 'uint256', 'uint256', 'address[]', 'bool'],
+    processPath: (path: string[]) => path,
+    getTokenOrder: (path) => ({ fromToken: path[path.length - 1], toToken: path[0] }),
+    getAmountOrder: (amounts) => ({ fromAmount: amounts[2].toString(), toAmount: amounts[1].toString() })
+  }
+};
 
 export class UniswapParser {
   private static readonly EXACT_INPUT_SINGLE = "exactInputSingle";
@@ -118,15 +152,21 @@ export class UniswapParser {
     return actions;
   }
 
-  private static decodePath(path: string): string[] {
+  public static decodeV3Path(path: string): string[] {
     if (!path.startsWith('0x')) return [];
     
     const cleanPath = path.slice(2);
     const tokens: string[] = [];
     
-    for (let i = 0; i < cleanPath.length; i += 40) {
+    // V3 paths are encoded as: tokenIn (20 bytes) + fee (3 bytes) + tokenOut (20 bytes)
+    // For each hop: address (20 bytes) = 40 hex chars, fee (3 bytes) = 6 hex chars
+    let i = 0;
+    while (i < cleanPath.length) {
       const token = '0x' + cleanPath.slice(i, i + 40);
       tokens.push(token.toLowerCase());
+      
+      // Skip the token address (40 chars) and fee (6 chars)
+      i += 46;
     }
     
     return tokens;
@@ -175,7 +215,7 @@ export class UniswapParser {
   ): ISingleSwapAction | null {
     if (!params.path) return null;
     
-    const decodedPath = this.decodePath(params.path);
+    const decodedPath = this.decodeV3Path(params.path);
     if (decodedPath.length < 2) return null;
 
     return {
@@ -186,5 +226,62 @@ export class UniswapParser {
       toAmount: (isExactInput ? params.amountOutMinimum : params.amountOut || '0').toString(),
       recipient: params.recipient || transaction.from
     };
+  }
+
+  public static async parseUniversalRouterTransaction(
+    transaction: ITransaction
+  ): Promise<ITransactionAction[]> {
+    const actions: ITransactionAction[] = [];
+    
+    if (!transaction.data) return actions;
+
+    try {
+      const iface = new ethers.Interface([
+        "function execute(bytes commands, bytes[] inputs) payable",
+        "function execute(bytes commands, bytes[] inputs, uint256 deadline) payable"
+      ]);
+
+      const decoded = iface.parseTransaction({ data: transaction.data });
+      if (!decoded) return actions;
+
+      const commands = ethers.getBytes(decoded.args[0]);
+      const inputs = decoded.args[1];
+
+      for (let i = 0; i < commands.length; i++) {
+        const command = commands[i];
+        const input = inputs[i];
+
+        const commandType = command & 0x1F;
+        const config = COMMAND_CONFIGS[commandType];
+
+        if (config) {
+          try {
+            const decodedInput = ethers.AbiCoder.defaultAbiCoder().decode(
+              config.decodeFormat,
+              input
+            );
+
+            const path = config.processPath(decodedInput[3]);
+            const { fromToken, toToken } = config.getTokenOrder(path, true);
+            const { fromAmount, toAmount } = config.getAmountOrder(decodedInput, true);
+
+            actions.push({
+              type: ACTION_ENUM.SINGLE_SWAP,
+              fromToken,
+              toToken,
+              fromAmount,
+              toAmount,
+              recipient: decodedInput[0]
+            });
+          } catch (error) {
+            console.error(`Error processing command type ${commandType}:`, error);
+          }
+        }
+      }
+    } catch (e) {
+      console.error("Error parsing Universal Router transaction:", e);
+    }
+
+    return actions;
   }
 }
