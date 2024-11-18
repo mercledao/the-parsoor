@@ -19,10 +19,6 @@ export default class Uniswap implements IProtocolParserExport {
   }
 
   public async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
-    if (!transaction?.to || !transaction?.data) {
-      return [];
-    }
-
     if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.UNIVERSAL_ROUTER, contracts)) {
       return await UniswapParser.parseUniversalRouterTransaction(transaction);
     }
