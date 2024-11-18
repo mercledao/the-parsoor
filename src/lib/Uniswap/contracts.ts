@@ -3,8 +3,8 @@ import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
 import SwapRouter01Abi from "./abis/SwapRouter01.json";
 import SwapRouter02Abi from "./abis/SwapRouter02.json";
-import UniswapUniversalRouterABI from "./abis/UniswapUniversalRouter.json";
-import UniswapV2RouterABI from "./abis/UniswapV2Router.json";
+import UniswapUniversalRouterAbi from "./abis/UniswapUniversalRouter.json";
+import UniswapV2RouterAbi from "./abis/UniswapV2Router.json";
 
 export enum CONTRACT_ENUM {
   ROUTER_V2 = "RouterV2",
@@ -53,12 +53,20 @@ export enum COMMAND_ENUM {
 }
 
 export enum EVENT_ENUM {
-  SWAP = "0xfb88e312bc8f158089ab52fe745b8e72d7f8c0a6cdbf33c69e53c04ba0367efd",
+  // V2 Events
+  V2_SWAP = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822",
+  
+  // V3 Events
+  V3_SWAP = "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
+  
+  // Universal Router Events
+  COMMAND_EXECUTED = "0x7737965cdb777c891128c8c79c26b0b4d1d8e261a5c3551fd8f5a8aa939d0b4c",
+  NATIVE_TRANSFER_RECEIVED = "0x0a7bb2c1cf6269d1f1c8c4c10bf8e1417e1b64352001305552e89fea8d01db16",
 }
 
 export const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.ROUTER_V2]: {
-    interface: new ethers.Interface(UniswapV2RouterABI),
+    interface: new ethers.Interface(UniswapV2RouterAbi),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
@@ -106,15 +114,15 @@ export const contracts: IProtocolContractDefinitions = {
       },
     },
     events: {
-      [EVENT_ENUM.SWAP]: {
+      [EVENT_ENUM.V2_SWAP]: {
         abi: new ethers.Interface([
-          "event Swap(address indexed sender, uint amount0In, uint amount1In, uint amount0Out, uint amount1Out, address indexed to)",
-        ]),
-      },
-    },
+          "event Swap(address indexed sender, uint amount0In, uint amount1In, uint amount0Out, uint amount1Out, address indexed to)"
+        ])
+      }
+    }
   },
   [CONTRACT_ENUM.UNIVERSAL_ROUTER]: {
-    interface: new ethers.Interface(UniswapUniversalRouterABI),
+    interface: new ethers.Interface(UniswapUniversalRouterAbi),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
@@ -165,7 +173,18 @@ export const contracts: IProtocolContractDefinitions = {
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
     },
-    events: {},
+    events: {
+      [EVENT_ENUM.COMMAND_EXECUTED]: {
+        abi: new ethers.Interface([
+          "event CommandExecuted(bytes32 indexed commandHash, uint256 indexed commandType)"
+        ])
+      },
+      [EVENT_ENUM.NATIVE_TRANSFER_RECEIVED]: {
+        abi: new ethers.Interface([
+          "event NativeTransferReceived(address indexed recipient, uint256 amount)"
+        ])
+      }
+    }
   },
   [CONTRACT_ENUM.ROUTER_V3_01]: {
     interface: new ethers.Interface(SwapRouter01Abi),
@@ -187,7 +206,13 @@ export const contracts: IProtocolContractDefinitions = {
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
       },
     },
-    events: {},
+    events: {
+      [EVENT_ENUM.V3_SWAP]: {
+        abi: new ethers.Interface([
+          "event Swap(address indexed sender, address indexed recipient, int256 amount0, int256 amount1, uint160 sqrtPriceX96, uint128 liquidity, int24 tick)"
+        ])
+      }
+    }
   },
   [CONTRACT_ENUM.ROUTER_V3_02]: {
     interface: new ethers.Interface(SwapRouter02Abi),
@@ -241,6 +266,12 @@ export const contracts: IProtocolContractDefinitions = {
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
       },
     },
-    events: {},
+    events: {
+      [EVENT_ENUM.V3_SWAP]: {
+        abi: new ethers.Interface([
+          "event Swap(address indexed sender, address indexed recipient, int256 amount0, int256 amount1, uint160 sqrtPriceX96, uint128 liquidity, int24 tick)"
+        ])
+      }
+    }
   },
 };
