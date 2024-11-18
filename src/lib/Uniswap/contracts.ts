@@ -1,16 +1,13 @@
 import { ethers } from "ethers";
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
-import PoolAbi from "./abis/Pool.json";
 import SwapRouter01Abi from "./abis/SwapRouter01.json";
 import SwapRouter02Abi from "./abis/SwapRouter02.json";
 import UniswapUniversalRouterABI from "./abis/UniswapUniversalRouter.json";
 import UniswapV2RouterABI from "./abis/UniswapV2Router.json";
 
 export enum CONTRACT_ENUM {
-  POOL_V2 = "PoolV2",
   ROUTER_V2 = "RouterV2",
-  POOL_V3 = "PoolV3",
   ROUTER_V3_01 = "RouterV3_01",
   ROUTER_V3_02 = "RouterV3_02",
   UNIVERSAL_ROUTER = "UniversalRouter",
@@ -169,22 +166,6 @@ export const contracts: IProtocolContractDefinitions = {
       },
     },
     events: {},
-  },
-  [CONTRACT_ENUM.POOL_V3]: {
-    interface: new ethers.Interface(PoolAbi.abi),
-    deployments: {
-      [CHAIN_ID.ARBITRUM]: {
-        address: ethers.ZeroAddress,
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-    },
-    events: {
-      [EVENT_ENUM.SWAP]: {
-        abi: new ethers.Interface([
-          "event Swap(address indexed sender, address indexed recipient, int256 amount0, int256 amount1, uint160 sqrtPriceX96, uint128 liquidity, int24 tick)",
-        ]),
-      },
-    },
   },
   [CONTRACT_ENUM.ROUTER_V3_01]: {
     interface: new ethers.Interface(SwapRouter01Abi),
