@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
+import LimitOrderRouterAbi from "./abis/LimitOrderRouter.json";
 import SwapRouter01Abi from "./abis/SwapRouter01.json";
 import SwapRouter02Abi from "./abis/SwapRouter02.json";
 import UniswapUniversalRouterAbi from "./abis/UniswapUniversalRouter.json";
@@ -11,6 +12,7 @@ export enum CONTRACT_ENUM {
   ROUTER_V3_01 = "RouterV3_01",
   ROUTER_V3_02 = "RouterV3_02",
   UNIVERSAL_ROUTER = "UniversalRouter",
+  LIMIT_ORDER_ROUTER = "DutchOrderReactorV2",
 }
 
 export enum COMMAND_ENUM {
@@ -62,6 +64,7 @@ export enum EVENT_ENUM {
   // Universal Router Events
   COMMAND_EXECUTED = "0x7737965cdb777c891128c8c79c26b0b4d1d8e261a5c3551fd8f5a8aa939d0b4c",
   NATIVE_TRANSFER_RECEIVED = "0x0a7bb2c1cf6269d1f1c8c4c10bf8e1417e1b64352001305552e89fea8d01db16",
+  LIMIT_ORDER_FILL = "0x95fb6205e23ff6bda16a2d1dba56b9ad7c783f67c96fa149785052f47696f2be",
 }
 
 export const contracts: IProtocolContractDefinitions = {
@@ -274,4 +277,20 @@ export const contracts: IProtocolContractDefinitions = {
       }
     }
   },
+  [CONTRACT_ENUM.LIMIT_ORDER_ROUTER]: {
+    interface: new ethers.Interface(LimitOrderRouterAbi),
+    deployments: {
+      [CHAIN_ID.ETHEREUM]: {
+        address: "0x00000011F84B9aa48e5f8aA8B9897600006289Be",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      }
+    },
+    events: {
+      [EVENT_ENUM.LIMIT_ORDER_FILL]: {
+        abi: new ethers.Interface([
+          "event LimitOrderFilled(bytes32 indexed orderHash, address indexed maker, address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 deadline)"
+        ])
+      }
+    }
+  }
 };

@@ -59,6 +59,63 @@ export class UniswapParser {
   private static readonly EXACT_INPUT = "exactInput";
   private static readonly EXACT_OUTPUT = "exactOutput";
 
+  public static async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
+    const actions: ITransactionAction[] = [];
+
+    // First check for limit orders
+    const limitOrderActions = await this.parseLimitOrder(transaction);
+    if (limitOrderActions.length > 0) {
+      actions.push(...limitOrderActions);
+      return actions;
+    }
+
+    // Then check for regular swaps
+    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.UNIVERSAL_ROUTER, contracts) ||
+        ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V2, contracts)) {
+      const swapActions = await this.parseV2Transaction(transaction);
+      actions.push(...swapActions);
+    }
+
+    return actions;
+  }
+
+  private static async parseLimitOrder(transaction: ITransaction): Promise<ITransactionAction[]> {
+    const actions: ITransactionAction[] = [];
+
+    // Check if transaction is to the limit order contract
+    const isLimitOrder = ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.LIMIT_ORDER_ROUTER, contracts);
+
+    if (!isLimitOrder) {
+      return actions;
+    }
+
+    // Define the ABI for limit order creation
+    const iface = new ethers.Interface([
+      "function createLimitOrder(address fromToken, address toToken, uint256 fromAmount, uint256 toAmount, uint256 priceLimit, uint256 deadline, address recipient)"
+    ]);
+
+    try {
+      const decoded = iface.parseTransaction({ data: transaction.data, value: transaction.value });
+
+      const action: ITransactionAction = {
+        type: ACTION_ENUM.LIMIT_ORDER,
+        fromToken: decoded.args[0],
+        toToken: decoded.args[1],
+        fromAmount: decoded.args[2].toString(),
+        toAmount: decoded.args[3].toString(),
+        priceLimit: decoded.args[4].toString(),
+        deadline: decoded.args[5].toNumber(),
+        recipient: decoded.args[6]
+      };
+
+      actions.push(action);
+    } catch (error) {
+      console.error('Error parsing limit order:', error);
+    }
+
+    return actions;
+  }
+
   public static async parseV2Transaction(transaction: ITransaction): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
     

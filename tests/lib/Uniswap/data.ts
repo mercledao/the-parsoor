@@ -3,7 +3,8 @@ import { IProtocolTestTransaction } from '../../../src/types/chunks/ITestingData
 
 export enum UNISWAP_VERSIONS {
   V2 = 'v2',
-  V3 = 'v3'
+  V3 = 'v3',
+  LIMIT_ORDER = 'limit_order'
 }
 
 export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> = {
@@ -483,6 +484,56 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
           fromAmount: '72098896692240926',
           toAmount: '0',
           recipient: '0x0000000000000000000000000000000000000002'
+        }
+      ]
+    },
+  ],
+  [UNISWAP_VERSIONS.LIMIT_ORDER]: [
+    {
+      txnHash: '0x3369b554053b8815dcc454faa6c2f3d426e9c3ca9207462128a702f5e8eb1440',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0xFADDeC79a21f9B74469A4e62DaFbBbCE15c06005',  
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6', 
+          fromAmount: '58000000000000000',  
+          toAmount: '8367120281343387728741250', 
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0xFADDeC79a21f9B74469A4e62DaFbBbCE15c06005'
+        }
+      ]
+    },
+    {
+      txnHash: '0xf5fa14f800b992ec6e449cd4f7c201d3baa49aad7b81099991a05adbc77b5f91',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0x80b920fb4B3C0d5EC678e6B8A56C801B8e23eA1B',  
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6', 
+          fromAmount: '600000000',  
+          toAmount: '28272550317241935686507500', 
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0x80b920fb4B3C0d5EC678e6B8A56C801B8e23eA1B'
+        }
+      ]
+    },
+    {
+      txnHash: '0x0477f828ccde843a2f261b86d6b5bbc74d664a5061f3a8a14d0777c8c29a4df4',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0xb3eAe6166CF48016fbf421F3BF338B943bc13F27',  
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6', 
+          fromAmount: '72801736550229234',  
+          toAmount: '842255575115868', 
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0xb3eAe6166CF48016fbf421F3BF338B943bc13F27'
         }
       ]
     },
