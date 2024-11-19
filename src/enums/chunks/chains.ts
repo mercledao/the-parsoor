@@ -29,4 +29,5 @@ export enum CHAIN_ID {
   BLAST = 81457,
   ZORA = 7777777,
   WORLDCHAIN = 480,
+  TAIKO = 167000
 }
