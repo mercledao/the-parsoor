@@ -1,12 +1,12 @@
 import { ethers } from "ethers";
-import { ACTION_ENUM } from "../../enums";
-import { ProtocolHelper } from "../../helpers";
+import { ACTION_ENUM } from "../../../enums";
+import { ProtocolHelper } from "../../../helpers";
 import {
     ILimitOrderAction,
     ITransaction,
     ITransactionAction
-} from "../../types";
-import { CONTRACT_ENUM, contracts } from "./contracts";
+} from "../../../types";
+import { CONTRACT_ENUM, contracts } from "../contracts";
 
 export class LimitOrderParser {
   private static readonly TRANSFER_EVENT_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
@@ -24,15 +24,11 @@ export class LimitOrderParser {
 
     // Look for Fill events in the transaction logs
     for (const log of transaction.logs || []) {
-      try {
-        if (log.topics[0] === this.FILL_EVENT_INTERFACE.getEvent('Fill').topicHash) {
-          const action = this.parseFillEvent(transaction, log);
-          if (action) {
-            actions.push(action);
-          }
+      if (log.topics[0] === this.FILL_EVENT_INTERFACE.getEvent('Fill').topicHash) {
+        const action = this.parseFillEvent(transaction, log);
+        if (action) {
+          actions.push(action);
         }
-      } catch (error) {
-        console.error('Error parsing Fill event:', error);
       }
     }
 

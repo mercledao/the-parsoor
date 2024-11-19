@@ -1,12 +1,12 @@
 import { ethers } from "ethers";
-import { ACTION_ENUM } from "../../enums";
-import { ProtocolHelper } from "../../helpers";
+import { ACTION_ENUM } from "../../../enums";
+import { ProtocolHelper } from "../../../helpers";
 import {
   ISingleSwapAction,
   ITransaction,
   ITransactionAction
-} from "../../types";
-import { COMMAND_ENUM, CONTRACT_ENUM, contracts } from "./contracts";
+} from "../../../types";
+import { COMMAND_ENUM, CONTRACT_ENUM, contracts } from "../contracts";
 
 interface IV3SwapParams {
   tokenIn: string;
@@ -88,7 +88,6 @@ export class UniswapParser {
 
     const functionName = parsedTxn.name.toLowerCase();
     
-    const isFeeOnTransfer = functionName.includes('supportingfeeontransfertokens');
     const isEthInput = functionName.includes('exacteth') || functionName.includes('ethforexact');
     const isEthOutput = functionName.includes('foreth');
     const isExactInput = functionName.includes('exact') && !functionName.includes('forexact');
@@ -158,32 +157,29 @@ export class UniswapParser {
     parsedTxn: ethers.TransactionDescription, 
     transaction: ITransaction
   ): Promise<ISingleSwapAction | null> {
-    try {
-      const functionName = parsedTxn.name.toLowerCase();
-      const params: IV3SwapParams = {
-        tokenIn: parsedTxn.args.tokenIn || parsedTxn.args.params?.tokenIn,
-        tokenOut: parsedTxn.args.tokenOut || parsedTxn.args.params?.tokenOut,
-        amountIn: parsedTxn.args.amountIn?.toString() || parsedTxn.args.params?.amountIn?.toString(),
-        amountInMaximum: parsedTxn.args.amountInMaximum?.toString() || parsedTxn.args.params?.amountInMaximum?.toString(),
-        amountOut: parsedTxn.args.amountOut?.toString() || parsedTxn.args.params?.amountOut?.toString(),
-        amountOutMinimum: parsedTxn.args.amountOutMinimum?.toString() || parsedTxn.args.params?.amountOutMinimum?.toString(),
-        recipient: parsedTxn.args.recipient || parsedTxn.args.params?.recipient,
-        path: parsedTxn.args.path || parsedTxn.args.params?.path
-      };
-      const isExactInput = functionName.includes('exactinput');
+    const functionName = parsedTxn.name.toLowerCase();
+    const params: IV3SwapParams = {
+      tokenIn: parsedTxn.args.tokenIn || parsedTxn.args.params?.tokenIn,
+      tokenOut: parsedTxn.args.tokenOut || parsedTxn.args.params?.tokenOut,
+      amountIn: parsedTxn.args.amountIn?.toString() || parsedTxn.args.params?.amountIn?.toString(),
+      amountInMaximum: parsedTxn.args.amountInMaximum?.toString() || parsedTxn.args.params?.amountInMaximum?.toString(),
+      amountOut: parsedTxn.args.amountOut?.toString() || parsedTxn.args.params?.amountOut?.toString(),
+      amountOutMinimum: parsedTxn.args.amountOutMinimum?.toString() || parsedTxn.args.params?.amountOutMinimum?.toString(),
+      recipient: parsedTxn.args.recipient || parsedTxn.args.params?.recipient,
+      path: parsedTxn.args.path || parsedTxn.args.params?.path
+    };
+    const isExactInput = functionName.includes('exactinput');
 
-      if (functionName === this.EXACT_INPUT_SINGLE.toLowerCase() || 
-          functionName === this.EXACT_OUTPUT_SINGLE.toLowerCase()) {
-        return this.createSingleV3SwapAction(params, isExactInput, transaction);
-      }
-
-      if (functionName === this.EXACT_INPUT.toLowerCase() || 
-          functionName === this.EXACT_OUTPUT.toLowerCase()) {
-        return this.createMultiHopV3SwapAction(params, isExactInput, transaction);
-      }
-    } catch (error) {
-      console.error('Failed to create V3 swap action:', error, transaction.hash);
+    if (functionName === this.EXACT_INPUT_SINGLE.toLowerCase() || 
+        functionName === this.EXACT_OUTPUT_SINGLE.toLowerCase()) {
+      return this.createSingleV3SwapAction(params, isExactInput, transaction);
     }
+
+    if (functionName === this.EXACT_INPUT.toLowerCase() || 
+        functionName === this.EXACT_OUTPUT.toLowerCase()) {
+      return this.createMultiHopV3SwapAction(params, isExactInput, transaction);
+    }
+    
     return null;
   }
 

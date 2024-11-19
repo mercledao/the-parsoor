@@ -7,8 +7,8 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import { LimitOrderParser } from "./LimitOrderParser";
-import { UniswapParser } from "./parser";
+import { LimitOrderParser } from "./parsers/LimitOrderRouter";
+import { UniswapParser } from "./parsers/Uniswap";
 
 export default class Uniswap implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
