@@ -537,5 +537,101 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         }
       ]
     },
+    {
+      txnHash: '0xe64e09c6a9fcfc50dc33e2ea83d588c56e7f78c0b053c923410199669c520261',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0x03995404Da03690eEBd7CfFbdE09d2194ded4D2A',
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
+          fromAmount: '652170852',
+          toAmount: '2654453423',
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0x03995404Da03690eEBd7CfFbdE09d2194ded4D2A'
+        }
+      ]
+    },
+    {
+      txnHash: '0xf98d18d941ff952591463d8d2423266c2a61f49ca3d941da1c0f92cdc0dce42c',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0xde6D4120A5d34468c405Cd8Aae7F6f3d047fFA28',
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
+          fromAmount: '531101625776840134956',
+          toAmount: '7780146335',
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0xde6D4120A5d34468c405Cd8Aae7F6f3d047fFA28'
+        }
+      ]
+    },
+    {
+      txnHash: '0xded3905629c5f23a7172c52ea0175da2b61e6554c82879706e0145b7ca833a45',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0x5c2BE1bd3204aE5b56589b900F789F0fB823bAAE',
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
+          fromAmount: '325093000',
+          toAmount: '319778448',
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0x5c2BE1bd3204aE5b56589b900F789F0fB823bAAE'
+        }
+      ]
+    },
+    {
+      txnHash: '0x1bd67759ab752e1e324df00b2a8c82ef6e946ade7bd922cc664755a0acb26a6a',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0xD7d52A2642CFafeadFb0199f53aC942E19565F38',
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
+          fromAmount: '2900410000000000000',
+          toAmount: '8966848150',
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0xD7d52A2642CFafeadFb0199f53aC942E19565F38'
+        }
+      ]
+    },
+    {
+      txnHash: '0x83e247a547288d3914dd76b1cdadb9273d21f3cee5c42864136fb004f6888eaa',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0xB96e6885CB6319b5E0dAf782CeA2441907874123',
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
+          fromAmount: '322414283179975086',
+          toAmount: '994405256',
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0xB96e6885CB6319b5E0dAf782CeA2441907874123'
+        }
+      ]
+    },
+    {
+      txnHash: '0x0ee9c695c3176fc07306195ea7bdbcdd5e4797067e7e223eca34fa3c9ba1e9e9',
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.LIMIT_ORDER,
+          fromToken: '0x2882C4Bbd5Bd3c9F75E75b4BE37EbEE37d68ddDA',
+          toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
+          fromAmount: '1000000000000000000',
+          toAmount: '3643908812',
+          priceLimit: '0',
+          deadline: 0,
+          recipient: '0x2882C4Bbd5Bd3c9F75E75b4BE37EbEE37d68ddDA'
+        }
+      ]
+    },
   ]
 }; 

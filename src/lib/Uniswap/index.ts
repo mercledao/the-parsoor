@@ -20,11 +20,6 @@ export default class Uniswap implements IProtocolParserExport {
   }
 
   public async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
-    // Try parsing as limit order first
-    const limitOrderActions = LimitOrderParser.parseTransaction(transaction);
-    if (limitOrderActions.length > 0) {
-      return limitOrderActions;
-    }
 
     if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.UNIVERSAL_ROUTER, contracts)) {
       return await UniswapParser.parseUniversalRouterTransaction(transaction);
@@ -40,6 +35,14 @@ export default class Uniswap implements IProtocolParserExport {
 
     if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V3_02, contracts)) {
       return await UniswapParser.parseV3Transaction(transaction, CONTRACT_ENUM.ROUTER_V3_02);
+    }
+
+    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.LIMIT_ORDER_ROUTER, contracts)) {
+      return await LimitOrderParser.parseTransaction(transaction);
+    }
+
+    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.EXCLUSIVE_LIMIT_ORDER_ROUTER, contracts)) {
+      return await LimitOrderParser.parseTransaction(transaction);
     }
 
     return [];

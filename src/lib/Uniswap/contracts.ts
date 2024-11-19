@@ -13,6 +13,7 @@ export enum CONTRACT_ENUM {
   ROUTER_V3_02 = "RouterV3_02",
   UNIVERSAL_ROUTER = "UniversalRouter",
   LIMIT_ORDER_ROUTER = "DutchOrderReactorV2",
+  EXCLUSIVE_LIMIT_ORDER_ROUTER = "ExclusiveDutchOrderReactor",
 }
 
 export enum COMMAND_ENUM {
@@ -282,6 +283,22 @@ export const contracts: IProtocolContractDefinitions = {
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x00000011F84B9aa48e5f8aA8B9897600006289Be",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      }
+    },
+    events: {
+      [EVENT_ENUM.LIMIT_ORDER_FILL]: {
+        abi: new ethers.Interface([
+          "event LimitOrderFilled(bytes32 indexed orderHash, address indexed maker, address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 deadline)"
+        ])
+      }
+    }
+  },
+  [CONTRACT_ENUM.EXCLUSIVE_LIMIT_ORDER_ROUTER]: {
+    interface: new ethers.Interface(LimitOrderRouterAbi),
+    deployments: {
+      [CHAIN_ID.ETHEREUM]: {
+        address: "0x6000da47483062A0D734Ba3dc7576Ce6A0B645C4",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       }
     },
