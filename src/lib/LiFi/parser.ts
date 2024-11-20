@@ -1,109 +1,87 @@
 import { ethers } from "ethers";
 import { ACTION_ENUM } from "../../enums";
-import { ITransaction, ITransactionAction } from "../../types";
+import { IBridgeOutAction, ISingleSwapAction, ITransaction, ITransactionAction, ITransactionLog } from "../../types";
 
 export class LifiParser {
-  private static readonly LIFI_TRANSFER_EVENT = 
-    "0xcba69f43792f9f399347222505213b55af8e0b0b54b893085c2e27ecbe1644f1";
-  private static readonly SWAP_EVENT =
-    "0x7bfdfdb5e3a3776976e53cb0607060f54c5312701c8cba1155cc4d5394440b38";
+  private static readonly LIFI_DIAMOND_ADDRESS = "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae";
+
+  private static readonly LIFI_TRANSFER_STARTED = {
+    topic: "0xcba69f43792f9f399347222505213b55af8e0b0b54b893085c2e27ecbe1644f1",
+    abi: ["tuple(bytes32 transactionId, string bridge, string integrator, address sendingAssetId, address receivingAssetId, address receiver, uint256 amount, uint256 destinationChainId)"]
+  };
+
+  private static readonly SWAP_STARTED = {
+    topic: "0x7bfdfdb5e3a3776976e53cb0607060f54c5312701c8cba1155cc4d5394440b38",
+    abi: ["bytes32", "address", "address", "address", "uint256", "uint256", "uint256"]
+  };
 
   public static async parseTransaction(
     transaction: ITransaction
   ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
-    const logs = transaction.logs;
 
-    for (const log of logs) {
-      const action = await this.parseLog(log, transaction);
-      if (action) {
-        if (Array.isArray(action)) {
-          actions.push(...action);
-        } else {
-          actions.push(action);
+    for (const log of transaction.logs) {
+      if (!log.topics?.[0]) continue;
+
+      const topic = log.topics[0].toLowerCase();
+      
+      try {
+        if (log.contractAddress.toLowerCase() === this.LIFI_DIAMOND_ADDRESS) {
+          if (topic === this.LIFI_TRANSFER_STARTED.topic.toLowerCase()) {
+            const bridgeAction = this.parseLiFiTransferStartedEvent(log, transaction);
+            actions.push(bridgeAction);
+          } else if (topic === this.SWAP_STARTED.topic.toLowerCase()) {
+            const swapAction = await this.parseSwapEvent(log, transaction);
+            actions.push(swapAction);
+          }
         }
+      } catch (error) {
+        console.error(`Error parsing log for transaction ${transaction.hash}:`, error);
       }
     }
 
     return actions;
   }
 
-  private static async parseLog(
-    log: any,
+  private static parseLiFiTransferStartedEvent(
+    log: ITransactionLog,
     transaction: ITransaction
-  ): Promise<ITransactionAction | ITransactionAction[] | null> {
-    switch (log.topics[0]) {
-      case this.LIFI_TRANSFER_EVENT:
-        return this.parseLiFiTransferEvent(log, transaction);
-      case this.SWAP_EVENT:
-        return this.parseSwapEvent(log, transaction);
-      default:
-        return null;
-    }
-  }
-
-  private static async parseLiFiTransferEvent(
-    log: any,
-    transaction: ITransaction
-  ): Promise<ITransactionAction[]> {
-    const stargateEvent = transaction.logs.find(l => 
-      l.topics[0] === "0x15955c5a4cc61b8fbb05301bce47fd31c0e6f935e1ab97fdac9b134c887bb074"
+  ): IBridgeOutAction {
+    const [transferData] = ethers.AbiCoder.defaultAbiCoder().decode(
+      this.LIFI_TRANSFER_STARTED.abi,
+      log.data
     );
 
-    const transferData = ethers.AbiCoder.defaultAbiCoder().decode(
-      ["tuple(bytes32 transactionId, string bridge, string integrator, address referrer, address sendingAssetId, address receivingAssetId, address receiver, uint256 amount, uint256 destinationChainId, bytes callData)"],
-      log.data
-    )[0];
-
-    const stargateData = stargateEvent ? ethers.AbiCoder.defaultAbiCoder().decode(
-      ["uint32", "uint72", "uint80", "bytes"],
-      stargateEvent.data
-    ) : null;
-
-    const destinationChainId = stargateData ? this.mapStargateChainIdToLiFi(stargateData[0]) : 0;
-
-    const recipient = transferData.receiver.length === 42 ? transferData.receiver : transaction.from;
-
-    const actions: ITransactionAction[] = [];
-    actions.push({
+    return {
       type: ACTION_ENUM.BRIDGE_OUT,
       fromChain: transaction.chainId,
-      toChain: destinationChainId,
-      fromToken: ethers.ZeroAddress,
-      toToken: ethers.ZeroAddress,
+      toChain: Number(transferData.destinationChainId),
+      fromToken: transferData.sendingAssetId.toLowerCase(),
+      toToken: transferData.receivingAssetId.toLowerCase(),
       fromAmount: transferData.amount.toString(),
       toAmount: transferData.amount.toString(),
-      sender: transaction.from,
-      recipient: recipient
-    });
-
-    return actions;
-  }
-
-  private static mapStargateChainIdToLiFi(stargateChainId: number): number {
-    const mapping: { [key: number]: number } = {
-      30111: 10,
+      sender: transaction.from.toLowerCase(),
+      recipient: transferData.receiver.toLowerCase()
     };
-    return mapping[stargateChainId] || 0;
   }
 
   private static async parseSwapEvent(
-    log: any,
+    log: ITransactionLog,
     transaction: ITransaction
-  ): Promise<ITransactionAction> {
+  ): Promise<ISingleSwapAction> {
     const swapData = ethers.AbiCoder.defaultAbiCoder().decode(
-      ["bytes32", "address", "address", "address", "uint256", "uint256", "uint256"],
+      this.SWAP_STARTED.abi,
       log.data
     );
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: ethers.ZeroAddress,
-      toToken: swapData[3],
+      toToken: swapData[3].toLowerCase(),
       fromAmount: swapData[4].toString(),
       toAmount: swapData[5].toString(),
-      sender: transaction.from,
-      recipient: transaction.from
+      sender: transaction.from.toLowerCase(),
+      recipient: transaction.from.toLowerCase()
     };
   }
 }
