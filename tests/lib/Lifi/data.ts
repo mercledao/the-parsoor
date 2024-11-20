@@ -184,23 +184,59 @@ export const lifiData: IProtocolTestingData = {
         },
       ],
     },
-    // {
-    //   txnHash:
-    //     "0xe676e6edd7a0bf1e17fb5e11a7d39676b22a464b7732b5777ab84a6e1a9a4b9d",
-    //   chainId: CHAIN_ID.ETHEREUM,
-    //   emittedActions: [
-    //     {
-    //       type: ACTION_ENUM.BRIDGE_OUT,
-    //       fromChain: CHAIN_ID.ETHEREUM,
-    //       toChain: CHAIN_ID.BSC,
-    //       fromToken: ethers.ZeroAddress,
-    //       toToken: "0x0000000000000000000000000000000000000000",
-    //       fromAmount: "3000000000000000",
-    //       toAmount: "3000000000000000",
-    //       sender: "0xa58bd7878e58c8047a32265ee43db521b85ec4db",
-    //       recipient: "0xa58bd7878e58c8047a32265ee43db521b85ec4db",
-    //     },
-    //   ],
-    // },
+    {
+      txnHash:
+        "0xe676e6edd7a0bf1e17fb5e11a7d39676b22a464b7732b5777ab84a6e1a9a4b9d",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: CHAIN_ID.SOLANA,
+          fromToken: ethers.ZeroAddress,
+          toToken: "0x0000000000000000000000000000000000000000",
+          fromAmount: "16212840000000000",
+          toAmount: "16212840000000000",
+          sender: "0xf6899228ed311b8fbe8d71ff28e5d0dd8db720f0",
+          recipient: "0x11f111f111f111f111f111f111f111f111f111f1",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xbc21e273b5ddce2b63c11cfc10244c62b21af16cfbfe4c2a38c8f0cde8b41d22",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: CHAIN_ID.BSC,
+          fromToken: ethers.ZeroAddress,
+          toToken: "0x0000000000000000000000000000000000000000",
+          fromAmount: "3000000000000000",
+          toAmount: "3000000000000000",
+          sender: "0xa58bd7878e58c8047a32265ee43db521b85ec4db",
+          recipient: "0xa58bd7878e58c8047a32265ee43db521b85ec4db",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x12d603900c20cf966c63613866c61a8b777698d9da7c63c627b63fce16c33f38",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: CHAIN_ID.SOLANA,
+          fromToken: ethers.ZeroAddress,
+          toToken: "0x0000000000000000000000000000000000000000",
+          fromAmount: "6808540000000000",
+          toAmount: "6808540000000000",
+          sender: "0x394d931fde5d52bce7183d4a8eb36966d9824b30",
+          recipient: "0x11f111f111f111f111f111f111f111f111f111f1",
+        },
+      ],
+    },
   ],
 };

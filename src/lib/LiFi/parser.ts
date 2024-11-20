@@ -15,34 +15,33 @@ export class LifiParser {
     abi: ["bytes32", "address", "address", "address", "uint256", "uint256", "uint256"]
   };
 
-  public static async parseTransaction(
-    transaction: ITransaction
-  ): Promise<ITransactionAction[]> {
-    const actions: ITransactionAction[] = [];
+  public static async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
+    if (!ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.LIFI_DIAMOND, contracts)) {
+      return [];
+    }
 
     for (const log of transaction.logs) {
       if (!log.topics?.[0]) continue;
-
-      const topic = log.topics[0].toLowerCase();
       
-      if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.LIFI_DIAMOND, contracts)) {
-        if (topic === this.LIFI_TRANSFER_STARTED.topic.toLowerCase()) {
-          const bridgeAction = this.parseLiFiTransferStartedEvent(log, transaction);
-          actions.push(bridgeAction);
-        } else if (topic === this.SWAP_STARTED.topic.toLowerCase()) {
-          const swapAction = await this.parseSwapEvent(log, transaction);
-          actions.push(swapAction);
-        }
+      const topic = log.topics[0].toLowerCase();
+      if (topic === this.LIFI_TRANSFER_STARTED.topic.toLowerCase()) {
+        return [this.parseLiFiTransferStartedEvent(log, transaction)];
       }
     }
 
-    return actions;
+    for (const log of transaction.logs) {
+      if (!log.topics?.[0]) continue;
+      
+      const topic = log.topics[0].toLowerCase();
+      if (topic === this.SWAP_STARTED.topic.toLowerCase()) {
+        return [await this.parseSwapEvent(log, transaction)];
+      }
+    }
+
+    return [];
   }
 
-  private static parseLiFiTransferStartedEvent(
-    log: ITransactionLog,
-    transaction: ITransaction
-  ): IBridgeOutAction {
+  private static parseLiFiTransferStartedEvent(log: ITransactionLog, transaction: ITransaction): IBridgeOutAction {
     const [transferData] = ethers.AbiCoder.defaultAbiCoder().decode(
       this.LIFI_TRANSFER_STARTED.abi,
       log.data
@@ -61,10 +60,7 @@ export class LifiParser {
     };
   }
 
-  private static async parseSwapEvent(
-    log: ITransactionLog,
-    transaction: ITransaction
-  ): Promise<ISingleSwapAction> {
+  private static async parseSwapEvent(log: ITransactionLog, transaction: ITransaction): Promise<ISingleSwapAction> {
     const swapData = ethers.AbiCoder.defaultAbiCoder().decode(
       this.SWAP_STARTED.abi,
       log.data
