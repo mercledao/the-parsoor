@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
 import { ACTION_ENUM } from "../../enums";
+import { ProtocolHelper } from "../../helpers";
 import { IBridgeOutAction, ISingleSwapAction, ITransaction, ITransactionAction, ITransactionLog } from "../../types";
+import { CONTRACT_ENUM, contracts } from "./contracts";
 
 export class LifiParser {
-  private static readonly LIFI_DIAMOND_ADDRESS = "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae";
-
   private static readonly LIFI_TRANSFER_STARTED = {
     topic: "0xcba69f43792f9f399347222505213b55af8e0b0b54b893085c2e27ecbe1644f1",
     abi: ["tuple(bytes32 transactionId, string bridge, string integrator, address sendingAssetId, address receivingAssetId, address receiver, uint256 amount, uint256 destinationChainId)"]
@@ -25,18 +25,14 @@ export class LifiParser {
 
       const topic = log.topics[0].toLowerCase();
       
-      try {
-        if (log.contractAddress.toLowerCase() === this.LIFI_DIAMOND_ADDRESS) {
-          if (topic === this.LIFI_TRANSFER_STARTED.topic.toLowerCase()) {
-            const bridgeAction = this.parseLiFiTransferStartedEvent(log, transaction);
-            actions.push(bridgeAction);
-          } else if (topic === this.SWAP_STARTED.topic.toLowerCase()) {
-            const swapAction = await this.parseSwapEvent(log, transaction);
-            actions.push(swapAction);
-          }
+      if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.LIFI_DIAMOND, contracts)) {
+        if (topic === this.LIFI_TRANSFER_STARTED.topic.toLowerCase()) {
+          const bridgeAction = this.parseLiFiTransferStartedEvent(log, transaction);
+          actions.push(bridgeAction);
+        } else if (topic === this.SWAP_STARTED.topic.toLowerCase()) {
+          const swapAction = await this.parseSwapEvent(log, transaction);
+          actions.push(swapAction);
         }
-      } catch (error) {
-        console.error(`Error parsing log for transaction ${transaction.hash}:`, error);
       }
     }
 

@@ -148,5 +148,59 @@ export const lifiData: IProtocolTestingData = {
         },
       ],
     },
+    {
+      txnHash:
+        "0xdfa7924efdba569613d85de1fc819c5ab1778ecffcf95a3997020ed79f74e283",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: CHAIN_ID.SOLANA,
+          fromToken: ethers.ZeroAddress,
+          toToken: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          fromAmount: "93171476812",
+          toAmount: "93171476812",
+          sender: "0x50e9a305606eedf2fce9b6bcb4fa7de0194da9a5",
+          recipient: "0x11f111f111f111f111f111f111f111f111f111f1",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xbc21e273b5ddce2b63c11cfc10244c62b21af16cfbfe4c2a38c8f0cde8b41d22",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: CHAIN_ID.BSC,
+          fromToken: ethers.ZeroAddress,
+          toToken: "0x0000000000000000000000000000000000000000",
+          fromAmount: "3000000000000000",
+          toAmount: "3000000000000000",
+          sender: "0xa58bd7878e58c8047a32265ee43db521b85ec4db",
+          recipient: "0xa58bd7878e58c8047a32265ee43db521b85ec4db",
+        },
+      ],
+    },
+    // {
+    //   txnHash:
+    //     "0xe676e6edd7a0bf1e17fb5e11a7d39676b22a464b7732b5777ab84a6e1a9a4b9d",
+    //   chainId: CHAIN_ID.ETHEREUM,
+    //   emittedActions: [
+    //     {
+    //       type: ACTION_ENUM.BRIDGE_OUT,
+    //       fromChain: CHAIN_ID.ETHEREUM,
+    //       toChain: CHAIN_ID.BSC,
+    //       fromToken: ethers.ZeroAddress,
+    //       toToken: "0x0000000000000000000000000000000000000000",
+    //       fromAmount: "3000000000000000",
+    //       toAmount: "3000000000000000",
+    //       sender: "0xa58bd7878e58c8047a32265ee43db521b85ec4db",
+    //       recipient: "0xa58bd7878e58c8047a32265ee43db521b85ec4db",
+    //     },
+    //   ],
+    // },
   ],
 };
