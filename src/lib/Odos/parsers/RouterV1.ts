@@ -53,8 +53,8 @@ export default class RouterV1Parser {
   ): IMultiSwapAction {
     return {
       type: ACTION_ENUM.MULTI_SWAP,
-      fromTokens: multiSwapLog.args.tokensIn,
-      toTokens: multiSwapLog.args.outputs,
+      fromTokens: multiSwapLog.args.tokensIn.map((t) => t.toString()),
+      toTokens: multiSwapLog.args.outputs.map((output) => output[0].toString()),
       fromAmounts: multiSwapLog.args.amountsIn.map((amount) =>
         amount.toString()
       ),
