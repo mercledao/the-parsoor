@@ -9,7 +9,9 @@ export enum CONTRACT_ENUM {
 
 export enum EVENT_ENUM {
   SWAP_STARTED = "0x7bfdfdb5e3a3776976e53cb0607060f54c5312701c8cba1155cc4d5394440b38",
-  LIFI_TRANSFER_STARTED = "0xcba69f43792f9f399347222505213b55af8e0b0b54b893085c2e27ecbe1644f1"
+  LIFI_TRANSFER_STARTED = "0xcba69f43792f9f399347222505213b55af8e0b0b54b893085c2e27ecbe1644f1",
+  LIFI_GENERIC_SWAP_COMPLETED = "0x2d4b597935f3cd67fb2eebf1db4cf663b7832ec22cb94eb42c0b611f3bb1b9d9",
+  LIFI_SWAPPED_GENERIC = "0x72a6c9c29f2a2730922d1e49bf0468c86b1e3529c6a9d6f36b9e9d8c49be1342"
 }
 
 const EVENTS = {
@@ -17,6 +19,10 @@ const EVENTS = {
     "event SwapStarted(bytes32 transactionId, address fromToken, address toToken, uint256 fromAmount, uint256 toAmount, address sender)",
   [EVENT_ENUM.LIFI_TRANSFER_STARTED]:
     "event LiFiTransferStarted((bytes32 transactionId, string bridge, string integrator, address referrer, address sendingAssetId, address receivingAssetId, address receiver, uint256 amount, uint256 destinationChainId, bytes callData))",
+  [EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED]:
+    "event LiFiGenericSwapCompleted(bytes32 transactionId, address fromToken, address toToken, uint256 fromAmount, uint256 toAmount, address sender)",
+  [EVENT_ENUM.LIFI_SWAPPED_GENERIC]:
+    "event LiFiSwappedGeneric(bytes32 transactionId, address fromToken, address toToken, uint256 fromAmount, uint256 toAmount, address sender)"
 };
 
 export const contracts: IProtocolContractDefinitions = {
@@ -139,6 +145,12 @@ export const contracts: IProtocolContractDefinitions = {
       [EVENT_ENUM.SWAP_STARTED]: {
         abi: new ethers.Interface([EVENTS[EVENT_ENUM.SWAP_STARTED]]),
       },
+      [EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED]: {
+        abi: new ethers.Interface([EVENTS[EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED]]),
+      },
+      [EVENT_ENUM.LIFI_SWAPPED_GENERIC]: {
+        abi: new ethers.Interface([EVENTS[EVENT_ENUM.LIFI_SWAPPED_GENERIC]]),
+      }
     },
   },
 };

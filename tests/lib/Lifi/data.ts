@@ -238,5 +238,110 @@ export const lifiData: IProtocolTestingData = {
         },
       ],
     },
+    {
+      txnHash: "0x53f274450d6e295462e481aa4a16a181d5cb4cc8931fb41298d9ae0f7a1f3062",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0000000000000000000000000000000000000000",
+          toToken: "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          fromAmount: "34111647",
+          toAmount: "33770531",
+          sender: "0x51ebfe28a319f5fc5f49f6441e3f1bce37d8f184",
+          recipient: "0x51ebfe28a319f5fc5f49f6441e3f1bce37d8f184"
+        }
+      ]
+    },
+    {
+      txnHash: "0x0219a476339f54aca7b06912cc65441bf08758f102e6d7401dd2d638a8876e6e",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0000000000000000000000000000000000000000", 
+          toToken: "0xd6203889c22d9fe5e938a9200f50fdffe9dd8e02", 
+          fromAmount: "80000000000",
+          toAmount: "79200000000",
+          sender: "0x32293e8209855816a2ca23249d45f03704ec0b37",
+          recipient: "0x32293e8209855816a2ca23249d45f03704ec0b37"
+        }
+      ]
+    },
+    {
+      txnHash: "0x83019c1a9df6c4265a513f890da779ac173322edaf09c720dfa4466231805715",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0000000000000000000000000000000000000000", 
+          toToken: "0x0000000000000000000000000000000000000000", 
+          fromAmount: "149746415864126023",
+          toAmount: "148248951705484764",
+          sender: "0x67284fb6d29c4e672ac8cbeeded80542716a38d1",
+          recipient: "0x67284fb6d29c4e672ac8cbeeded80542716a38d1"
+        }
+      ]
+    },
+    {
+      txnHash: "0x4cda4f6aa1994ebc4330bb149e1e616e7ae687a33c8d36599674258f26c0a7b9",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0000000000000000000000000000000000000000", 
+          toToken: "0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b", 
+          fromAmount: "17478716118",
+          toAmount: "17303928958",
+          sender: "0xc0ee9ea2ee937ab8811472b423f431460221bb61",
+          recipient: "0xc0ee9ea2ee937ab8811472b423f431460221bb61"
+        }
+      ]
+    },
+    {
+      txnHash: "0x5f5998998d74416d468910dd1679fc17e12604e40d2cbd1eed3419b08e3cc0e8",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0000000000000000000000000000000000000000", 
+          toToken: "0xd6203889c22d9fe5e938a9200f50fdffe9dd8e02", 
+          fromAmount: "105263374435",
+          toAmount: "104210740691",
+          sender: "0x32293e8209855816a2ca23249d45f03704ec0b37",
+          recipient: "0x32293e8209855816a2ca23249d45f03704ec0b37"
+        }
+      ]
+    },
+    {
+      txnHash: "0x6348b6eed148c7e0f8348bc3eee64c00740b2acc03a5fc3affc1b029e6ed838e",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0000000000000000000000000000000000000000", 
+          toToken: "0xa35923162c49cf95e6bf26623385eb431ad920d3", 
+          fromAmount: "128368192123387874572673",
+          toAmount: "127084510202153995826947",
+          sender: "0x71fcfb06637a449fad642f7e2628f3c62ee3d98e",
+          recipient: "0x71fcfb06637a449fad642f7e2628f3c62ee3d98e"
+        }
+      ]
+    },
+    {
+      txnHash: "0x6e990d0b27b5f797b21f7764c0a20d7101fab72ff0d6471c52bdfa283eff04bf",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0000000000000000000000000000000000000000", 
+          toToken: "0x0000000000000000000000000000000000000000", 
+          fromAmount: "400000000000000000",
+          toAmount: "396000000000000000",
+          sender: "0xb42c84a8868502aa1179a8848dfa52103139aa29",
+          recipient: "0xb42c84a8868502aa1179a8848dfa52103139aa29"
+        }
+      ]
+    },
   ],
 };

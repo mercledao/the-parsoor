@@ -5,11 +5,19 @@ import { EVENT_ENUM } from "./contracts";
 
 export class LifiParser {
   public static async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
-
     for (const log of transaction.logs) {
       const topic = log.topics[0].toLowerCase();
+      
       if (topic === EVENT_ENUM.LIFI_TRANSFER_STARTED.toLowerCase()) {
         return [this.parseLiFiTransferStartedEvent(log, transaction)];
+      }
+      
+      if (topic === EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED.toLowerCase()) {
+        return [await this.parseGenericSwapCompletedEvent(log, transaction)];
+      }
+      
+      if (topic === EVENT_ENUM.LIFI_SWAPPED_GENERIC.toLowerCase()) {
+        return [await this.parseSwappedGenericEvent(log, transaction)];
       }
     }
 
@@ -54,6 +62,40 @@ export class LifiParser {
       toToken: swapData[3].toLowerCase(),
       fromAmount: swapData[4].toString(),
       toAmount: swapData[5].toString(),
+      sender: transaction.from.toLowerCase(),
+      recipient: transaction.from.toLowerCase()
+    };
+  }
+
+  private static async parseGenericSwapCompletedEvent(log: ITransactionLog, transaction: ITransaction): Promise<ISingleSwapAction> {
+    const [integrator, referrer, receiver, fromAssetId, toAssetId, fromAmount, toAmount] = ethers.AbiCoder.defaultAbiCoder().decode(
+      ["string", "string", "address", "address", "address", "uint256", "uint256"],
+      log.data
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: fromAssetId.toLowerCase(),
+      toToken: toAssetId.toLowerCase(),
+      fromAmount: fromAmount.toString(),
+      toAmount: toAmount.toString(),
+      sender: transaction.from.toLowerCase(),
+      recipient: receiver.toLowerCase()
+    };
+  }
+
+  private static async parseSwappedGenericEvent(log: ITransactionLog, transaction: ITransaction): Promise<ISingleSwapAction> {
+    const [integrator, referrer, fromAssetId, toAssetId, fromAmount, toAmount] = ethers.AbiCoder.defaultAbiCoder().decode(
+      ["string", "string", "address", "address", "uint256", "uint256"],
+      log.data
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: fromAssetId.toLowerCase(),
+      toToken: toAssetId.toLowerCase(),
+      fromAmount: fromAmount.toString(),
+      toAmount: toAmount.toString(),
       sender: transaction.from.toLowerCase(),
       recipient: transaction.from.toLowerCase()
     };
