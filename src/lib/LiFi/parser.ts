@@ -1,34 +1,26 @@
 import { ethers } from "ethers";
 import { ACTION_ENUM } from "../../enums";
-import { ProtocolHelper } from "../../helpers";
 import { IBridgeOutAction, ISingleSwapAction, ITransaction, ITransactionAction, ITransactionLog } from "../../types";
-import { CONTRACT_ENUM, contracts, EVENT_ENUM } from "./contracts";
+import { EVENT_ENUM } from "./contracts";
 
 export class LifiParser {
   public static async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
-    if (!ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.LIFI_DIAMOND, contracts)) {
-      return [];
-    }
 
     for (const log of transaction.logs) {
-      if (!log.topics?.[0]) continue;
-      
       const topic = log.topics[0].toLowerCase();
       if (topic === EVENT_ENUM.LIFI_TRANSFER_STARTED.toLowerCase()) {
         return [this.parseLiFiTransferStartedEvent(log, transaction)];
       }
     }
 
-    for (const log of transaction.logs) {
-      if (!log.topics?.[0]) continue;
-      
+    for (const log of transaction.logs) {      
       const topic = log.topics[0].toLowerCase();
       if (topic === EVENT_ENUM.SWAP_STARTED.toLowerCase()) {
         return [await this.parseSwapEvent(log, transaction)];
       }
     }
 
-    return [];
+    throw new Error("No supported events found in transaction");
   }
 
   private static parseLiFiTransferStartedEvent(log: ITransactionLog, transaction: ITransaction): IBridgeOutAction {

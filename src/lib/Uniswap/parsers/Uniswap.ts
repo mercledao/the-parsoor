@@ -59,20 +59,6 @@ export class UniswapParser {
   private static readonly EXACT_INPUT = "exactInput";
   private static readonly EXACT_OUTPUT = "exactOutput";
 
-  public static async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
-    const actions: ITransactionAction[] = [];
-
-    if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.UNIVERSAL_ROUTER, contracts)) {
-      const universalRouterActions = await this.parseUniversalRouterTransaction(transaction);
-      actions.push(...universalRouterActions);
-    } else if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.ROUTER_V2, contracts)) {
-      const v2Actions = await this.parseV2Transaction(transaction);
-      actions.push(...v2Actions);
-    }
-
-    return actions;
-  }
-
   public static async parseV2Transaction(transaction: ITransaction): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
     
@@ -83,7 +69,7 @@ export class UniswapParser {
     );
 
     if (!parsedTxn || !parsedTxn.args.path || parsedTxn.args.path.length < 2) {
-      return actions;
+      throw new Error("Failed to parse V2 transaction: Invalid or missing path");
     }
 
     const functionName = parsedTxn.name.toLowerCase();
@@ -106,18 +92,17 @@ export class UniswapParser {
   }
 
   public static async parseV3Transaction(transaction: ITransaction, routerType: CONTRACT_ENUM): Promise<ITransactionAction[]> {
-    const actions: ITransactionAction[] = [];
-
-    const isRouterV3 = ProtocolHelper.txnToIsListenerContract(transaction, routerType, contracts);
-    if (!isRouterV3) return actions;
-
     const parsedTxn = contracts[routerType].interface.parseTransaction({ data: transaction.data });
-    if (!parsedTxn) return actions;
+    if (!parsedTxn) {
+      throw new Error("Failed to parse V3 transaction data");
+    }
 
     const action = await this.createV3SwapAction(parsedTxn, transaction);
-    if (action) actions.push(action);
+    if (!action) {
+      throw new Error("Failed to create V3 swap action");
+    }
 
-    return actions;
+    return [action];
   }
 
   private static parseAmount(isExactInput: boolean, isEthInput: boolean, args: any, transaction: ITransaction): string {
@@ -219,9 +204,9 @@ export class UniswapParser {
   }
 
   public static async parseUniversalRouterTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
-    const actions: ITransactionAction[] = [];
-    
-    if (!transaction.data) return actions;
+    if (!transaction.data) {
+      throw new Error("No transaction data found");
+    }
 
     const iface = new ethers.Interface([
       "function execute(bytes commands, bytes[] inputs) payable",
@@ -229,10 +214,14 @@ export class UniswapParser {
     ]);
 
     const decoded = iface.parseTransaction({ data: transaction.data });
-    if (!decoded) return actions;
+    if (!decoded) {
+      throw new Error("Failed to decode Universal Router transaction");
+    }
 
     const commands = ethers.getBytes(decoded.args[0]);
     const inputs = decoded.args[1];
+
+    const actions: ITransactionAction[] = [];
 
     for (let i = 0; i < commands.length; i++) {
       const command = commands[i];

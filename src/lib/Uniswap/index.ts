@@ -20,6 +20,7 @@ export default class Uniswap implements IProtocolParserExport {
   }
 
   public async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
+    const actions: ITransactionAction[] = [];
 
     if (ProtocolHelper.txnToIsListenerContract(transaction, CONTRACT_ENUM.UNIVERSAL_ROUTER, contracts)) {
       return await UniswapParser.parseUniversalRouterTransaction(transaction);
@@ -45,7 +46,7 @@ export default class Uniswap implements IProtocolParserExport {
       return await LimitOrderParser.parseTransaction(transaction);
     }
 
-    return [];
+    return actions;
   }
 
   public getProtocolContracts(): IProtocolContractDefinitions {
