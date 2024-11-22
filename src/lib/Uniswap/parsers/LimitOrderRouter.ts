@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { ACTION_ENUM } from "../../../enums";
 import { ProtocolHelper } from "../../../helpers";
 import {
-  ILimitOrderAction,
   ITransaction,
   ITransactionAction
 } from "../../../types";
@@ -30,10 +29,10 @@ export class LimitOrderParser {
 
     return fillEvents
       .map(log => this.parseFillEvent(transaction, log))
-      .filter((action): action is ILimitOrderAction => action !== null);
+      .filter((action): action is ITransactionAction => action !== null);
   }
 
-  private static parseFillEvent(transaction: ITransaction, fillLog: any): ILimitOrderAction | null {
+  private static parseFillEvent(transaction: ITransaction, fillLog: any): ITransactionAction | null {
     const transferLogs = transaction.logs.filter(l => 
       l.topics[0] === this.TRANSFER_EVENT_TOPIC && 
       l.topics.length === 3
@@ -64,14 +63,13 @@ export class LimitOrderParser {
     const outputAmount = ethers.getBigInt(outputTransfer.data || '0');
 
     return {
-      type: ACTION_ENUM.LIMIT_ORDER,
+      type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: ethers.getAddress(`0x${inputTransfer.topics[1].slice(-40)}`),
       toToken: ethers.getAddress(`0x${outputTransfer.topics[1].slice(-40)}`),
       fromAmount: inputAmount.toString(),
       toAmount: outputAmount.toString(),
-      priceLimit: '0',
-      deadline: 0,
-      recipient: ethers.getAddress(swapper)
+      recipient: ethers.getAddress(swapper),
+      sender: ethers.getAddress(swapper)
     };
   }
 }

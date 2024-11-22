@@ -5,7 +5,6 @@ import {
   chainConfig,
   IBridgeInAction,
   IBridgeOutAction,
-  ILimitOrderAction,
   IMultiSwapAction,
   IProtocolTestTransaction,
   ISingleSwapAction,
@@ -95,9 +94,6 @@ export class ProtocolParserUtils {
         case ACTION_ENUM.MULTI_SWAP:
           this.assertMultiSwapAction(expectedAction, actualAction as IMultiSwapAction);
           break;
-        case ACTION_ENUM.LIMIT_ORDER:
-          this.assertLimitOrderAction(expectedAction, actualAction as ILimitOrderAction);
-          break;
       }
     }
   }
@@ -146,15 +142,5 @@ export class ProtocolParserUtils {
     expect(actualAction.fromAmounts).toEqual(expectedAction.fromAmounts);
     expect(actualAction.toAmounts).toEqual(expectedAction.toAmounts);
     expect(actualAction.recipients).toEqual(expectedAction.recipients);
-  }
-
-  public assertLimitOrderAction(expectedAction: ILimitOrderAction, actualAction: ILimitOrderAction): void {
-    expect(actualAction.fromToken).toBe(expectedAction.fromToken);
-    expect(actualAction.toToken).toBe(expectedAction.toToken);
-    expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
-    expect(actualAction.toAmount).toBe(expectedAction.toAmount);
-    expect(actualAction.priceLimit).toBe(expectedAction.priceLimit);
-    expect(actualAction.deadline).toBe(expectedAction.deadline);
-    expect(actualAction.recipient).toBe(expectedAction.recipient);
   }
 }

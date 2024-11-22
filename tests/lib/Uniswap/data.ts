@@ -4,7 +4,6 @@ import { IProtocolTestTransaction } from '../../../src/types/chunks/ITestingData
 export enum UNISWAP_VERSIONS {
   V2 = 'v2',
   V3 = 'v3',
-  LIMIT_ORDER = 'limit_order'
 }
 
 export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> = {
@@ -487,21 +486,17 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         }
       ]
     },
-  ],
-  [UNISWAP_VERSIONS.LIMIT_ORDER]: [
     {
       txnHash: '0x3369b554053b8815dcc454faa6c2f3d426e9c3ca9207462128a702f5e8eb1440',
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
-          fromToken: '0xFADDeC79a21f9B74469A4e62DaFbBbCE15c06005',  
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: '0xFADDeC79a21f9B74469A4e62DaFbBbCE15c06005',
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6', 
           fromAmount: '58000000000000000',  
           toAmount: '8367120281343387728741250', 
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0xFADDeC79a21f9B74469A4e62DaFbBbCE15c06005'
+          recipient: '0xFADDeC79a21f9B74469A4e62DaFbBbCE15c06005',
         }
       ]
     },
@@ -510,14 +505,13 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
+          type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0x80b920fb4B3C0d5EC678e6B8A56C801B8e23eA1B',  
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6', 
           fromAmount: '600000000',  
           toAmount: '28272550317241935686507500', 
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0x80b920fb4B3C0d5EC678e6B8A56C801B8e23eA1B'
+          recipient: '0x80b920fb4B3C0d5EC678e6B8A56C801B8e23eA1B',
+          sender: '0x80b920fb4B3C0d5EC678e6B8A56C801B8e23eA1B'
         }
       ]
     },
@@ -526,14 +520,13 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
+          type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0xb3eAe6166CF48016fbf421F3BF338B943bc13F27',  
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6', 
           fromAmount: '72801736550229234',  
           toAmount: '842255575115868', 
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0xb3eAe6166CF48016fbf421F3BF338B943bc13F27'
+          recipient: '0xb3eAe6166CF48016fbf421F3BF338B943bc13F27',
+          sender: '0xb3eAe6166CF48016fbf421F3BF338B943bc13F27'
         }
       ]
     },
@@ -542,14 +535,13 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
+          type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0x03995404Da03690eEBd7CfFbdE09d2194ded4D2A',
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
           fromAmount: '652170852',
           toAmount: '2654453423',
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0x03995404Da03690eEBd7CfFbdE09d2194ded4D2A'
+          recipient: '0x03995404Da03690eEBd7CfFbdE09d2194ded4D2A',
+          sender: '0x03995404Da03690eEBd7CfFbdE09d2194ded4D2A'
         }
       ]
     },
@@ -558,14 +550,13 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
+          type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0xde6D4120A5d34468c405Cd8Aae7F6f3d047fFA28',
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
           fromAmount: '531101625776840134956',
           toAmount: '7780146335',
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0xde6D4120A5d34468c405Cd8Aae7F6f3d047fFA28'
+          recipient: '0xde6D4120A5d34468c405Cd8Aae7F6f3d047fFA28',
+          sender: '0xde6D4120A5d34468c405Cd8Aae7F6f3d047fFA28'
         }
       ]
     },
@@ -574,14 +565,13 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
+          type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0x5c2BE1bd3204aE5b56589b900F789F0fB823bAAE',
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
           fromAmount: '325093000',
           toAmount: '319778448',
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0x5c2BE1bd3204aE5b56589b900F789F0fB823bAAE'
+          recipient: '0x5c2BE1bd3204aE5b56589b900F789F0fB823bAAE',
+          sender: '0x5c2BE1bd3204aE5b56589b900F789F0fB823bAAE'
         }
       ]
     },
@@ -590,14 +580,13 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
+          type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0xD7d52A2642CFafeadFb0199f53aC942E19565F38',
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
           fromAmount: '2900410000000000000',
           toAmount: '8966848150',
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0xD7d52A2642CFafeadFb0199f53aC942E19565F38'
+          recipient: '0xD7d52A2642CFafeadFb0199f53aC942E19565F38',
+          sender: '0xD7d52A2642CFafeadFb0199f53aC942E19565F38'
         }
       ]
     },
@@ -606,14 +595,13 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
+          type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0xB96e6885CB6319b5E0dAf782CeA2441907874123',
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
           fromAmount: '322414283179975086',
           toAmount: '994405256',
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0xB96e6885CB6319b5E0dAf782CeA2441907874123'
+          recipient: '0xB96e6885CB6319b5E0dAf782CeA2441907874123',
+          sender: '0xB96e6885CB6319b5E0dAf782CeA2441907874123'
         }
       ]
     },
@@ -622,14 +610,13 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.LIMIT_ORDER,
+          type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: '0x2882C4Bbd5Bd3c9F75E75b4BE37EbEE37d68ddDA',
           toToken: '0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6',
           fromAmount: '1000000000000000000',
           toAmount: '3643908812',
-          priceLimit: '0',
-          deadline: 0,
-          recipient: '0x2882C4Bbd5Bd3c9F75E75b4BE37EbEE37d68ddDA'
+          recipient: '0x2882C4Bbd5Bd3c9F75E75b4BE37EbEE37d68ddDA',
+          sender: '0x2882C4Bbd5Bd3c9F75E75b4BE37EbEE37d68ddDA'
         }
       ]
     },
