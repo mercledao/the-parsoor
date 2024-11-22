@@ -126,7 +126,11 @@ export const contracts: IProtocolContractDefinitions = {
     }
   },
   [CONTRACT_ENUM.UNIVERSAL_ROUTER]: {
-    interface: new ethers.Interface(UniswapUniversalRouterAbi),
+    interface: new ethers.Interface([
+      ...UniswapUniversalRouterAbi,
+      "function execute(bytes commands, bytes[] inputs) payable",
+      "function execute(bytes commands, bytes[] inputs, uint256 deadline) payable"
+    ]),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",

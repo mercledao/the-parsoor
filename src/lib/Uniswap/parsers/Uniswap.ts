@@ -208,12 +208,7 @@ export class UniswapParser {
       throw new Error("No transaction data found");
     }
 
-    const iface = new ethers.Interface([
-      "function execute(bytes commands, bytes[] inputs) payable",
-      "function execute(bytes commands, bytes[] inputs, uint256 deadline) payable"
-    ]);
-
-    const decoded = iface.parseTransaction({ data: transaction.data });
+    const decoded = contracts[CONTRACT_ENUM.UNIVERSAL_ROUTER].interface.parseTransaction({ data: transaction.data });
     if (!decoded) {
       throw new Error("Failed to decode Universal Router transaction");
     }
