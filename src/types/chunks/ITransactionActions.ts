@@ -1,6 +1,11 @@
-import { ACTION_ENUM, CHAIN_ID } from '../../enums';
+import { ACTION_ENUM, CHAIN_ID } from "../../enums";
 
-export type ITransactionAction = ISingleSwapAction | IMultiSwapAction | IBridgeInAction | IBridgeOutAction | ILimitOrderAction;
+export type ITransactionAction =
+  | ISingleSwapAction
+  | IMultiSwapAction
+  | IBridgeInAction
+  | IBridgeOutAction
+  | ILimitOrderAction;
 
 export type ISingleSwapAction = {
   type: ACTION_ENUM.SINGLE_SWAP;

@@ -22,4 +22,12 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/lifi.png",
     website: "https://li.fi/",
   },
+  odos: {
+    identifier: "odos",
+    name: "Odos",
+    twitter: "https://x.com/odosprotocol",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/odos.png",
+    website: "https://www.odos.xyz/",
+  },
 };
+  
