@@ -1,7 +1,8 @@
 import { ethers } from "ethers";
 import { ACTION_ENUM } from "../../enums";
+import { ProtocolHelper } from "../../helpers";
 import { IBridgeOutAction, ISingleSwapAction, ITransaction, ITransactionAction, ITransactionLog } from "../../types";
-import { EVENT_ENUM } from "./contracts";
+import { EVENT_ENUM, contracts } from "./contracts";
 
 export class LifiParser {
   public static async parseTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
@@ -13,18 +14,15 @@ export class LifiParser {
       }
       
       if (topic === EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED.toLowerCase()) {
-        return [await this.parseGenericSwapCompletedEvent(log, transaction)];
+        return [this.parseGenericSwapCompletedEvent(log, transaction)];
       }
       
       if (topic === EVENT_ENUM.LIFI_SWAPPED_GENERIC.toLowerCase()) {
-        return [await this.parseSwappedGenericEvent(log, transaction)];
+        return [this.parseSwappedGenericEvent(log, transaction)];
       }
-    }
 
-    for (const log of transaction.logs) {      
-      const topic = log.topics[0].toLowerCase();
       if (topic === EVENT_ENUM.SWAP_STARTED.toLowerCase()) {
-        return [await this.parseSwapEvent(log, transaction)];
+        return [this.parseSwapEvent(log, transaction)];
       }
     }
 
@@ -32,26 +30,24 @@ export class LifiParser {
   }
 
   private static parseLiFiTransferStartedEvent(log: ITransactionLog, transaction: ITransaction): IBridgeOutAction {
-    const [transferData] = ethers.AbiCoder.defaultAbiCoder().decode(
-      ["tuple(bytes32 transactionId, string bridge, string integrator, address sendingAssetId, address receivingAssetId, address receiver, uint256 amount, uint256 destinationChainId)"],
-      log.data
-    );
+    const parsedLog = ProtocolHelper.parseLog(log, contracts.LIFI_DIAMOND.events[EVENT_ENUM.LIFI_TRANSFER_STARTED]);
+    const bridgeData = parsedLog.args.bridgeData;
 
     return {
       type: ACTION_ENUM.BRIDGE_OUT,
       fromChain: transaction.chainId,
-      toChain: Number(transferData.destinationChainId),
-      fromToken: transferData.sendingAssetId.toLowerCase(),
-      toToken: transferData.receivingAssetId.toLowerCase(),
-      fromAmount: transferData.amount.toString(),
-      toAmount: transferData.amount.toString(),
+      toChain: Number(bridgeData.destinationChainId),
+      fromToken: bridgeData.sendingAssetId.toLowerCase(),
+      toToken: bridgeData.sendingAssetId.toLowerCase(),
+      fromAmount: bridgeData.minAmount.toString(),
+      toAmount: bridgeData.minAmount.toString(),
       sender: transaction.from.toLowerCase(),
-      recipient: transferData.receiver.toLowerCase()
+      recipient: bridgeData.receiver.toLowerCase()
     };
   }
 
-  private static async parseSwapEvent(log: ITransactionLog, transaction: ITransaction): Promise<ISingleSwapAction> {
-    const swapData = ethers.AbiCoder.defaultAbiCoder().decode(
+    private static parseSwapEvent(log: ITransactionLog, transaction: ITransaction): ISingleSwapAction {
+    const [transactionId, integrator, fromAssetId, toAssetId, fromAmount, toAmount] = ethers.AbiCoder.defaultAbiCoder().decode(
       ["bytes32", "address", "address", "address", "uint256", "uint256", "uint256"],
       log.data
     );
@@ -59,43 +55,37 @@ export class LifiParser {
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: ethers.ZeroAddress,
-      toToken: swapData[3].toLowerCase(),
-      fromAmount: swapData[4].toString(),
-      toAmount: swapData[5].toString(),
+      toToken: toAssetId.toLowerCase(),
+      fromAmount: fromAmount.toString(),
+      toAmount: toAmount.toString(),
       sender: transaction.from.toLowerCase(),
       recipient: transaction.from.toLowerCase()
     };
   }
 
-  private static async parseGenericSwapCompletedEvent(log: ITransactionLog, transaction: ITransaction): Promise<ISingleSwapAction> {
-    const [integrator, referrer, receiver, fromAssetId, toAssetId, fromAmount, toAmount] = ethers.AbiCoder.defaultAbiCoder().decode(
-      ["string", "string", "address", "address", "address", "uint256", "uint256"],
-      log.data
-    );
+  private static parseGenericSwapCompletedEvent(log: ITransactionLog, transaction: ITransaction): ISingleSwapAction {
+    const parsedLog = ProtocolHelper.parseLog(log, contracts.LIFI_DIAMOND.events[EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED]);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: fromAssetId.toLowerCase(),
-      toToken: toAssetId.toLowerCase(),
-      fromAmount: fromAmount.toString(),
-      toAmount: toAmount.toString(),
+      fromToken: parsedLog.args.fromAssetId.toLowerCase(),
+      toToken: parsedLog.args.toAssetId.toLowerCase(),
+      fromAmount: parsedLog.args.fromAmount.toString(),
+      toAmount: parsedLog.args.toAmount.toString(),
       sender: transaction.from.toLowerCase(),
-      recipient: receiver.toLowerCase()
+      recipient: parsedLog.args.receiver.toLowerCase()
     };
   }
 
-  private static async parseSwappedGenericEvent(log: ITransactionLog, transaction: ITransaction): Promise<ISingleSwapAction> {
-    const [integrator, referrer, fromAssetId, toAssetId, fromAmount, toAmount] = ethers.AbiCoder.defaultAbiCoder().decode(
-      ["string", "string", "address", "address", "uint256", "uint256"],
-      log.data
-    );
+  private static parseSwappedGenericEvent(log: ITransactionLog, transaction: ITransaction): ISingleSwapAction {
+    const parsedLog = ProtocolHelper.parseLog(log, contracts.LIFI_DIAMOND.events[EVENT_ENUM.LIFI_SWAPPED_GENERIC]);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: fromAssetId.toLowerCase(),
-      toToken: toAssetId.toLowerCase(),
-      fromAmount: fromAmount.toString(),
-      toAmount: toAmount.toString(),
+      fromToken: parsedLog.args.fromAssetId.toLowerCase(),
+      toToken: parsedLog.args.toAssetId.toLowerCase(),
+      fromAmount: parsedLog.args.fromAmount.toString(),
+      toAmount: parsedLog.args.toAmount.toString(),
       sender: transaction.from.toLowerCase(),
       recipient: transaction.from.toLowerCase()
     };

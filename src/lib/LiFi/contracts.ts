@@ -14,17 +14,6 @@ export enum EVENT_ENUM {
   LIFI_SWAPPED_GENERIC = "0x72a6c9c29f2a2730922d1e49bf0468c86b1e3529c6a9d6f36b9e9d8c49be1342"
 }
 
-const EVENTS = {
-  [EVENT_ENUM.SWAP_STARTED]:
-    "event SwapStarted(bytes32 transactionId, address fromToken, address toToken, uint256 fromAmount, uint256 toAmount, address sender)",
-  [EVENT_ENUM.LIFI_TRANSFER_STARTED]:
-    "event LiFiTransferStarted((bytes32 transactionId, string bridge, string integrator, address referrer, address sendingAssetId, address receivingAssetId, address receiver, uint256 amount, uint256 destinationChainId, bytes callData))",
-  [EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED]:
-    "event LiFiGenericSwapCompleted(bytes32 transactionId, address fromToken, address toToken, uint256 fromAmount, uint256 toAmount, address sender)",
-  [EVENT_ENUM.LIFI_SWAPPED_GENERIC]:
-    "event LiFiSwappedGeneric(bytes32 transactionId, address fromToken, address toToken, uint256 fromAmount, uint256 toAmount, address sender)"
-};
-
 export const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.LIFI_DIAMOND]: {
     interface: new ethers.Interface(LifiDiamondABI),
@@ -140,16 +129,19 @@ export const contracts: IProtocolContractDefinitions = {
     },
     events: {
       [EVENT_ENUM.LIFI_TRANSFER_STARTED]: {
-        abi: new ethers.Interface([EVENTS[EVENT_ENUM.LIFI_TRANSFER_STARTED]]),
-      },
-      [EVENT_ENUM.SWAP_STARTED]: {
-        abi: new ethers.Interface([EVENTS[EVENT_ENUM.SWAP_STARTED]]),
+        abi: new ethers.Interface([
+          "event LiFiTransferStarted((bytes32 transactionId, string bridge, string integrator, address referrer, address sendingAssetId, address receiver, uint256 minAmount, uint256 destinationChainId, bool hasSourceSwaps, bool hasDestinationCall) bridgeData)"
+        ]),
       },
       [EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED]: {
-        abi: new ethers.Interface([EVENTS[EVENT_ENUM.LIFI_GENERIC_SWAP_COMPLETED]]),
+        abi: new ethers.Interface([
+          "event LiFiGenericSwapCompleted(bytes32 indexed transactionId, string integrator, string referrer, address receiver, address fromAssetId, address toAssetId, uint256 fromAmount, uint256 toAmount)"
+        ]),
       },
       [EVENT_ENUM.LIFI_SWAPPED_GENERIC]: {
-        abi: new ethers.Interface([EVENTS[EVENT_ENUM.LIFI_SWAPPED_GENERIC]]),
+        abi: new ethers.Interface([
+          "event LiFiSwappedGeneric(bytes32 indexed transactionId, string integrator, string referrer, address fromAssetId, address toAssetId, uint256 fromAmount, uint256 toAmount)"
+        ]),
       }
     },
   },
