@@ -31,11 +31,11 @@ export class DeBridgeParser {
       type: ACTION_ENUM.BRIDGE_OUT,
       fromChain: transaction.chainId,
       toChain: Number(parsedLog.args.chainIdTo),
-      fromToken: parsedLog.args.feeParams.isNativeToken ? ethers.ZeroAddress : transaction.to.toLowerCase(),
+      fromToken: parsedLog.args.feeParams.isNativeToken ? ethers.ZeroAddress : transaction.to,
       toToken: null,
       fromAmount: parsedLog.args.amount.toString(),
       toAmount: null,
-      sender: parsedLog.args.nativeSender.toLowerCase(),
+      sender: parsedLog.args.nativeSender,
       recipient: null
     };
   }
@@ -51,11 +51,11 @@ export class DeBridgeParser {
       fromChain: Number(parsedLog.args.chainIdFrom),
       toChain: transaction.chainId,
       fromToken: null,
-      toToken: parsedLog.args.isNativeToken ? ethers.ZeroAddress : transaction.to.toLowerCase(),
+      toToken: parsedLog.args.isNativeToken ? ethers.ZeroAddress : transaction.to,
       fromAmount: null,
       toAmount: parsedLog.args.amount.toString(),
       sender: null,
-      recipient: parsedLog.args.receiver.toLowerCase()
+      recipient: parsedLog.args.receiver
     };
   }
 }

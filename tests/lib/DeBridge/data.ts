@@ -18,11 +18,11 @@ export const debridgeTestData: IProtocolTestingData = {
           fromChain: SOLANA,
           toChain: CHAIN_ID.ETHEREUM,
           fromToken: null,
-          toToken: "0x43de2d77bf8027e25dbd179b491e8d64f38398aa",
+          toToken: "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA",
           fromAmount: null,
           toAmount: "0",
           sender: null,
-          recipient: "0xef4fb24ad0916217251f553c0596f8edc630eb66"
+          recipient: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66"
         }
       ]
     },
@@ -38,7 +38,7 @@ export const debridgeTestData: IProtocolTestingData = {
             toToken: null,
             fromAmount: "48664594885400000000000",
             toAmount: null,
-            sender: "0x65a8f07bd9a8598e1b5b6c0a88f4779dbc077675",
+            sender: "0x65A8F07Bd9A8598E1b5B6C0a88F4779DBC077675",
             recipient: null
           }
         ]
@@ -55,7 +55,7 @@ export const debridgeTestData: IProtocolTestingData = {
             toToken: null,
             fromAmount: "4227312847948450000000000",
             toAmount: null,
-            sender: "0x65a8f07bd9a8598e1b5b6c0a88f4779dbc077675",
+            sender: "0x65A8F07Bd9A8598E1b5B6C0a88F4779DBC077675",
             recipient: null,
           }
         ]
@@ -69,11 +69,11 @@ export const debridgeTestData: IProtocolTestingData = {
             fromChain: SOLANA,
             toChain: CHAIN_ID.ETHEREUM,
             fromToken: null,
-            toToken: "0x43de2d77bf8027e25dbd179b491e8d64f38398aa",
+            toToken: "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA",
             fromAmount: null,
             toAmount: "0",
             sender: null,
-            recipient: "0xef4fb24ad0916217251f553c0596f8edc630eb66"
+            recipient: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66"
           }
         ]
       },
@@ -90,7 +90,7 @@ export const debridgeTestData: IProtocolTestingData = {
             fromAmount: null,
             toAmount: "6079378427921190000000000",
             sender: null,
-            recipient: "0x65a8f07bd9a8598e1b5b6c0a88f4779dbc077675"
+            recipient: "0x65A8F07Bd9A8598E1b5B6C0a88F4779DBC077675"
           }
         ]
       },
@@ -106,7 +106,7 @@ export const debridgeTestData: IProtocolTestingData = {
             toToken: null,
             fromAmount: "5250656717199960000000000",
             toAmount: null,
-            sender: "0x65a8f07bd9a8598e1b5b6c0a88f4779dbc077675",
+            sender: "0x65A8F07Bd9A8598E1b5B6C0a88F4779DBC077675",
             recipient: null,
           }
         ]
@@ -123,7 +123,7 @@ export const debridgeTestData: IProtocolTestingData = {
             toToken: null,
             fromAmount: "970000000000",
             toAmount: null,
-            sender: "0xb2a8c66172309ec01f2e55498e699c5c4c665e21",
+            sender: "0xB2a8c66172309Ec01f2e55498e699C5C4C665E21",
             recipient: null,
           }
         ]
@@ -137,11 +137,11 @@ export const debridgeTestData: IProtocolTestingData = {
             fromChain: SOLANA,
             toChain: CHAIN_ID.ETHEREUM,
             fromToken: null,
-            toToken: "0x43de2d77bf8027e25dbd179b491e8d64f38398aa",
+            toToken: "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA",
             fromAmount: null,
             toAmount: "0",
             sender: null,
-            recipient: "0xef4fb24ad0916217251f553c0596f8edc630eb66",
+            recipient: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
           }
         ]
       },
@@ -154,11 +154,11 @@ export const debridgeTestData: IProtocolTestingData = {
             fromChain: CHAIN_ID.LINEA,
             toChain: CHAIN_ID.ARBITRUM,
             fromToken: null,
-            toToken: "0x43de2d77bf8027e25dbd179b491e8d64f38398aa",
+            toToken: "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA",
             fromAmount: null,
             toAmount: "0",
             sender: null,
-            recipient: "0xef4fb24ad0916217251f553c0596f8edc630eb66",
+            recipient: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
           }
         ]
       },
@@ -174,7 +174,7 @@ export const debridgeTestData: IProtocolTestingData = {
             toToken: null,
             fromAmount: "990000000000",
             toAmount: null,
-            sender: "0x1e379e0ecffddaffeefad48b811bcc873c199e28",
+            sender: "0x1E379e0ecFFdDAfFeEFad48b811BCc873C199e28",
             recipient: null,
           }
         ]
