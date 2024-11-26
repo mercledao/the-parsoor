@@ -21,7 +21,7 @@ export class LifiParser {
         return [this.parseSwappedGenericEvent(log, transaction)];
       }
 
-      if (topic === EVENT_ENUM.SWAP_STARTED.toLowerCase()) {
+      if (topic === EVENT_ENUM.SWAP.toLowerCase()) {
         return [this.parseSwapEvent(log, transaction)];
       }
     }
@@ -43,23 +43,6 @@ export class LifiParser {
       toAmount: bridgeData.minAmount.toString(),
       sender: transaction.from.toLowerCase(),
       recipient: bridgeData.receiver.toLowerCase()
-    };
-  }
-
-    private static parseSwapEvent(log: ITransactionLog, transaction: ITransaction): ISingleSwapAction {
-    const [transactionId, integrator, fromAssetId, toAssetId, fromAmount, toAmount] = ethers.AbiCoder.defaultAbiCoder().decode(
-      ["bytes32", "address", "address", "address", "uint256", "uint256", "uint256"],
-      log.data
-    );
-
-    return {
-      type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: ethers.ZeroAddress,
-      toToken: toAssetId.toLowerCase(),
-      fromAmount: fromAmount.toString(),
-      toAmount: toAmount.toString(),
-      sender: transaction.from.toLowerCase(),
-      recipient: transaction.from.toLowerCase()
     };
   }
 
@@ -88,6 +71,24 @@ export class LifiParser {
       toAmount: parsedLog.args.toAmount.toString(),
       sender: transaction.from.toLowerCase(),
       recipient: transaction.from.toLowerCase()
+    };
+  }
+
+  private static parseSwapEvent(log: ITransactionLog, transaction: ITransaction): ISingleSwapAction {
+    const parsedLog = ProtocolHelper.parseLog(log, contracts.LIFI_DIAMOND.events[EVENT_ENUM.SWAP]);
+
+    const isToken0In = parsedLog.args.amount0In > 0;
+    const fromAmount = isToken0In ? parsedLog.args.amount0In : parsedLog.args.amount1In;
+    const toAmount = isToken0In ? parsedLog.args.amount1Out : parsedLog.args.amount0Out;
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: ethers.ZeroAddress,
+      toToken: ethers.ZeroAddress,
+      fromAmount: fromAmount.toString(),
+      toAmount: toAmount.toString(),
+      sender: parsedLog.args.sender.toLowerCase(),
+      recipient: parsedLog.args.to.toLowerCase()
     };
   }
 }

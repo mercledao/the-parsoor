@@ -50,7 +50,7 @@ export const lifiData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: ethers.ZeroAddress,
+          fromToken: "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
           toToken: ethers.ZeroAddress,
           fromAmount:
             "150000000",
@@ -121,7 +121,7 @@ export const lifiData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: ethers.ZeroAddress,
+          fromToken: "0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8",
           toToken: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
           fromAmount: "69031806925904565431",
           toAmount:
@@ -138,7 +138,7 @@ export const lifiData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: ethers.ZeroAddress,
+          fromToken: "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
           toToken: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
           fromAmount: "516735602",
           toAmount:
@@ -190,13 +190,15 @@ export const lifiData: IProtocolTestingData = {
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.SINGLE_SWAP,
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: CHAIN_ID.SOLANA,
           fromToken: ethers.ZeroAddress,
           toToken: "0x0000000000000000000000000000000000000000",
-          fromAmount: "16351839254879390",
-          toAmount: "16212848621212917",
+          fromAmount: "16212840000000000",
+          toAmount: "16212840000000000",
           sender: "0xf6899228ed311b8fbe8d71ff28e5d0dd8db720f0",
-          recipient: "0xf6899228ed311b8fbe8d71ff28e5d0dd8db720f0",
+          recipient: "0x11f111f111f111f111f111f111f111f111f111f1",
         },
       ],
     },
@@ -224,13 +226,15 @@ export const lifiData: IProtocolTestingData = {
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
-          type: ACTION_ENUM.SINGLE_SWAP,
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ETHEREUM,
+          toChain: CHAIN_ID.SOLANA,
           fromToken: ethers.ZeroAddress,
           toToken: "0x0000000000000000000000000000000000000000",
-          fromAmount: "6866917687999600",
-          toAmount: "6808548887651605",
+          fromAmount: "6808540000000000",
+          toAmount: "6808540000000000",
           sender: "0x394d931fde5d52bce7183d4a8eb36966d9824b30",
-          recipient: "0x394d931fde5d52bce7183d4a8eb36966d9824b30",
+          recipient: "0x11f111f111f111f111f111f111f111f111f111f1",
         },
       ],
     },
@@ -241,11 +245,11 @@ export const lifiData: IProtocolTestingData = {
         {
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: ethers.ZeroAddress,
-          toToken: "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          fromAmount: "34111647",
-          toAmount: "33770531",
-          sender: "0x51ebfe28a319f5fc5f49f6441e3f1bce37d8f184",
-          recipient: "0x51ebfe28a319f5fc5f49f6441e3f1bce37d8f184"
+          toToken: ethers.ZeroAddress,
+          fromAmount: "33770531",
+          toAmount: "10217949574420910",
+          sender: "0xf2614a233c7c3e7f08b1f887ba133a13f1eb2c55",
+          recipient: "0xf2614a233c7c3e7f08b1f887ba133a13f1eb2c55"
         }
       ]
     },
@@ -256,11 +260,11 @@ export const lifiData: IProtocolTestingData = {
         {
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: "0x0000000000000000000000000000000000000000", 
-          toToken: "0xd6203889c22d9fe5e938a9200f50fdffe9dd8e02", 
-          fromAmount: "80000000000",
-          toAmount: "79200000000",
-          sender: "0x32293e8209855816a2ca23249d45f03704ec0b37",
-          recipient: "0x32293e8209855816a2ca23249d45f03704ec0b37"
+          toToken: ethers.ZeroAddress, 
+          fromAmount: "79200000000",
+          toAmount: "54424698437389990",
+          sender: "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
+          recipient: "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc"
         }
       ]
     },
@@ -270,12 +274,12 @@ export const lifiData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0x0000000000000000000000000000000000000000", 
-          toToken: "0x0000000000000000000000000000000000000000", 
-          fromAmount: "149746415864126023",
-          toAmount: "148248951705484764",
-          sender: "0x67284fb6d29c4e672ac8cbeeded80542716a38d1",
-          recipient: "0x67284fb6d29c4e672ac8cbeeded80542716a38d1"
+          fromToken: ethers.ZeroAddress, 
+          toToken: ethers.ZeroAddress, 
+          fromAmount: "148248951705484763",
+          toAmount: "1774456259489515461146",
+          sender: "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          recipient: "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae"
         }
       ]
     },
@@ -285,12 +289,12 @@ export const lifiData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0x0000000000000000000000000000000000000000", 
-          toToken: "0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b", 
-          fromAmount: "17478716118",
-          toAmount: "17303928958",
-          sender: "0xc0ee9ea2ee937ab8811472b423f431460221bb61",
-          recipient: "0xc0ee9ea2ee937ab8811472b423f431460221bb61"
+          fromToken: ethers.ZeroAddress, 
+          toToken: ethers.ZeroAddress, 
+          fromAmount: "17303928957",
+          toAmount: "9922189472325668",
+          sender: "0xf2614a233c7c3e7f08b1f887ba133a13f1eb2c55",
+          recipient: "0xf2614a233c7c3e7f08b1f887ba133a13f1eb2c55"
         }
       ]
     },
@@ -300,12 +304,12 @@ export const lifiData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0x0000000000000000000000000000000000000000", 
-          toToken: "0xd6203889c22d9fe5e938a9200f50fdffe9dd8e02", 
-          fromAmount: "105263374435",
-          toAmount: "104210740691",
-          sender: "0x32293e8209855816a2ca23249d45f03704ec0b37",
-          recipient: "0x32293e8209855816a2ca23249d45f03704ec0b37"
+          fromToken: ethers.ZeroAddress, 
+          toToken: ethers.ZeroAddress, 
+          fromAmount: "246622",
+          toAmount: "240262383",
+          sender: "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          recipient: "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae"
         }
       ]
     },
@@ -315,12 +319,12 @@ export const lifiData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0x0000000000000000000000000000000000000000", 
-          toToken: "0xa35923162c49cf95e6bf26623385eb431ad920d3", 
-          fromAmount: "128368192123387874572673",
-          toAmount: "127084510202153995826947",
-          sender: "0x71fcfb06637a449fad642f7e2628f3c62ee3d98e",
-          recipient: "0x71fcfb06637a449fad642f7e2628f3c62ee3d98e"
+          fromToken: ethers.ZeroAddress, 
+          toToken: ethers.ZeroAddress, 
+          fromAmount: "294066039610370116",
+          toAmount: "150522795515774031",
+          sender: "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          recipient: "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae"
         }
       ]
     },
@@ -330,10 +334,10 @@ export const lifiData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0x0000000000000000000000000000000000000000", 
-          toToken: "0x0000000000000000000000000000000000000000", 
+          fromToken: ethers.ZeroAddress, 
+          toToken: "0xaa7a9ca87d3694b5755f213b5d04094b8d0f0a6f", 
           fromAmount: "400000000000000000",
-          toAmount: "396000000000000000",
+          toAmount: "1497336257973555072439",
           sender: "0xb42c84a8868502aa1179a8848dfa52103139aa29",
           recipient: "0xb42c84a8868502aa1179a8848dfa52103139aa29"
         }
