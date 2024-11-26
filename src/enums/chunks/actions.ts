@@ -9,8 +9,5 @@ export enum ACTION_ENUM {
   BRIDGE_IN = 'BRIDGE_IN',
 
   /** Action for a bridge out */
-  BRIDGE_OUT = 'BRIDGE_OUT',
-
-  /** Action for a limit order */
-  LIMIT_ORDER = 'LIMIT_ORDER'
+  BRIDGE_OUT = 'BRIDGE_OUT'
 }

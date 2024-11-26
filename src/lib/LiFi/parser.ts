@@ -22,7 +22,7 @@ export class LifiParser {
       }
 
       if (topic === EVENT_ENUM.SWAP.toLowerCase()) {
-        return [this.parseSwapEvent(log, transaction)];
+        return [this.parseSwapEvent(log)];
       }
     }
 
@@ -74,7 +74,7 @@ export class LifiParser {
     };
   }
 
-  private static parseSwapEvent(log: ITransactionLog, transaction: ITransaction): ISingleSwapAction {
+  private static parseSwapEvent(log: ITransactionLog): ISingleSwapAction {
     const parsedLog = ProtocolHelper.parseLog(log, contracts.LIFI_DIAMOND.events[EVENT_ENUM.SWAP]);
 
     const isToken0In = parsedLog.args.amount0In > 0;
