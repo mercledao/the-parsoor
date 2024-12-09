@@ -19,6 +19,9 @@ export type ITransaction = {
   /** Timestamp of the transaction */
   timestamp: number;
 
+  /** Block number of the transaction */
+  block: number;
+
   /** Data of the transaction */
   data: string;
 
