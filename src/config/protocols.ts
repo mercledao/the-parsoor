@@ -15,6 +15,13 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/uniswap.png",
     website: "https://uniswap.org/",
   },
+  lifi: {
+    identifier: "lifi",
+    name: "LiFi",
+    twitter: "https://x.com/lifiprotocol",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/lifi.png",
+    website: "https://li.fi/",
+  },
   odos: {
     identifier: "odos",
     name: "Odos",
@@ -23,3 +30,4 @@ export const protocols: IProtocolDefinitionMap = {
     website: "https://www.odos.xyz/",
   },
 };
+  
