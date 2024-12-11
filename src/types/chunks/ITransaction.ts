@@ -1,8 +1,11 @@
-import { CHAIN_ID } from '../../enums';
+import { CHAIN_ID } from "../../enums";
 
 export type ITransaction = {
   /** Chain ID of the transaction */
   chainId: CHAIN_ID;
+
+  /** Block number of the transaction */
+  block: number;
 
   /** Hash of the transaction */
   hash: string;
@@ -21,6 +24,12 @@ export type ITransaction = {
 
   /** Data of the transaction */
   data: string;
+
+  /** Gas price of the transaction */
+  gasPrice: string;
+
+  /** Gas used of the transaction */
+  gasUsed: string;
 
   /** Logs of the transaction */
   logs: ITransactionLog[];

@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers } from "ethers";
 import {
   ACTION_ENUM,
   CHAIN_ID,
@@ -11,8 +11,8 @@ import {
   ITransaction,
   ITransactionAction,
   parsers,
-  protocols
-} from '../src';
+  protocols,
+} from "../src";
 
 export class ProtocolParserUtils {
   public readonly protocolIdentifier: string;
@@ -40,19 +40,29 @@ export class ProtocolParserUtils {
     expect(hasCorrectDefinition).toBe(true);
   }
 
-  public async fetchAndParseTestTxn(data: IProtocolTestTransaction): Promise<ITransactionAction[]> {
-    const formattedTxn = await this.fetchAndFormatTransaction(data.chainId, data.txnHash);
-    const actions = await parsers[this.protocolIdentifier].parseTransaction(formattedTxn);
+  public async fetchAndParseTestTxn(
+    data: IProtocolTestTransaction
+  ): Promise<ITransactionAction[]> {
+    const formattedTxn = await this.fetchAndFormatTransaction(
+      data.chainId,
+      data.txnHash
+    );
+    const actions =
+      await parsers[this.protocolIdentifier].parseTransaction(formattedTxn);
     return actions;
   }
 
-  private async fetchAndFormatTransaction(chainId: CHAIN_ID, txnHash: string): Promise<ITransaction> {
+  private async fetchAndFormatTransaction(
+    chainId: CHAIN_ID,
+    txnHash: string
+  ): Promise<ITransaction> {
     const [txn, receipts] = await Promise.all([
       this.rpcPool[chainId].getTransaction(txnHash),
-      this.rpcPool[chainId].getTransactionReceipt(txnHash)
+      this.rpcPool[chainId].getTransactionReceipt(txnHash),
     ]);
 
-    const timestamp = (await this.rpcPool[chainId].getBlock(txn.blockNumber)).timestamp * 1000;
+    const timestamp =
+      (await this.rpcPool[chainId].getBlock(txn.blockNumber)).timestamp * 1000;
 
     const formattedTxn: ITransaction = {
       chainId: chainId,
@@ -62,17 +72,23 @@ export class ProtocolParserUtils {
       value: txn.value.toString(),
       timestamp: timestamp,
       data: txn.data,
+      block: txn.blockNumber,
+      gasPrice: txn.gasPrice.toString(),
+      gasUsed: receipts.gasUsed.toString(),
       logs: receipts.logs.map((log) => ({
         contractAddress: log.address,
         topics: log.topics as string[],
-        data: log.data
-      }))
+        data: log.data,
+      })),
     };
 
     return formattedTxn;
   }
 
-  public assertTestTransactionForData(data: IProtocolTestTransaction, actions: ITransactionAction[]): void {
+  public assertTestTransactionForData(
+    data: IProtocolTestTransaction,
+    actions: ITransactionAction[]
+  ): void {
     expect(actions.length).toBe(data.emittedActions.length);
 
     for (let i = 0; i < actions.length; i++) {
@@ -83,22 +99,37 @@ export class ProtocolParserUtils {
 
       switch (expectedAction.type) {
         case ACTION_ENUM.BRIDGE_IN:
-          this.assertBridgeInAction(expectedAction, actualAction as IBridgeInAction);
+          this.assertBridgeInAction(
+            expectedAction,
+            actualAction as IBridgeInAction
+          );
           break;
         case ACTION_ENUM.BRIDGE_OUT:
-          this.assertBridgeOutAction(expectedAction, actualAction as IBridgeOutAction);
+          this.assertBridgeOutAction(
+            expectedAction,
+            actualAction as IBridgeOutAction
+          );
           break;
         case ACTION_ENUM.SINGLE_SWAP:
-          this.assertSingleSwapAction(expectedAction, actualAction as ISingleSwapAction);
+          this.assertSingleSwapAction(
+            expectedAction,
+            actualAction as ISingleSwapAction
+          );
           break;
         case ACTION_ENUM.MULTI_SWAP:
-          this.assertMultiSwapAction(expectedAction, actualAction as IMultiSwapAction);
+          this.assertMultiSwapAction(
+            expectedAction,
+            actualAction as IMultiSwapAction
+          );
           break;
       }
     }
   }
 
-  public assertBridgeInAction(expectedAction: IBridgeInAction, actualAction: IBridgeInAction): void {
+  public assertBridgeInAction(
+    expectedAction: IBridgeInAction,
+    actualAction: IBridgeInAction
+  ): void {
     expect(actualAction.fromChain).toBe(expectedAction.fromChain);
     expect(actualAction.toChain).toBe(expectedAction.toChain);
     expect(actualAction.fromToken).toBe(expectedAction.fromToken);
@@ -109,7 +140,10 @@ export class ProtocolParserUtils {
     expect(actualAction.recipient).toBe(expectedAction.recipient);
   }
 
-  public assertBridgeOutAction(expectedAction: IBridgeOutAction, actualAction: IBridgeOutAction): void {
+  public assertBridgeOutAction(
+    expectedAction: IBridgeOutAction,
+    actualAction: IBridgeOutAction
+  ): void {
     expect(actualAction.fromChain).toBe(expectedAction.fromChain);
     expect(actualAction.toChain).toBe(expectedAction.toChain);
     expect(actualAction.fromToken).toBe(expectedAction.fromToken);
@@ -119,24 +153,22 @@ export class ProtocolParserUtils {
     expect(actualAction.sender).toBe(expectedAction.sender);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
   }
-  
-  public assertSwapAction(expectedAction: ISingleSwapAction, actualAction: ISingleSwapAction): void {
+
+  public assertSingleSwapAction(
+    expectedAction: ISingleSwapAction,
+    actualAction: ISingleSwapAction
+  ): void {
     expect(actualAction.fromToken).toBe(expectedAction.fromToken);
     expect(actualAction.toToken).toBe(expectedAction.toToken);
     expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
   }
-  
-  public assertSingleSwapAction(expectedAction: ISingleSwapAction, actualAction: ISingleSwapAction): void {
-    expect(actualAction.fromToken).toBe(expectedAction.fromToken);
-    expect(actualAction.toToken).toBe(expectedAction.toToken);
-    expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
-    expect(actualAction.toAmount).toBe(expectedAction.toAmount);
-    expect(actualAction.recipient).toBe(expectedAction.recipient);
-  }
-    
-  public assertMultiSwapAction(expectedAction: IMultiSwapAction, actualAction: IMultiSwapAction): void {
+
+  public assertMultiSwapAction(
+    expectedAction: IMultiSwapAction,
+    actualAction: IMultiSwapAction
+  ): void {
     expect(actualAction.fromTokens).toEqual(expectedAction.fromTokens);
     expect(actualAction.toTokens).toEqual(expectedAction.toTokens);
     expect(actualAction.fromAmounts).toEqual(expectedAction.fromAmounts);
