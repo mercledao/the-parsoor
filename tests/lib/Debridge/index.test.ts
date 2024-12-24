@@ -24,7 +24,7 @@ describe('DebridgeDepositParser', () => {
       utils.assertTestTransactionForData(transaction, actions);
 
       console.log(
-        chalk.green('Successfully parsed transaction with actions:', actions.map((action) => action.type).join(',')),
+        chalk.green('Successfully parsed place order transaction with actions:', actions.map((action) => action.type).join(',')),
         'and hash:',
         transaction.txnHash
       );
@@ -40,7 +40,7 @@ describe('DebridgeDepositParser', () => {
       utils.assertTestTransactionForData(transaction, actions);
 
       console.log(
-        chalk.green('Successfully parsed transaction with actions:', actions.map((action) => action.type).join(',')),
+        chalk.green('Successfully parsed fulfilled order transaction with actions:', actions.map((action) => action.type).join(',')),
         'and hash:',
         transaction.txnHash
       );
