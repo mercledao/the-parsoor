@@ -97,6 +97,10 @@ export const contracts: IProtocolContractDefinitions = {
         address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
+      [CHAIN_ID.ARBITRUM]: {
+        address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
     },
     events: {
       [EVENT_ENUM.ORDER_FULFILLED]: {

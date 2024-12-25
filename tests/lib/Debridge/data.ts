@@ -224,5 +224,24 @@ export const debridgerulfilledOrderData: IProtocolTestingData = {
         },
       ],
     },
+    {
+      txnHash:
+        "0xf8aa1fcc247115d2ee7c728e6592abc945f310a93c224ffd1993d2226c18d27c",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: CHAIN_ID.POLYGON.toString(),
+          toChain: CHAIN_ID.ARBITRUM.toString(),
+          fromToken:
+            "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+          toToken: "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+          fromAmount: "3429134",
+          toAmount: "2994184",
+          sender: "0x555ce236c0220695b68341bc48c68d52210cc35b",
+          recipient: "0x807f4f82f02f7c986a51887ee5536aed767977c8",
+        },
+      ],
+    },
   ],
 };

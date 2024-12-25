@@ -109,8 +109,6 @@ export class DlnDestinationContractParseTransaction {
     const matchedFulfilledOrderLog = transaction.logs.find(
       (log) => log.topics[0] === EVENT_ENUM.ORDER_FULFILLED
     );
-
-    console.log(`matchedFulfilledOrderLog: ${JSON.stringify(matchedFulfilledOrderLog)}`);
     
     if (matchedFulfilledOrderLog) {
       actions.push(this.parseFulfilledOrder(matchedFulfilledOrderLog));
