@@ -35,9 +35,7 @@ export class DlnSourceContractParseTransaction {
         this.contractDefiniton.events[EVENT_ENUM.ORDER_PLACED]
       );
 
-      const structuredEvent = this.mapDecodedEvent(parsedLog);
-
-      const order = structuredEvent.order;
+      const order = parsedLog.args.order;
 
       return {
         type: ACTION_ENUM.BRIDGE_IN,
@@ -46,7 +44,7 @@ export class DlnSourceContractParseTransaction {
         fromToken: order.giveTokenAddress,
         toToken: order.takeTokenAddress,
         fromAmount: (
-          BigInt(order.giveAmount) + BigInt(structuredEvent.percentFee)
+          BigInt(order.giveAmount) + BigInt(parsedLog.args.percentFee)
         ).toString(),
         toAmount: order.takeAmount.toString(),
         sender: order.makerSrc,
@@ -56,45 +54,6 @@ export class DlnSourceContractParseTransaction {
       console.error("Error parsing order placed transaction:", error);
       throw error;
     }
-  }
-
-  private static mapDecodedEvent(parsedLog: any): any {
-    const { args } = parsedLog;
-
-    const fieldNames = [
-      "makerOrderNonce",
-      "makerSrc",
-      "giveChainId",
-      "giveTokenAddress",
-      "giveAmount",
-      "takeChainId",
-      "takeTokenAddress",
-      "takeAmount",
-      "receiverDst",
-      "givePatchAuthoritySrc",
-      "orderAuthorityAddressDst",
-      "allowedTakerDst",
-      "allowedCancelBeneficiarySrc",
-      "externalCall",
-    ] as const;
-
-    const order = fieldNames.reduce(
-      (obj, key, index) => ({
-        ...obj,
-        [key]: args[0][index],
-      }),
-      {}
-    );
-
-    return {
-      order,
-      orderId: args[1],
-      affiliateFee: args[2],
-      nativeFixFee: args[3],
-      percentFee: args[4],
-      referralCode: args[5],
-      metadata: args[6],
-    };
   }
 }
 
@@ -125,10 +84,8 @@ export class DlnDestinationContractParseTransaction {
         this.contractDefiniton.events[EVENT_ENUM.ORDER_FULFILLED]
       );
       
-      const structuredEvent = this.mapDecodedEvent(parsedLog);
-
-      const order = structuredEvent.order;
-
+      const order = parsedLog.args.order;
+    
       return {
         type: ACTION_ENUM.BRIDGE_IN,
         fromChain: order.giveChainId.toString(),
@@ -144,44 +101,5 @@ export class DlnDestinationContractParseTransaction {
       console.error("Error parsing fulfilled order transaction:", error);
       throw error;
     }
-  }
-
-  private static mapDecodedEvent(parsedLog: any): any {
-    const { args } = parsedLog;
-
-    // Extract field names for the `Order` structure from the ABI
-    const orderFieldNames = [
-      "makerOrderNonce",
-      "makerSrc",
-      "giveChainId",
-      "giveTokenAddress",
-      "giveAmount",
-      "takeChainId",
-      "takeTokenAddress",
-      "takeAmount",
-      "receiverDst",
-      "givePatchAuthoritySrc",
-      "orderAuthorityAddressDst",
-      "allowedTakerDst",
-      "allowedCancelBeneficiarySrc",
-      "externalCall",
-    ] as const;
-
-    // Map the `Order` structure
-    const order = orderFieldNames.reduce(
-      (obj, key, index) => ({
-        ...obj,
-        [key]: args.order[index],
-      }),
-      {}
-    );
-
-    // Return the parsed event object
-    return {
-      order,
-      orderId: args.orderId, // bytes32
-      sender: args.sender, // address
-      unlockAuthority: args.unlockAuthority, // address
-    };
   }
 }

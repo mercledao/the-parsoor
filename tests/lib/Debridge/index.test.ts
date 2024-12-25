@@ -19,23 +19,23 @@ describe("DebridgeDepositParser", () => {
     utils.isValidProtocol();
   });
 
-  // it("should parse place order transactions correctly", async () => {
-  //   const v1Transactions = debridgePlaceOrderData[DEBRIDGE_VERSIONS.V1];
+  it("should parse place order transactions correctly", async () => {
+    const v1Transactions = debridgePlaceOrderData[DEBRIDGE_VERSIONS.V1];
 
-  //   for (const transaction of v1Transactions) {
-  //     const actions = await utils.fetchAndParseTestTxn(transaction);
-  //     utils.assertTestTransactionForData(transaction, actions);
+    for (const transaction of v1Transactions) {
+      const actions = await utils.fetchAndParseTestTxn(transaction);
+      utils.assertTestTransactionForData(transaction, actions);
 
-  //     console.log(
-  //       chalk.green(
-  //         "Successfully parsed place order transaction with actions:",
-  //         actions.map((action) => action.type).join(",")
-  //       ),
-  //       "and hash:",
-  //       transaction.txnHash
-  //     );
-  //   }
-  // });
+      console.log(
+        chalk.green(
+          "Successfully parsed place order transaction with actions:",
+          actions.map((action) => action.type).join(",")
+        ),
+        "and hash:",
+        transaction.txnHash
+      );
+    }
+  });
 
   it("should parse fulfilled order transactions correctly", async () => {
     const v1Transactions = debridgerulfilledOrderData[DEBRIDGE_VERSIONS.V1];
