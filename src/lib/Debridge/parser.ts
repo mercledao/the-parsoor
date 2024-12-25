@@ -109,6 +109,9 @@ export class DlnDestinationContractParseTransaction {
     const matchedFulfilledOrderLog = transaction.logs.find(
       (log) => log.topics[0] === EVENT_ENUM.ORDER_FULFILLED
     );
+
+    console.log(`matchedFulfilledOrderLog: ${JSON.stringify(matchedFulfilledOrderLog)}`);
+    
     if (matchedFulfilledOrderLog) {
       actions.push(this.parseFulfilledOrder(matchedFulfilledOrderLog));
     }
@@ -123,7 +126,7 @@ export class DlnDestinationContractParseTransaction {
         fulfilledOrderLog,
         this.contractDefiniton.events[EVENT_ENUM.ORDER_FULFILLED]
       );
-
+      
       const structuredEvent = this.mapDecodedEvent(parsedLog);
 
       const order = structuredEvent.order;

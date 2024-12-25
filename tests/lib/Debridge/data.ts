@@ -146,24 +146,6 @@ export const debridgePlaceOrderData: IProtocolTestingData = {
     },
     {
       txnHash:
-        "0x678aa14e6f7219360a30d255beca2cbd075cbc2d87b2369096d4293eb96e3025",
-      chainId: CHAIN_ID.BSC,
-      emittedActions: [
-        {
-          type: ACTION_ENUM.BRIDGE_IN,
-          fromChain: CHAIN_ID.BSC,
-          toChain: CHAIN_ID.ARBITRUM.toString(),
-          fromToken: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d".toLowerCase(),
-          toToken: "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
-          fromAmount: "83342478000000000000",
-          toAmount: "82770900",
-          sender: "0xD033A60cAC3b574E90a7a2f665c8018E88E54319".toLowerCase(),
-          recipient: "0xd033a60cac3b574e90a7a2f665c8018e88e54319",
-        },
-      ],
-    },
-    {
-      txnHash:
         "0x5b39bfebc0ee008d5fcb5b194a9af4db91c8cd1c7890bef74af9ed19fc7e97fc",
       chainId: CHAIN_ID.OPTIMISM,
       emittedActions: [
@@ -202,24 +184,6 @@ export const debridgePlaceOrderData: IProtocolTestingData = {
     },
     {
       txnHash:
-        "0x19f56f3e95c045c653c281915f67150ffe65ad766e9a7c99a5da514dc21f56af",
-      chainId: CHAIN_ID.LINEA,
-      emittedActions: [
-        {
-          type: ACTION_ENUM.BRIDGE_IN,
-          fromChain: CHAIN_ID.LINEA,
-          toChain: CHAIN_ID.BASE.toString(),
-          fromToken: ZeroAddress,
-          toToken: ZeroAddress,
-          fromAmount: "2908909367287734",
-          toAmount: "2776109112000000",
-          sender: "0xFE1730038EBEd3B16B695E5CF528813328DDd987".toLowerCase(),
-          recipient: "0xfe1730038ebed3b16b695e5cf528813328ddd987",
-        },
-      ],
-    },
-    {
-      txnHash:
         "0x0c661f788ccdb29ee3135f06b932d7ce3760bfb886ddc27d726f406c0e04bd20",
       chainId: CHAIN_ID.ARBITRUM,
       emittedActions: [
@@ -243,20 +207,20 @@ export const debridgerulfilledOrderData: IProtocolTestingData = {
   [DEBRIDGE_VERSIONS.V1]: [
     {
       txnHash:
-        "0xd6bee3f19c59bf6f1cb463e1bf82c24a078d63bbe98e225d3e5edfb80abf8c81",
-      chainId: CHAIN_ID.ARBITRUM,
+        "0x84528f2d8f01b50f5150b128088197c1cf2feb8e332aa564254e1ed8414bcb61",
+      chainId: CHAIN_ID.OPTIMISM,
       emittedActions: [
         {
           type: ACTION_ENUM.BRIDGE_IN,
-          fromChain: "7565164",
-          toChain: CHAIN_ID.ARBITRUM.toString(),
+          fromChain: CHAIN_ID.POLYGON.toString(),
+          toChain: CHAIN_ID.OPTIMISM.toString(),
           fromToken:
-            "0xc6fa7af3bedbad3a3d65f36aabc97431b1bbe4c2d2f6e0e47ca60203452f5d61",
-          toToken: "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
-          fromAmount: "11325438",
-          toAmount: "9992001",
-          sender: "0x555CE236C0220695b68341bc48C68d52210cC35b".toLowerCase(),
-          recipient: "0xc6b524ac5b98907f1ec1bc562c5f42642161ede6",
+            "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          toToken: ZeroAddress,
+          fromAmount: "202455985200000000",
+          toAmount: "202455985200000000",
+          sender: "0x555ce236c0220695b68341bc48c68d52210cc35b",
+          recipient: "0x4e38d4e12d6014803ce631ae50db546736fd6cb8",
         },
       ],
     },
