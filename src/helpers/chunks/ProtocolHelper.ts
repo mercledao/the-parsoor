@@ -1,10 +1,12 @@
-import { ethers } from "ethers";
+import { ethers, keccak256, AbiCoder, toBeHex, getAddress } from "ethers";
 import {
   IContractEventConfig,
   IProtocolContractDefinitions,
   ITransaction,
   ITransactionLog,
 } from "../../types";
+// ERC20 Transfer Event Signature
+const TRANSFER_EVENT_SIGNATURE = "Transfer(address,address,uint256)";
 
 export class ProtocolHelper {
   /**
@@ -123,5 +125,39 @@ export class ProtocolHelper {
     });
 
     return listenerContracts;
+  }
+
+  public static parseERC20TransferLogs(
+    logs: ITransactionLog[]
+  ): {
+    fromAddress: string;
+    toAddress: string;
+    value: bigint;
+    contractAddress: string;
+  }[] {
+    // Hash the event signature to derive the topic
+    const TRANSFER_EVENT_TOPIC = keccak256(Buffer.from(TRANSFER_EVENT_SIGNATURE));
+    const abiCoder = new AbiCoder();
+
+    // Filter and parse logs
+    const parsedLogs = logs
+      .filter(log => log.topics && log.topics[0] === TRANSFER_EVENT_TOPIC) // Match ERC20 Transfer event
+      .map(log => {
+        // Decode `from` and `to` addresses from topics
+        const fromAddress = getAddress(toBeHex(log.topics[1]));
+        const toAddress = getAddress(toBeHex(log.topics[2]));
+
+        // Decode `value` from the data field
+        const [value] = abiCoder.decode(["uint256"], log.data);
+
+        return {
+          fromAddress,
+          toAddress,
+          value: BigInt(value.toString()),
+          contractAddress: log.contractAddress
+        };
+      });
+
+    return parsedLogs;
   }
 }

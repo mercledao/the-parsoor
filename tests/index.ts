@@ -13,6 +13,7 @@ import {
   parsers,
   protocols,
 } from "../src";
+import { log } from "console";
 
 export class ProtocolParserUtils {
   public readonly protocolIdentifier: string;

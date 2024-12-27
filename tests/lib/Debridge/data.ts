@@ -203,7 +203,7 @@ export const debridgePlaceOrderData: IProtocolTestingData = {
   ],
 };
 
-export const debridgerulfilledOrderData: IProtocolTestingData = {
+export const debridgeFilledOrderData: IProtocolTestingData = {
   [DEBRIDGE_VERSIONS.V1]: [
     {
       txnHash:
@@ -240,6 +240,72 @@ export const debridgerulfilledOrderData: IProtocolTestingData = {
           toAmount: "2994184",
           sender: "0x555ce236c0220695b68341bc48c68d52210cc35b",
           recipient: "0x807f4f82f02f7c986a51887ee5536aed767977c8",
+        },
+      ],
+    },
+  ],
+};
+
+export const debridgeCrossChainOrderData: IProtocolTestingData = {
+  [DEBRIDGE_VERSIONS.V1]: [
+    {
+      txnHash:
+        "0x240c129d9763611513fd8a4293a40d591d5a78fc56b2493d7fab81c8fc1419db",
+      chainId: CHAIN_ID.BSC,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: CHAIN_ID.BSC,
+          toChain: CHAIN_ID.ARBITRUM.toString(),
+          fromToken: "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+          toToken: ZeroAddress,
+          fromAmount: "367920382131392",
+          toAmount: "204822996368626",
+          sender: "0x0fd3d2746e3114fa30c5c3380d3ecb978955e3ed",
+          recipient: "0x0fd3d2746e3114fa30c5c3380d3ecb978955e3ed",
+        },
+      ],
+    },
+  ],
+};
+
+export const debridgeBridgeOrderData: IProtocolTestingData = {
+  [DEBRIDGE_VERSIONS.V1]: [
+    {
+      txnHash:
+        "0xbc1f53724440a463b225aaeb139836db6bd3b74186c2a88406f1944a994a4d26",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: CHAIN_ID.ETHEREUM.toString(),
+          toChain: "7565164",
+          fromToken:
+            "0x0b61C4f33BCdEF83359ab97673Cb5961c6435F4E",
+          toToken: null,
+          fromAmount: "55734358760000000000000",
+          toAmount: null,
+          sender: "0x65A8F07Bd9A8598E1b5B6C0a88F4779DBC077675",
+          recipient: "0x0dc6749576a267dc24e3173f22ada27fb78e80c0350e711822802dc365d63a75",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x21c7bb09315ce2a29d836905d59663b9fc11642aebe3126a6ee946bf77197094",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: CHAIN_ID.BSC.toString(),
+          toChain: CHAIN_ID.ETHEREUM.toString(),
+          fromToken:
+            "0x362bc847A3a9637d3af6624EeC853618a43ed7D2",
+          toToken: null,
+          fromAmount: "17894974410000000000000",
+          toAmount: null,
+          sender: "0xaf1e71AD1712ce43B7E083Cb517bB14F25BE2d77",
+          recipient: "0x4730c58FDA9d78f60c987039aEaB7d261aAd942E",
         },
       ],
     },
