@@ -1,4 +1,4 @@
-import { ethers, keccak256, AbiCoder, toBeHex, getAddress } from "ethers";
+import { ethers, AbiCoder, toBeHex, getAddress } from "ethers";
 import {
   IContractEventConfig,
   IProtocolContractDefinitions,
