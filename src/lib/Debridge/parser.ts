@@ -145,8 +145,7 @@ export class DlnBridgeContractParseTransaction {
 
     const parsedLogs = ProtocolHelper.parseERC20TransferLogs(log);
     if (parsedLogs.length > 0) {
-      const { fromAddress, toAddress, value, contractAddress } = parsedLogs[0];
-      console.log(fromAddress, toAddress, value.toString(), contractAddress);
+      const { value, contractAddress } = parsedLogs[0];
       return {
         type: ACTION_ENUM.BRIDGE_IN,
         fromChain: parsedTxn.args._chainIdFrom.toString(),
