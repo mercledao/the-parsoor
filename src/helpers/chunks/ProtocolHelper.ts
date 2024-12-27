@@ -5,8 +5,7 @@ import {
   ITransaction,
   ITransactionLog,
 } from "../../types";
-// ERC20 Transfer Event Signature
-const TRANSFER_EVENT_SIGNATURE = "Transfer(address,address,uint256)";
+const ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
 
 export class ProtocolHelper {
   /**
@@ -135,13 +134,11 @@ export class ProtocolHelper {
     value: bigint;
     contractAddress: string;
   }[] {
-    // Hash the event signature to derive the topic
-    const TRANSFER_EVENT_TOPIC = keccak256(Buffer.from(TRANSFER_EVENT_SIGNATURE));
     const abiCoder = new AbiCoder();
 
     // Filter and parse logs
     const parsedLogs = logs
-      .filter(log => log.topics && log.topics[0] === TRANSFER_EVENT_TOPIC) // Match ERC20 Transfer event
+      .filter(log => log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE)
       .map(log => {
         // Decode `from` and `to` addresses from topics
         const fromAddress = getAddress(toBeHex(log.topics[1]));
