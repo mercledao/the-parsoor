@@ -139,6 +139,12 @@ export class ProtocolParserUtils {
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
     expect(actualAction.sender).toBe(expectedAction.sender);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
+    if (expectedAction.fee !== undefined) {
+      expect(actualAction.fee).toBe(expectedAction.fee);
+    } else {
+      expect(actualAction.fee).toBeUndefined();
+    }
+    
   }
 
   public assertBridgeOutAction(
@@ -153,6 +159,12 @@ export class ProtocolParserUtils {
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
     expect(actualAction.sender).toBe(expectedAction.sender);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
+    if (expectedAction.fee !== undefined) {
+      expect(actualAction.fee).toBe(expectedAction.fee);
+    } else {
+      expect(actualAction.fee).toBeUndefined();
+    }
+    
   }
 
   public assertSingleSwapAction(
@@ -164,6 +176,12 @@ export class ProtocolParserUtils {
     expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
+    if (expectedAction.fee !== undefined) {
+      expect(actualAction.fee).toBe(expectedAction.fee);
+    } else {
+      expect(actualAction.fee).toBeUndefined();
+    }
+    
   }
 
   public assertMultiSwapAction(
@@ -175,5 +193,11 @@ export class ProtocolParserUtils {
     expect(actualAction.fromAmounts).toEqual(expectedAction.fromAmounts);
     expect(actualAction.toAmounts).toEqual(expectedAction.toAmounts);
     expect(actualAction.recipients).toEqual(expectedAction.recipients);
+    if (expectedAction.fee !== undefined) {
+      expect(actualAction.fee).toBe(expectedAction.fee);
+    } else {
+      expect(actualAction.fee).toBeUndefined();
+    }
+    
   }
 }

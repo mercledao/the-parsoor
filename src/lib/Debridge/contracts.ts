@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
-import DlnSourceAbi from "./abis/DlnSource.json";
-import DlnDestinationAbi from "./abis/DlnDestination.json";
-import DlnCrossChainAbi from "./abis/DlnCrossChain.json";
 import DebridgeGateAbi from "./abis/DebridgeGate.json";
+import DlnCrossChainAbi from "./abis/DlnCrossChain.json";
+import DlnDestinationAbi from "./abis/DlnDestination.json";
+import DlnSourceAbi from "./abis/DlnSource.json";
 
 export enum CONTRACT_ENUM {
   // The contract used to place orders on Debridge
@@ -65,6 +65,30 @@ export const contracts: IProtocolContractDefinitions = {
         address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
+      [CHAIN_ID.BSC]: {
+        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.GNOSIS]: {
+        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.FANTOM]: {
+        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.LINEA]: {
+        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.SCROLL]: {
+        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.NEON]: {
+        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
     },
     events: {
       [EVENT_ENUM.ORDER_PLACED]: {
@@ -105,6 +129,26 @@ export const contracts: IProtocolContractDefinitions = {
         address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
+      [CHAIN_ID.BSC]: {
+        address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.GNOSIS]: {
+        address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.FANTOM]: {
+        address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.LINEA]: {
+        address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.NEON]: {
+        address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
     },
     events: {
       [EVENT_ENUM.ORDER_FULFILLED]: {
@@ -115,7 +159,7 @@ export const contracts: IProtocolContractDefinitions = {
     },
   },
   [CONTRACT_ENUM.DLN_CROSS_CHAIN]: {
-    interface: new ethers.Interface(DlnSourceAbi),
+    interface: new ethers.Interface(DlnCrossChainAbi),
     deployments: {
       [CHAIN_ID.BASE]: {
         address: "0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251",
@@ -149,18 +193,28 @@ export const contracts: IProtocolContractDefinitions = {
         address: "0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
-      [CHAIN_ID.MODE]: {
+      [CHAIN_ID.NEON]: {
+        address: "0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.GNOSIS]: {
+        address: "0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.FANTOM]: {
+        address: "0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.LINEA]: {
+        address: "0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.SCROLL]: {
         address: "0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
     },
-    events: {
-      [EVENT_ENUM.CROSS_CHAIN_ORDER_PLACED]: {
-        abi: new ethers.Interface([
-          "event CreatedOrder(tuple(uint64 makerOrderNonce, bytes makerSrc, uint256 giveChainId, bytes giveTokenAddress, uint256 giveAmount, uint256 takeChainId, bytes takeTokenAddress, uint256 takeAmount, bytes receiverDst, bytes givePatchAuthoritySrc, bytes orderAuthorityAddressDst, bytes allowedTakerDst, bytes allowedCancelBeneficiarySrc, bytes externalCall) order, bytes32 orderId, bytes affiliateFee, uint256 nativeFixFee, uint256 percentFee, uint32 referralCode, bytes metadata)",
-        ]),
-      },
-    },
+    events: {},
   },
   [CONTRACT_ENUM.DEBRIDGE_GATE]: {
     interface: new ethers.Interface(DebridgeGateAbi),
@@ -198,6 +252,18 @@ export const contracts: IProtocolContractDefinitions = {
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.POLYGON]: {
+        address: "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.GNOSIS]: {
+        address: "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.FANTOM]: {
+        address: "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.NEON]: {
         address: "0x43dE2d77BF8027e25dBD179B491e8d64f38398aA",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },

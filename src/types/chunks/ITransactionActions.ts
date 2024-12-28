@@ -32,6 +32,10 @@ export type ISingleSwapAction = {
    * The sender of the swap
    */
   sender?: string;
+  /**
+   * The fee for the bridge
+   */
+  fee?: string | null;
 };
 
 export type IMultiSwapAction = {
@@ -60,6 +64,10 @@ export type IMultiSwapAction = {
    * The sender of the swaps
    */
   sender?: string;
+  /**
+   * The fee for the bridge
+   */
+  fee?: string | null;
 };
 
 export type IBridgeInAction = {
@@ -96,6 +104,10 @@ export type IBridgeInAction = {
    * The recipient of the bridged funds
    */
   recipient: string;
+  /**
+   * The fee for the bridge
+   */
+  fee?: string | null;
 };
 
 export type IBridgeOutAction = {
@@ -103,11 +115,11 @@ export type IBridgeOutAction = {
   /**
    * The chain the funds are coming from
    */
-  fromChain: CHAIN_ID;
+  fromChain: CHAIN_ID | string;
   /**
    * The chain the funds are going to
    */
-  toChain: CHAIN_ID | null;
+  toChain: CHAIN_ID | null | string;
   /**
    * The token being bridged out
    */
@@ -132,4 +144,8 @@ export type IBridgeOutAction = {
    * The recipient of the bridged funds
    */
   recipient: string | null;
+  /**
+   * The fee for the bridge
+   */
+  fee?: string | null;
 };
