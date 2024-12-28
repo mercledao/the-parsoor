@@ -28,7 +28,6 @@ export default class Across implements IProtocolParserExport {
         contracts
       )
     ) {
-      console.log("Parsing Spokepool contract transaction");
       const action = SpokepoolContractParser.parseTransaction(transaction);
       actions.push(...action);
     }

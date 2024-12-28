@@ -67,7 +67,7 @@ export type IBridgeInAction = {
   /**
    * The chain the funds are coming from
    */
-  fromChain: CHAIN_ID | null;
+  fromChain: CHAIN_ID | null | string;
   /**
    * The chain the funds are going to
    */
@@ -103,11 +103,11 @@ export type IBridgeOutAction = {
   /**
    * The chain the funds are coming from
    */
-  fromChain: CHAIN_ID;
+  fromChain: CHAIN_ID | string;
   /**
    * The chain the funds are going to
    */
-  toChain: CHAIN_ID | null;
+  toChain: CHAIN_ID | null | string;
   /**
    * The token being bridged out
    */

@@ -8,7 +8,8 @@ enum CONTRACT_ENUM {
 }
 
 enum EVENT_ENUM {
-  FILLED_DEPOSIT = "0x571749edf1d5c9599318cdbc4e28a6475d65e87fd3b2ddbe1e9a8d5e7a0f0ff7"
+  DEPOSIT = "0xa123dc29aebf7d0c3322c8eeb5b999e859f39937950ed31056532713d0de396f",
+  FILLED_DEPOSIT = "0x571749edf1d5c9599318cdbc4e28a6475d65e87fd3b2ddbe1e9a8d5e7a0f0ff7",
 }
 
 const contracts: IProtocolContractDefinitions = {
@@ -42,11 +43,16 @@ const contracts: IProtocolContractDefinitions = {
     },
 
     events: {
+      [EVENT_ENUM.DEPOSIT]: {
+        abi: new ethers.Interface([
+          "event V3FundsDeposited(address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 indexed destinationChainId, uint32 indexed depositId, uint32 quoteTimestamp, uint32 fillDeadline, uint32 exclusivityDeadline, address indexed depositor, address recipient, address exclusiveRelayer, bytes message)",
+        ]),
+      },
       [EVENT_ENUM.FILLED_DEPOSIT]: {
         abi: new ethers.Interface([
           "event FilledV3Relay(address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 repaymentChainId, uint256 indexed originChainId, uint32 indexed depositId, uint32 fillDeadline, uint32 exclusivityDeadline, address exclusiveRelayer, address indexed relayer, address depositor, address recipient, bytes message, tuple(address updatedRecipient, bytes updatedMessage, uint256 updatedOutputAmount, uint8 fillType) relayExecutionInfo)",
         ]),
-      },
+      }
     },
   }
 };
