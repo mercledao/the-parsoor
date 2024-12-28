@@ -9,7 +9,6 @@ import {
   ITransactionLog,
 } from "../../types";
 import { CONTRACT_ENUM, contracts, EVENT_ENUM } from "./contracts";
-import { log } from "console";
 
 enum CONTRACT_FUNCTION_NAMES {
   SEND = "send",
