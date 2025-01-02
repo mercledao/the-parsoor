@@ -34,5 +34,6 @@ export enum CHAIN_ID {
   ALEPH_ZERO = 41455,
   LISK = 1135,
   READ_STONE = 690,
-  
+  SONIC = 146,
+  NEON = 245022934,
 }

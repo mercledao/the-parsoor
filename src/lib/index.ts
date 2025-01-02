@@ -4,6 +4,7 @@ import Lifi from './LiFi';
 import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
 import Across from "./Across";
+import Debridge from "./Debridge";
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -11,4 +12,5 @@ export const parsers = {
   [protocols.lifi.identifier]: new Lifi(),
   [protocols.odos.identifier]: new Odos(),
   [protocols.across.identifier]: new Across(),
+  [protocols.debridge.identifier]: new Debridge(),
 };
