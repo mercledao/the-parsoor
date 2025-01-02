@@ -35,6 +35,7 @@ export const protocols: IProtocolDefinitionMap = {
     twitter: "https://x.com/AcrossProtocol",
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/across.png",
     website: "https://across.to/",
+  },
   debridge: {
     identifier: "debridge",
     name: "Debridge",
@@ -43,4 +44,3 @@ export const protocols: IProtocolDefinitionMap = {
     website: "https://app.debridge.finance/",
   },
 };
-  
