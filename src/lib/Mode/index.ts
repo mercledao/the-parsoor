@@ -30,7 +30,6 @@ export default class Mode implements IProtocolParserExport {
     ) {
       
       const action = ModeL1BridgeParser.parseTransaction(transaction);
-      console.log(action);
 
       actions.push(...action);
     }
