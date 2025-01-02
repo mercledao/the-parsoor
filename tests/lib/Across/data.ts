@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import { ACTION_ENUM, CHAIN_ID } from "../../../src";
 import { IProtocolTestingData } from "../../../src/types";
 
@@ -21,7 +20,7 @@ export const acrossFilledDepositData: IProtocolTestingData = {
           toToken: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
           fromAmount: "30085448776876509",
           toAmount: "29926828012176636",
-          sender: "0x18105A39dB36EB6f865704Be858bcC7954c66467",
+          sender: "0xbA7Cb627C63Bb369f767f032eF5b44183970C771",
           recipient: "0xbA7Cb627C63Bb369f767f032eF5b44183970C771",
         },
       ],
@@ -39,7 +38,7 @@ export const acrossFilledDepositData: IProtocolTestingData = {
           toToken: "0x4200000000000000000000000000000000000006",
           fromAmount: "78000000000000000",
           toAmount: "77948542083744230",
-          sender: "0xCad97616f91872C02BA3553dB315Db4015cBE850",
+          sender: "0xE2c14A66Dd4cdbA65428244d99791FA498428CBE",
           recipient: "0xE2c14A66Dd4cdbA65428244d99791FA498428CBE",
         },
       ],
@@ -75,7 +74,7 @@ export const acrossFilledDepositData: IProtocolTestingData = {
           toToken: "0x4200000000000000000000000000000000000006",
           fromAmount: "78000000000000000",
           toAmount: "77948542083744230",
-          sender: "0xCad97616f91872C02BA3553dB315Db4015cBE850",
+          sender: "0xE2c14A66Dd4cdbA65428244d99791FA498428CBE",
           recipient: "0xE2c14A66Dd4cdbA65428244d99791FA498428CBE",
         },
       ],

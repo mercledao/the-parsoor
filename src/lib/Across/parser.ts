@@ -79,7 +79,7 @@ export class SpokepoolContractParser {
       toToken: args.outputToken,
       fromAmount: args.inputAmount.toString(),
       toAmount: args.outputAmount.toString(),
-      sender: args.relayer,
+      sender: args.depositor,
       recipient: args.recipient,
     };
   }
