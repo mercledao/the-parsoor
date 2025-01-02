@@ -3,6 +3,7 @@ import Odos from "./Odos";
 import Lifi from './LiFi';
 import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
+import Across from "./Across";
 import Debridge from "./Debridge";
 
 export const parsers = {
@@ -10,5 +11,6 @@ export const parsers = {
   [protocols.uniswap.identifier]: new Uniswap(),
   [protocols.lifi.identifier]: new Lifi(),
   [protocols.odos.identifier]: new Odos(),
+  [protocols.across.identifier]: new Across(),
   [protocols.debridge.identifier]: new Debridge(),
 };

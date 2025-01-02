@@ -29,6 +29,13 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/odos.png",
     website: "https://www.odos.xyz/",
   },
+  across: {
+    identifier: "across",
+    name: "Across",
+    twitter: "https://x.com/AcrossProtocol",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/across.png",
+    website: "https://across.to/",
+  },
   debridge: {
     identifier: "debridge",
     name: "Debridge",
@@ -37,4 +44,3 @@ export const protocols: IProtocolDefinitionMap = {
     website: "https://app.debridge.finance/",
   },
 };
-  
