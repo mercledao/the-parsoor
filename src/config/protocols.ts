@@ -43,4 +43,11 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
   },
+  mode: {
+    identifier: "mode",
+    name: "Mode",
+    twitter: "https://x.com/modenetwork",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/modenetwork.png",
+    website: "https://www.mode.network/",
+  },
 };
