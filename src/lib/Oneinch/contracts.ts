@@ -7,10 +7,9 @@ enum CONTRACT_ENUM {
   AGGREGATION_ROUTER_V5_CONTRACT = "AGGREGATION_ROUTER_V5",
 }
 
-// enum EVENT_ENUM {
-//   DEPOSIT = "0xa123dc29aebf7d0c3322c8eeb5b999e859f39937950ed31056532713d0de396f",
-//   FILLED_DEPOSIT = "0x571749edf1d5c9599318cdbc4e28a6475d65e87fd3b2ddbe1e9a8d5e7a0f0ff7",
-// }
+enum EVENT_ENUM {
+  FILLED_ORDER = "0xb9ed0243fdf00f0545c63a0af8850c090d86bb46682baec4bf3c496814fe4f02",
+}
 
 const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.AGGREGATION_ROUTER_V5_CONTRACT]: {
@@ -26,8 +25,14 @@ const contracts: IProtocolContractDefinitions = {
       },
     },
 
-    events: {},
-  }
+    events: {
+      [EVENT_ENUM.FILLED_ORDER]: {
+        abi: new ethers.Interface([
+          "event OrderFilled (address indexed maker, bytes32 orderHash, uint256 remaining)",
+        ]),
+      },
+    },
+  },
 };
 
-export { CONTRACT_ENUM, contracts };
+export { contracts, CONTRACT_ENUM, EVENT_ENUM };
