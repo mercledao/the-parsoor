@@ -168,5 +168,21 @@ export const oneinchAggregationRouterData: IProtocolTestingData = {
         },
       ],
     },
+    {
+      txnHash:
+        "0xb2d285ebd7afca2c0f0d6bee483f0711e6d6e5ae6da45a5c3b3aaff5e8d75cfe",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          toToken: "0xCBE26dbC91B05C160050167107154780F36CeAAB",
+          fromAmount: "1348031892401604751",
+          toAmount: "1358265826408362314",
+          sender: "0x0aE1931832a3974c6d5139CF794d6d86cf000bFb",
+          recipient: "0x0aE1931832a3974c6d5139CF794d6d86cf000bFb",
+        },
+      ],
+    },
   ],
 };

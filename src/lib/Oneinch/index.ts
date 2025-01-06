@@ -6,8 +6,11 @@ import {
   ITransaction,
   ITransactionAction,
 } from "../../types";
-import { CONTRACT_ENUM, contracts } from "./contracts"
-import { AggregationRouterV5ContractParser } from "./parsers";
+import { CONTRACT_ENUM, contracts } from "./contracts";
+import {
+  AggregationRouterV5ContractParser,
+  LimitOrderV4ContractParser,
+} from "./parsers";
 
 export default class Oneinch implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
@@ -20,7 +23,7 @@ export default class Oneinch implements IProtocolParserExport {
     transaction: ITransaction
   ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
-    
+
     if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
@@ -28,7 +31,17 @@ export default class Oneinch implements IProtocolParserExport {
         contracts
       )
     ) {
-      const action = AggregationRouterV5ContractParser.parseTransaction(transaction);
+      const action =
+        AggregationRouterV5ContractParser.parseTransaction(transaction);
+      actions.push(...action);
+    } else if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.LIMIT_ORDER_V4,
+        contracts
+      )
+    ) {
+      const action = LimitOrderV4ContractParser.parseTransaction(transaction);
       actions.push(...action);
     }
     return actions;

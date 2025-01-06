@@ -6,7 +6,7 @@ import {
   ITransaction,
   ITransactionAction,
 } from "../../types";
-import { contracts, CONTRACT_ENUM } from "./contracts";
+import { contracts, CONTRACT_ENUM, EVENT_ENUM } from "./contracts";
 enum CONTRACT_FUNCTION_NAMES {
   SWAP = "swap",
   UNISWAP_V3_SWAP = "uniswapV3Swap",
@@ -174,6 +174,49 @@ export class AggregationRouterV5ContractParser {
       toAmount: BigInt(toAmount) > 0 ? toAmount : null,
       sender: transaction.from,
       recipient: parsedTxn.args.target,
+    };
+  }
+}
+
+export class LimitOrderV4ContractParser {
+
+  public static parseTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const parsedTxn = ProtocolHelper.parseTransaction(
+      transaction,
+      CONTRACT_ENUM.LIMIT_ORDER_V4,
+      contracts
+    );
+
+    const filledOrderLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.FILLED_ORDER
+    );
+    
+    if (filledOrderLog) {
+      actions.push(this.parseFillOrderTransaction(transaction, parsedTxn));
+    }
+    return actions;
+  }
+
+  private static parseFillOrderTransaction(
+    transaction: ITransaction,
+    parsedTxn: any
+  ): ISingleSwapAction {
+    const log = transaction.logs;
+    const { fromToken, toToken, fromAmount, toAmount } =
+      ProtocolHelper.analyzeSingleSwapFromLogs(log, transaction);
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: fromToken,
+      toToken: toToken ?? ZeroAddress,
+      fromAmount: BigInt(fromAmount) > 0 ? fromAmount : null,
+      toAmount: BigInt(toAmount) > 0 ? toAmount : null,
+      sender: transaction.from,
+      recipient: parsedTxn.args.target ?? transaction.from,
     };
   }
 }
