@@ -1,4 +1,4 @@
-import { ZeroAddress } from "ethers";
+import { ZeroAddress, zeroPadBytes } from "ethers";
 import { ACTION_ENUM, CHAIN_ID } from "../../../src";
 import { IProtocolTestingData } from "../../../src/types";
 
@@ -133,6 +133,38 @@ export const oneinchAggregationRouterData: IProtocolTestingData = {
           toAmount: null,
           sender: "0x1D425d5C3fe77F5F91f5582f2a98d4a94cb0549b",
           recipient: "0x893Ee5a10aEC49aAe0Ae6e5A78FF79e2069F82e8",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x8fccdf40637b92072160a156564fb0666da73768b5629a900bf2e6469ec1dd39",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          toToken: "0x8D6CeBD76f18E1558D4DB88138e2DeFB3909fAD6",
+          fromAmount: "10471047280",
+          toAmount: "13088809100000000000000",
+          sender: "0x6c8f602792a74E52F56a5e769cE417701684b73e",
+          recipient: "0x6c8f602792a74E52F56a5e769cE417701684b73e",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x5f335605bafc2efebdf5dcc244657b09e8b265fca5d1e0d7cbab52c0a7e23988",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x967da4048cD07aB37855c090aAF366e4ce1b9F48",
+          toToken: ZeroAddress,
+          fromAmount: "9757435732610000000000",
+          toAmount: null,
+          sender: "0xe67090216073bC8771F4bDeEC4C0f0A8AF71A0F7",
+          recipient: "0x0B80c366D3d92fcd4DE0d4a3d596ced82eDcf65d",
         },
       ],
     },

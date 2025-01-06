@@ -16,16 +16,9 @@ enum CONTRACT_FUNCTION_NAMES {
   CLIPPER_SWAP_TO_WITH_PERMIT = "clipperSwapToWithPermit",
   CLIPPER_SWAP = "clipperSwap",
   UNOSWAP_TO_WITH_PERMIT = "unoswapToWithPermit",
-  ETH_UNOSWAP = "ethUnoswap",
-  ETH_UNOSWAP_TO = "ethUnoswapTo",
-  ETH_UNOSWAP_TO_2 = "ethUnoswapTo2",
-  ETH_UNOSWAP_TO_WITH_PERMIT_3 = "unoswapToWithPermit3",
-  UNOSWAP_3 = "unoswap3",
-  UNOSWAP_TO_3 = "unoswapTo3",
-  ETH_UNOSWAP_3 = "ethUnoswap3",
-  ETH_UNOSWAP_TO_3 = "ethUnoswapTo3",
   FILL_ORDER = "fillOrder",
   FILL_ORDER_TO = "fillOrderTo",
+  FILL_ORDER_TO_WITH_PERMIT = "fillOrderToWithPermit",
 }
 
 export class AggregationRouterV5ContractParser {
@@ -34,14 +27,6 @@ export class AggregationRouterV5ContractParser {
     CONTRACT_FUNCTION_NAMES.UNOSWAP,
     CONTRACT_FUNCTION_NAMES.UNOSWAP_TO,
     CONTRACT_FUNCTION_NAMES.UNOSWAP_TO_WITH_PERMIT,
-    CONTRACT_FUNCTION_NAMES.ETH_UNOSWAP,
-    CONTRACT_FUNCTION_NAMES.ETH_UNOSWAP_TO,
-    CONTRACT_FUNCTION_NAMES.ETH_UNOSWAP_TO_2,
-    CONTRACT_FUNCTION_NAMES.ETH_UNOSWAP_TO_WITH_PERMIT_3,
-    CONTRACT_FUNCTION_NAMES.UNOSWAP_3,
-    CONTRACT_FUNCTION_NAMES.UNOSWAP_TO_3,
-    CONTRACT_FUNCTION_NAMES.ETH_UNOSWAP_3,
-    CONTRACT_FUNCTION_NAMES.ETH_UNOSWAP_TO_3,
     CONTRACT_FUNCTION_NAMES.FILL_ORDER,
   ]);
 
@@ -76,13 +61,16 @@ export class AggregationRouterV5ContractParser {
       case CONTRACT_FUNCTION_NAMES.FILL_ORDER_TO:
         actions.push(this.parseFillOrderToTransaction(transaction, parsedTxn));
         break;
+      case CONTRACT_FUNCTION_NAMES.FILL_ORDER_TO_WITH_PERMIT:
+        actions.push(this.parseFillOrderToTransaction(transaction, parsedTxn));
+        break;
       default:
         if (
           this.AGGREGATOR_SWAP_FUNCTIONS.has(
             parsedTxn.name as CONTRACT_FUNCTION_NAMES
           )
         ) {
-          actions.push(this.parseAggregatorSwapTransaction(transaction));
+          actions.push(this.parseAggregatorSwapTransaction(transaction, parsedTxn));
         }
 
         break;
@@ -106,7 +94,8 @@ export class AggregationRouterV5ContractParser {
   }
 
   private static parseAggregatorSwapTransaction(
-    transaction: ITransaction
+    transaction: ITransaction,
+    parsedTxn: any
   ): ISingleSwapAction {
     const log = transaction.logs;
 
@@ -120,7 +109,7 @@ export class AggregationRouterV5ContractParser {
       fromAmount: BigInt(fromAmount) > 0 ? fromAmount : null,
       toAmount: BigInt(toAmount) > 0 ? toAmount : null,
       sender: transaction.from,
-      recipient: transaction.from,
+      recipient: parsedTxn.args.recipient ?? transaction.from,
     };
   }
 
@@ -173,7 +162,6 @@ export class AggregationRouterV5ContractParser {
     transaction: ITransaction,
     parsedTxn: any
   ): ISingleSwapAction {
-
     const log = transaction.logs;
     const { fromToken, toToken, fromAmount, toAmount } =
       ProtocolHelper.analyzeSingleSwapFromLogs(log, transaction);
