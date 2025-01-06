@@ -1,4 +1,4 @@
-import { ethers, AbiCoder, toBeHex, getAddress } from "ethers";
+import { ethers, AbiCoder, toBeHex, getAddress, ZeroAddress } from "ethers";
 import {
   IContractEventConfig,
   IProtocolContractDefinitions,
@@ -7,7 +7,7 @@ import {
 } from "../../types";
 const ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE =
   "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
-
+const NULL_ADDRESS = "0x0000000000000000000000000000000000000000000000000000000000000000"
 export class ProtocolHelper {
   /**
    * Parses a transaction
@@ -139,16 +139,15 @@ export class ProtocolHelper {
     const parsedLogs = logs
       .filter(
         (log) =>
-          log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE
+          log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE && log.topics.length < 4
       )
       .map((log) => {
         // Decode `from` and `to` addresses from topics
-        const fromAddress = getAddress(toBeHex(log.topics[1]));
-        const toAddress = getAddress(toBeHex(log.topics[2]));
+        const fromAddress = log.topics[1] === NULL_ADDRESS ? ZeroAddress : getAddress(toBeHex(log.topics[1]));
+        const toAddress = log.topics[2] === NULL_ADDRESS ? ZeroAddress :  getAddress(toBeHex(log.topics[2]));
 
         // Decode `value` from the data field
         const [value] = abiCoder.decode(["uint256"], log.data);
-
         return {
           fromAddress,
           toAddress,
@@ -166,6 +165,7 @@ export class ProtocolHelper {
   ) {
     const userAddress = txn.from.toLowerCase();
     const transfers = this.parseERC20TransferLogs(txLogs);
+    
 
     let fromToken: string | null = null;
     let toToken: string | null = null;
@@ -173,6 +173,7 @@ export class ProtocolHelper {
     let toAmount = BigInt(0);
 
     transfers.forEach(({ fromAddress, toAddress, value, contractAddress }) => {
+      
       // If the user is the sender, it's the amount being deducted (fromAmount)
       if (fromAddress.toLowerCase() === userAddress) {
         fromToken = contractAddress;
