@@ -3,3 +3,4 @@ export * from './enums';
 export * from './helpers';
 export * from './lib';
 export * from './types';
+export * from './chains';
