@@ -1,4 +1,5 @@
-import { ACTION_ENUM } from "../../enums";
+import { ZeroAddress } from "ethers";
+import { ACTION_ENUM, CHAIN_ID } from "../../enums";
 import { ProtocolHelper } from "../../helpers";
 import {
   IBridgeInAction,
@@ -11,7 +12,8 @@ import { contracts, EVENT_ENUM } from "./contracts";
 
 export class OptimismParser {
   public static parseTransaction(
-    transaction: ITransaction
+    transaction: ITransaction,
+    contract: string
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
 
@@ -19,8 +21,15 @@ export class OptimismParser {
       (log) => log.topics[0] === EVENT_ENUM.BRIDGE
     );
 
+    const ethBridgeLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.ETH_BRIDGE
+    );
+
     if (bridgeLog) {
-      actions.push(this.parseBridge(transaction, bridgeLog));
+      actions.push(this.parseBridge(transaction, bridgeLog, contract));
+      return actions;
+    } else if (ethBridgeLog) {
+      actions.push(this.parseEthBridge(transaction, ethBridgeLog, contract));
       return actions;
     }
     return actions;
@@ -28,28 +37,52 @@ export class OptimismParser {
 
   private static parseBridge(
     transaction: ITransaction,
-    depositLog: ITransactionLog
-  ): IBridgeInAction {
+    bridgeLog: ITransactionLog,
+    contract: string
+  ): IBridgeOutAction {
     const parsedBridgeLog = ProtocolHelper.parseLog(
-      depositLog,
-      contracts.OPTIMISM.events[EVENT_ENUM.BRIDGE]
+      bridgeLog,
+      contracts[contract].events[EVENT_ENUM.BRIDGE]
     );
 
     const args = parsedBridgeLog.args;
 
-    console.log(args);
-    
-
     return {
-      type: ACTION_ENUM.BRIDGE_IN,
-      fromChain: args.repaymentChainId.toString(),
-      toChain: transaction.chainId,
+      type: ACTION_ENUM.BRIDGE_OUT,
+      fromChain: transaction.chainId,
+      toChain: CHAIN_ID.ETHEREUM,
       fromToken: args.localToken,
       toToken: args.remoteToken,
-      fromAmount: args.inputAmount.toString(),
-      toAmount: args.outputAmount.toString(),
-      sender: args.depositor,
-      recipient: args.recipient,
+      fromAmount: args.amount.toString(),
+      toAmount: null,
+      sender: transaction.from,
+      recipient: args.to,
+    };
+  }
+
+  private static parseEthBridge(
+    transaction: ITransaction,
+    ethBridgeLog: ITransactionLog,
+    contract: string
+  ): IBridgeOutAction {
+    
+    const parsedBridgeLog = ProtocolHelper.parseLog(
+      ethBridgeLog,
+      contracts[contract].events[EVENT_ENUM.ETH_BRIDGE]
+    );
+
+    const args = parsedBridgeLog.args;
+
+    return {
+      type: ACTION_ENUM.BRIDGE_OUT,
+      fromChain: transaction.chainId,
+      toChain: CHAIN_ID.ETHEREUM,
+      fromToken: ZeroAddress,
+      toToken: ZeroAddress,
+      fromAmount: args.amount.toString(),
+      toAmount: null,
+      sender: transaction.from,
+      recipient: args.to,
     };
   }
 }

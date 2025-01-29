@@ -1,18 +1,14 @@
 import chalk from 'chalk';
-import { protocols } from '../../../src';
-import { ProtocolParserUtils } from '../../index';
+import { CHAIN_ID } from "../../../src/enums";
+import { ChainParserUtils } from '../../index';
 import { OPTIMISM_VERSIONS, optimiseBridgeData } from './data';
 
 describe('OptimismParser', () => {
-  let utils: ProtocolParserUtils;
+  let utils: ChainParserUtils;
 
   beforeAll(async () => {
-    utils = new ProtocolParserUtils(protocols.across.identifier);
+    utils = new ChainParserUtils(CHAIN_ID.OPTIMISM);
     await utils.initialize();
-  });
-
-  it('is correctly defined', () => {
-    utils.isValidProtocol();
   });
 
   it('should parse v1 transactions correctly', async () => {
@@ -20,6 +16,7 @@ describe('OptimismParser', () => {
 
     for (const transaction of v1Transactions) {
       const actions = await utils.fetchAndParseTestTxn(transaction);
+      
       utils.assertTestTransactionForData(transaction, actions);
 
       console.log(

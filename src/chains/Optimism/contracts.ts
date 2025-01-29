@@ -11,6 +11,7 @@ enum CONTRACT_ENUM {
 
 enum EVENT_ENUM {
   BRIDGE = "0x7ff126db8024424bbfd9826e8ab82ff59136289ea440b04b39a0df1b03b9cabf",
+  ETH_BRIDGE = "0x2849b43074093a05396b6f2a937dee8565b15a48a7b3d4bffb732a5017380af5",
 }
 
 const contracts: IChainContractDefinitions = {
@@ -84,6 +85,11 @@ const contracts: IChainContractDefinitions = {
       [EVENT_ENUM.BRIDGE]: {
         abi: new ethers.Interface([
           "event ERC20BridgeInitiated (address indexed localToken, address indexed remoteToken, address indexed from, address to, uint256 amount, bytes extraData)",
+        ]),
+      },
+      [EVENT_ENUM.ETH_BRIDGE]: {
+        abi: new ethers.Interface([
+          "event ETHBridgeInitiated (address indexed from, address indexed to, uint256 amount, bytes extraData)",
         ]),
       },
     },

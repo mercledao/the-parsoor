@@ -14,11 +14,11 @@ export const optimiseBridgeData: IProtocolTestingData = {
       chainId: CHAIN_ID.OPTIMISM,
       emittedActions: [
         {
-          type: ACTION_ENUM.BRIDGE_IN,
-          fromChain: CHAIN_ID.OPTIMISM.toString(),
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.OPTIMISM,
           toChain: CHAIN_ID.ETHEREUM,
           fromToken: "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
-          toToken: ZeroAddress,
+          toToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
           fromAmount: "65000000000000",
           toAmount: null,
           sender: "0xE69f81b825d7Dc31ee9becef4DbEab5cf30e3Abb",
@@ -28,93 +28,75 @@ export const optimiseBridgeData: IProtocolTestingData = {
     },
     {
       txnHash:
-        "0xdea409f9c8bebc0b95f80d5673890b7d7605527147f788f0d36103754ebaacf3",
-      chainId: CHAIN_ID.OPTIMISM,
-      emittedActions: [
-        {
-          type: ACTION_ENUM.BRIDGE_IN,
-          fromChain: "7777777",
-          toChain: CHAIN_ID.OPTIMISM,
-          fromToken: "0x4200000000000000000000000000000000000006",
-          toToken: "0x4200000000000000000000000000000000000006",
-          fromAmount: "78000000000000000",
-          toAmount: "77948542083744230",
-          sender: "0xE2c14A66Dd4cdbA65428244d99791FA498428CBE",
-          recipient: "0xE2c14A66Dd4cdbA65428244d99791FA498428CBE",
-        },
-      ],
-    },
-    {
-      txnHash:
-        "0xb4a4c4fae73433128164cf26d3679fd2c2eb9dd1b360b550e04dbd5de169323f",
+        "0x8847062ad9bf030f4eb40e9fd7b3b68f64a6e23dd1ac06955e56de67abe5224e",
       chainId: CHAIN_ID.OPTIMISM,
       emittedActions: [
         {
           type: ACTION_ENUM.BRIDGE_OUT,
           fromChain: CHAIN_ID.OPTIMISM,
-          toChain: CHAIN_ID.BASE.toString(),
-          fromToken: "0x4200000000000000000000000000000000000006",
-          toToken: "0x4200000000000000000000000000000000000006",
-          fromAmount: "110000000000000000",
-          toAmount: "109974609061483935",
-          sender: "0x27CDcD479c713da07072959F3bA5055D23d384Bb",
-          recipient: "0x27CDcD479c713da07072959F3bA5055D23d384Bb",
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: "0x7a1263eC3Bf0a19e25C553B8A2C312e903262C5E",
+          toToken: "0xd8F1460044925d2D5c723C7054cd9247027415B7",
+          fromAmount: "309181000000000000000000",
+          toAmount: null,
+          sender: "0xFacbDEcF714f55d65ABF5be2054a8127880405c7",
+          recipient: "0xFacbDEcF714f55d65ABF5be2054a8127880405c7",
         },
       ],
     },
     {
       txnHash:
-        "0xdea409f9c8bebc0b95f80d5673890b7d7605527147f788f0d36103754ebaacf3",
-      chainId: CHAIN_ID.OPTIMISM,
-      emittedActions: [
-        {
-          type: ACTION_ENUM.BRIDGE_IN,
-          fromChain: "7777777",
-          toChain: CHAIN_ID.OPTIMISM,
-          fromToken: "0x4200000000000000000000000000000000000006",
-          toToken: "0x4200000000000000000000000000000000000006",
-          fromAmount: "78000000000000000",
-          toAmount: "77948542083744230",
-          sender: "0xE2c14A66Dd4cdbA65428244d99791FA498428CBE",
-          recipient: "0xE2c14A66Dd4cdbA65428244d99791FA498428CBE",
-        },
-      ],
-    },
-    {
-      txnHash:
-        "0x20a329d2eab4ae1246c6ecebd3c5b0317f4ae0797e2c1a6070a805840007a32d",
+        "0xafcac9439dd67d2559483a74870736c27236cbb3f99d4f1d34e0071632c875f6",
       chainId: CHAIN_ID.OPTIMISM,
       emittedActions: [
         {
           type: ACTION_ENUM.BRIDGE_OUT,
           fromChain: CHAIN_ID.OPTIMISM,
-          toChain: CHAIN_ID.BASE.toString(),
-          fromToken: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
-          toToken: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-          fromAmount: "1007637",
-          toAmount: "968258",
-          sender: "0x5a59aDb668d4E714c18654a1Dfa7A0c1257fE33C",
-          recipient: "0x5a59aDb668d4E714c18654a1Dfa7A0c1257fE33C",
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: ZeroAddress,
+          toToken: ZeroAddress,
+          fromAmount: "8162294745512708550",
+          toAmount: null,
+          sender: "0x3636bDDC7bA0DfE6F4269f2F5B15dEB112804361",
+          recipient: "0x3636bDDC7bA0DfE6F4269f2F5B15dEB112804361",
         },
       ],
     },
     {
       txnHash:
-        "0xed0aac0c6fe671fdf9c556f88abad54fdfb38d3c2fbd8cff9b96016f534bb7f6",
+        "0xb7cce89a2c2ab929613aff3c60384c8651d8086ecd0582a6560af6c499dc12f1",
       chainId: CHAIN_ID.OPTIMISM,
       emittedActions: [
         {
           type: ACTION_ENUM.BRIDGE_OUT,
           fromChain: CHAIN_ID.OPTIMISM,
-          toChain: CHAIN_ID.BASE.toString(),
-          fromToken: "0x4200000000000000000000000000000000000006",
-          toToken: "0x4200000000000000000000000000000000000006",
-          fromAmount: "1400000000000000",
-          toAmount: "1391062143320277",
-          sender: "0xBbD59ed30c11d7ac507da89D216b07003FDD12C3",
-          recipient: "0xBbD59ed30c11d7ac507da89D216b07003FDD12C3",
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
+          toToken: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+          fromAmount: "54803299",
+          toAmount: null,
+          sender: "0x272C39C82CA9F10e5338A6eE75927cFe00C82e2c",
+          recipient: "0x272C39C82CA9F10e5338A6eE75927cFe00C82e2c",
         },
       ],
     },
+    {
+      txnHash:
+        "0x055b3e120dcee4bb66e99b358a7eb1e299d0e67784490014d7249f9ccd69bce3",
+      chainId: CHAIN_ID.ZORA,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_OUT,
+          fromChain: CHAIN_ID.ZORA,
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: "0x0000000000000000000000000000000000000000",
+          toToken: "0x0000000000000000000000000000000000000000",
+          fromAmount: "4500000000000000",
+          toAmount: null,
+          sender: "0x1Ce8d8Dc797a55ef4a50A2929e374AF00326607D",
+          recipient: "0x1Ce8d8Dc797a55ef4a50A2929e374AF00326607D",
+        },
+      ],
+    }
   ],
 };

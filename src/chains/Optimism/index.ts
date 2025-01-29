@@ -28,7 +28,7 @@ export default class Optimism implements IChainParserExport {
         contracts
       )
     ) {
-      const action = OptimismParser.parseTransaction(transaction);
+      const action = OptimismParser.parseTransaction(transaction, CONTRACT_ENUM.L1_STANDARD_BRIDGE);
       actions.push(...action);
     } else if (
       ProtocolHelper.txnToIsListenerContract(
@@ -37,7 +37,7 @@ export default class Optimism implements IChainParserExport {
         contracts
       )
     ) {
-      const action = OptimismParser.parseTransaction(transaction);
+      const action = OptimismParser.parseTransaction(transaction, CONTRACT_ENUM.L2_STANDARD_BRIDGE);
       actions.push(...action);
     }
     return actions;
