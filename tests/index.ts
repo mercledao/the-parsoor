@@ -225,8 +225,6 @@ export class ChainParserUtils {
       data.chainId,
       data.txnHash
     );
-    console.log(formattedTxn);
-    
     const actions =
       await chainParsers[this.chainIdentifier].parseTransaction(formattedTxn);
     return actions;

@@ -24,20 +24,14 @@ export default class Optimism implements IChainParserExport {
     if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
-        CONTRACT_ENUM.L1_STANDARD_BRIDGE,
-        contracts
-      )
-    ) {
-      const action = OptimismParser.parseTransaction(transaction, CONTRACT_ENUM.L1_STANDARD_BRIDGE);
-      actions.push(...action);
-    } else if (
-      ProtocolHelper.txnToIsListenerContract(
-        transaction,
         CONTRACT_ENUM.L2_STANDARD_BRIDGE,
         contracts
       )
     ) {
-      const action = OptimismParser.parseTransaction(transaction, CONTRACT_ENUM.L2_STANDARD_BRIDGE);
+      const action = OptimismParser.parseTransaction(
+        transaction,
+        CONTRACT_ENUM.L2_STANDARD_BRIDGE
+      );
       actions.push(...action);
     }
     return actions;
