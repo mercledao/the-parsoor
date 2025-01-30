@@ -19,7 +19,7 @@ export const cowswapSwapData: IProtocolTestingData = {
           fromAmount: "20000000000",
           toAmount: "42310150156594486438480",
           sender: "0x34717040928d7fd8154d4612f3228eff14521023",
-          recipient: "0x34717040928d7fd8154d4612f3228eff14521023"
+          recipient: "0x6fe3314087ace6b2b54021980a690c02acdd0098"
         },
       ],
     },
@@ -35,7 +35,7 @@ export const cowswapSwapData: IProtocolTestingData = {
           fromAmount: "8299499821",
           toAmount: "20000000000000000000000",
           sender: "0x00806daa2cfe49715ea05243ff259deb195760fc",
-          recipient: "0x00806daa2cfe49715ea05243ff259deb195760fc"
+          recipient: "0x1405f9beae7b74ece74f6734d1a1302e1873211c"
         },
       ],
     },
@@ -51,7 +51,7 @@ export const cowswapSwapData: IProtocolTestingData = {
           fromAmount: "236830943687003687961",
           toAmount: "804205943233010446709",
           sender: "0x8f70a86c1309d8b1f5befc58948e7386fd495875",
-          recipient: "0x8f70a86c1309d8b1f5befc58948e7386fd495875"
+          recipient: "0x402904e954aebee2e78b7b09595393cf05571333"
         },
       ],
     },
@@ -67,7 +67,7 @@ export const cowswapSwapData: IProtocolTestingData = {
           fromAmount: "244783248237207583",
           toAmount: "1660276181802241186294",
           sender: "0x00806daa2cfe49715ea05243ff259deb195760fc",
-          recipient: "0x00806daa2cfe49715ea05243ff259deb195760fc"
+          recipient: "0x9bd702e05b9c97e4a4a3e47df1e0fe7a0c26d2f1"
         },
       ],
     },
@@ -83,7 +83,7 @@ export const cowswapSwapData: IProtocolTestingData = {
           fromAmount: "5000000000000000000",
           toAmount: "6576007078316234267229248",
           sender: "0x008300082c3000009e63680088f8c7f4d3ff2e87",
-          recipient: "0x008300082c3000009e63680088f8c7f4d3ff2e87"
+          recipient: "0x40a50cf069e992aa4536211b23f286ef88752187"
         },
       ],
     }

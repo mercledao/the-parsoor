@@ -37,7 +37,7 @@ export class CowswapContractParser {
       fromAmount: parsedLog.args.sellAmount.toString(),
       toAmount: parsedLog.args.buyAmount.toString(),
       sender: transaction.from.toLowerCase(),
-      recipient: transaction.from.toLowerCase()
+      recipient: `0x${parsedLog.args.orderUid.slice(66,106)}`
     };
   }
 }
