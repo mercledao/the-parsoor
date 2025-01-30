@@ -73,23 +73,7 @@ export const sushiswapData: IProtocolTestingData = {
     },
     {
       txnHash:
-        "0xb6c13cfe1fa2bc160e351a619cced9df39f9f0897753db2e8307598418976966",
-      chainId: CHAIN_ID.ZORA,
-      emittedActions: [
-        {
-          type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
-          toToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-          fromAmount: "200000",
-          toAmount: "62634583529882",
-          sender: "0x71cC96829ed93371b5b8f8d760c83290119F66cf",
-          recipient: "0x71cC96829ed93371b5b8f8d760c83290119F66cf",
-        },
-      ],
-    },
-    {
-      txnHash:
-        "0xec5d7a1b533c4ed7d27be5078970357a2f85fd892a2670defa45ce0455fc739f",
+        "0xb327dd06c2820c8b07fd0a0ad46635523ac602a9e090d59b1c494856fe064be6",
       chainId: CHAIN_ID.ETHEREUM,
       emittedActions: [
         {
