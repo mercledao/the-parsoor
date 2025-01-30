@@ -78,12 +78,12 @@ export const sushiswapData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
-          toToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-          fromAmount: "200000",
-          toAmount: "62634583529882",
-          sender: "0x71cC96829ed93371b5b8f8d760c83290119F66cf",
-          recipient: "0x71cC96829ed93371b5b8f8d760c83290119F66cf",
+          fromToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+          toToken: "0xf94e7d0710709388bCe3161C32B4eEA56d3f91CC",
+          fromAmount: "3300000000000000",
+          toAmount: "34371166284090943809",
+          sender: "0xB4765Bee75A0fa0a2f66Bf68CE1796c55854c154",
+          recipient: "0xB4765Bee75A0fa0a2f66Bf68CE1796c55854c154",
         },
       ],
     }
