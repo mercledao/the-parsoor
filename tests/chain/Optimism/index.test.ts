@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { CHAIN_ID } from "../../../src/enums";
 import { ChainParserUtils } from '../../index';
-import { OPTIMISM_VERSIONS, optimiseBridgeData } from './data';
+import { OPTIMISM_VERSIONS, optimismBridgeData } from './data';
 
 describe('OptimismParser', () => {
   let utils: ChainParserUtils;
@@ -12,7 +12,7 @@ describe('OptimismParser', () => {
   });
 
   it('should parse v1 transactions correctly', async () => {
-    const v1Transactions = optimiseBridgeData[OPTIMISM_VERSIONS.V1];
+    const v1Transactions = optimismBridgeData[OPTIMISM_VERSIONS.V1];
 
     for (const transaction of v1Transactions) {
       const actions = await utils.fetchAndParseTestTxn(transaction);

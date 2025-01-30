@@ -6,7 +6,7 @@ export enum OPTIMISM_VERSIONS {
   V1 = "v1",
 }
 
-export const optimiseBridgeData: IProtocolTestingData = {
+export const optimismBridgeData: IProtocolTestingData = {
   [OPTIMISM_VERSIONS.V1]: [
     {
       txnHash:

@@ -4,7 +4,6 @@ import { IChainContractDefinitions } from "../../types";
 import L2StandardBridgeAbi from "./abis/L2StandardBridge.json";
 
 enum CONTRACT_ENUM {
-  L1_STANDARD_BRIDGE = "L1_STANDARD_BRIDGE",
   L2_STANDARD_BRIDGE = "L2_STANDARD_BRIDGE",
 }
 
