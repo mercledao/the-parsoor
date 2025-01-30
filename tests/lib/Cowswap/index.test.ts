@@ -7,7 +7,7 @@ describe('CowswapParser', () => {
   let utils: ProtocolParserUtils;
 
   beforeAll(async () => {
-    utils = new ProtocolParserUtils(protocols.across.identifier);
+    utils = new ProtocolParserUtils(protocols.cowswap.identifier);
     await utils.initialize();
   });
 
@@ -16,9 +16,9 @@ describe('CowswapParser', () => {
   });
 
   it('should parse v3 transactions correctly', async () => {
-    const v3Transactions = cowswapSwapData[COWSWAP_VERSIONS.V2];
+    const v2Transactions = cowswapSwapData[COWSWAP_VERSIONS.V2];
 
-    for (const transaction of v3Transactions) {
+    for (const transaction of v2Transactions) {
       const actions = await utils.fetchAndParseTestTxn(transaction);
       utils.assertTestTransactionForData(transaction, actions);
 

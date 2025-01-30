@@ -1,45 +1,43 @@
 import { ACTION_ENUM } from "../../enums";
 import { ProtocolHelper } from "../../helpers";
 import {
-  IMultiSwapAction,
+  ISingleSwapAction,
   ITransaction,
   ITransactionAction,
   ITransactionLog,
 } from "../../types";
-import { contracts } from "./contracts";
+import { CONTRACT_ENUM, contracts, EVENT_ENUM } from "./contracts";
 
 export class CowswapContractParser {
   public static parseTransaction(
     transaction: ITransaction
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
-    const log = transaction.logs;
-    const erc20Transfers = ProtocolHelper.parseERC20TransferLogs(log);
-    console.log(erc20Transfers);
+    
+    const matchedSwapOrderLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.TRADE
+    );
+    if (matchedSwapOrderLog) {
+      actions.push(this.parseSwapOrder(matchedSwapOrderLog, transaction));
+    }
+    
     return actions;
   }
-
-  private static parseSwap(
-    transaction: ITransaction,
-    depositLog: ITransactionLog
-  ): IBridgeOutAction {
-    const parsedFilledDepositLog = ProtocolHelper.parseLog(
-      depositLog,
-      contracts.SPOKEPOOL_CONTRACT.events[EVENT_ENUM.DEPOSIT]
+  
+  private static parseSwapOrder(log: ITransactionLog, transaction:ITransaction): ISingleSwapAction {
+    const parsedLog = ProtocolHelper.parseLog(
+      log,
+      contracts.GP_V2_SETTLEMENT.events[EVENT_ENUM.TRADE]
     );
 
-    const args = parsedFilledDepositLog.args;
-
     return {
-      type: ACTION_ENUM.BRIDGE_OUT,
-      fromChain: transaction.chainId,
-      toChain: args.destinationChainId.toString(),
-      fromToken: args.inputToken,
-      toToken: args.outputToken,
-      fromAmount: args.inputAmount.toString(),
-      toAmount: args.outputAmount.toString(),
-      sender: args.depositor,
-      recipient: args.recipient,
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: parsedLog.args.sellToken.toLowerCase(),
+      toToken: parsedLog.args.buyToken.toLowerCase(),
+      fromAmount: parsedLog.args.sellAmount.toString(),
+      toAmount: parsedLog.args.buyAmount.toString(),
+      sender: transaction.from.toLowerCase(),
+      recipient: transaction.from.toLowerCase()
     };
   }
 }
