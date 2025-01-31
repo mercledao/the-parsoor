@@ -5,7 +5,11 @@ import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
 import Across from "./Across";
 import Debridge from "./Debridge";
+<<<<<<< HEAD
 import Stargate from "./Stargate";
+=======
+import Bungee from "./Bungee"
+>>>>>>> d198654 (feat: add Bungee protocol implementation with transaction parsing)
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -14,5 +18,9 @@ export const parsers = {
   [protocols.odos.identifier]: new Odos(),
   [protocols.across.identifier]: new Across(),
   [protocols.debridge.identifier]: new Debridge(),
+<<<<<<< HEAD
   [protocols.stargate.identifier]: new Stargate(),
+=======
+  [protocols.bungee.identifier]: new Bungee(),
+>>>>>>> d198654 (feat: add Bungee protocol implementation with transaction parsing)
 };
