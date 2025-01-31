@@ -43,4 +43,11 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
   },
+  bungee: {
+    identifier: "bungee",
+    name: "Bungee",
+    twitter: "https://x.com/BungeeExchange",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/bungee.png",
+    website: "https://www.bungee.exchange/",
+  },
 };
