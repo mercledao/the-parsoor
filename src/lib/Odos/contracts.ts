@@ -64,7 +64,7 @@ const contracts: IProtocolContractDefinitions = {
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.POLYGON]: {
-        address: "0x4E3288c9ca110bCC82bf38F09A7b425c095d92Bf ",
+        address: "0x4E3288c9ca110bCC82bf38F09A7b425c095d92Bf",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.AVALANCHE]: {
@@ -72,7 +72,7 @@ const contracts: IProtocolContractDefinitions = {
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.BSC]: {
-        address: "0x89b8AA89FDd0507a99d334CBe3C808fAFC7d850E ",
+        address: "0x89b8AA89FDd0507a99d334CBe3C808fAFC7d850E",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.FANTOM]: {
