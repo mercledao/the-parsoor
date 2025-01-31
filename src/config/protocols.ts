@@ -43,4 +43,18 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
   },
+  oneinch: {
+    identifier: "debridge",
+    name: "Debridge",
+    twitter: "https://x.com/1inch",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/oneinch.png",
+    website: "https://1inch.io/",
+  },
+  paraswap: {
+    identifier: "paraswap",
+    name: "Paraswap",
+    twitter: "https://x.com/parasvwap",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/paraswap.png",
+    website: "https://www.paraswap.xyz/",
+  },
 };
