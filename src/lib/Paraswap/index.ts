@@ -7,7 +7,7 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import { AugustusV5Parser, AugustusV6Parser } from "./parsers";
+import { AugustusV5Parser, AugustusV6Parser, AugustusRFQParser } from "./parsers";
 
 export default class Paraswap implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
@@ -38,6 +38,15 @@ export default class Paraswap implements IProtocolParserExport {
       )
     ) {
       const action = AugustusV6Parser.parseTransaction(transaction);
+      actions.push(...action);
+    } else if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.AUGUSTUS_RFQ,
+        contracts
+      )
+    ) {
+      const action = AugustusRFQParser.parseTransaction(transaction);
       actions.push(...action);
     }
     return actions;

@@ -5,6 +5,7 @@ import { IProtocolTestingData } from "../../../src/types";
 export enum PARASWAP_VERSIONS {
   V5 = "v5",
   V6 = "v6.2",
+  LIMIT = "1"
 }
 
 export const paraswapSimpleSwappedData: IProtocolTestingData = {
@@ -147,13 +148,47 @@ export const paraswapSimpleSwappedData: IProtocolTestingData = {
         {
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: "0xF469fBD2abcd6B9de8E169d128226C0Fc90a012e",
-          toToken: "0xF469fBD2abcd6B9de8E169d128226C0Fc90a012e",
+          toToken: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
           fromAmount: "16725",
           toAmount: "16177",
           sender: "0x2ABe7b8f475eD7F2d881F51D9F4880e4871F680f",
           recipient: "0x2ABe7b8f475eD7F2d881F51D9F4880e4871F680f",
         },
       ],
+    },
+    {
+      txnHash:
+        "0xb62bdabe3bb70c38dd7fa9b625960fc6abd5fb5df47549957691e10dc714d0e7",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x657e8C867D8B37dCC18fA4Caead9C45EB088C642",
+          toToken: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+          fromAmount: "5004688",
+          toAmount: "4999689",
+          sender: "0x9Db28EFB4872b65C79BbD0dA9a3474519F5F0035",
+          recipient: "0x9Db28EFB4872b65C79BbD0dA9a3474519F5F0035",
+        },
+      ],
     }
   ],
+  [PARASWAP_VERSIONS.LIMIT]: [
+    {
+      txnHash:
+        "0x27b446cde4eab3189c2155b5aaea7cb7a748d582810fb39058397abd774b1569",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x9ff58067Bd8D239000010c154C6983A325Df138E",
+          toToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          fromAmount: "1360000000000000000",
+          toAmount: "49034555000",
+          sender: "0xfcFEE36a053063751FdbeeBC6414aDac514b8410",
+          recipient: "0xfcFEE36a053063751FdbeeBC6414aDac514b8410",
+        },
+      ],
+    }
+  ]
 };
