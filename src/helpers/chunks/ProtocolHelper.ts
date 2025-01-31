@@ -5,7 +5,8 @@ import {
   ITransaction,
   ITransactionLog,
 } from "../../types";
-const ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+const ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE =
+  "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
 export class ProtocolHelper {
   /**
@@ -126,9 +127,7 @@ export class ProtocolHelper {
     return listenerContracts;
   }
 
-  public static parseERC20TransferLogs(
-    logs: ITransactionLog[]
-  ): {
+  public static parseERC20TransferLogs(logs: ITransactionLog[]): {
     fromAddress: string;
     toAddress: string;
     value: bigint;
@@ -138,22 +137,33 @@ export class ProtocolHelper {
 
     // Filter and parse logs
     const parsedLogs = logs
-      .filter(log => log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE)
-      .map(log => {
-        // Decode `from` and `to` addresses from topics
-        const fromAddress = getAddress(toBeHex(log.topics[1]));
-        const toAddress = getAddress(toBeHex(log.topics[2]));
+      .filter(
+        (log) =>
+          log.topics &&
+          log.topics.length >= 3 &&
+          log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE
+      )
+      .map((log) => {
+        try {
+          // Ensure topics contain valid addresses
+          const fromAddress = getAddress(`0x${log.topics[1].slice(-40)}`);
+          const toAddress = getAddress(`0x${log.topics[2].slice(-40)}`);
 
-        // Decode `value` from the data field
-        const [value] = abiCoder.decode(["uint256"], log.data);
+          // Decode `value` from data field
+          const [value] = abiCoder.decode(["uint256"], log.data);
 
-        return {
-          fromAddress,
-          toAddress,
-          value: BigInt(value.toString()),
-          contractAddress: log.contractAddress
-        };
-      });
+          return {
+            fromAddress,
+            toAddress,
+            value: BigInt(value.toString()),
+            contractAddress: log.contractAddress,
+          };
+        } catch (error) {
+          console.error("Error parsing log:", log, error);
+          return null;
+        }
+      })
+      .filter(Boolean); // Remove null values
 
     return parsedLogs;
   }
