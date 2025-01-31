@@ -23,7 +23,7 @@ export type ISingleSwapAction = {
   /**
    * The amount being swapped to
    */
-  toAmount?: string;
+  toAmount?: string | null;
   /**
    * The recipient of the swap
    */
