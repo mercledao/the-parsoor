@@ -106,9 +106,9 @@ export class UniswapParser {
 
     const functionName = parsedTxn.name.toLowerCase();
 
-    const isEthInput =
-      functionName.includes("exacteth") || functionName.includes("ethforexact");
-    const isEthOutput = functionName.includes("foreth");
+    const isEthInput = functionName.includes("ethfor");
+    const isEthOutput =
+      functionName.includes("foreth") || functionName.includes("forexacteth");
     const isExactInput =
       functionName.includes("exact") && !functionName.includes("forexact");
 
