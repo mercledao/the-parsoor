@@ -7,7 +7,7 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import { AugustusV5Parser } from "./parsers";
+import { AugustusV5Parser, AugustusV6Parser } from "./parsers";
 
 export default class Paraswap implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
@@ -37,7 +37,7 @@ export default class Paraswap implements IProtocolParserExport {
         contracts
       )
     ) {
-      const action = AugustusV5Parser.parseTransaction(transaction);
+      const action = AugustusV6Parser.parseTransaction(transaction);
       actions.push(...action);
     }
     return actions;
