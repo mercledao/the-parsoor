@@ -52,16 +52,16 @@ export enum COMMAND_ENUM {
   NFT20 = 0x18,
   X2Y2_1155 = 0x19,
   FOUNDATION = 0x1a,
-  SWEEP_ERC1155 = 0x1b
+  SWEEP_ERC1155 = 0x1b,
 }
 
 export enum EVENT_ENUM {
   // V2 Events
   V2_SWAP = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822",
-  
+
   // V3 Events
   V3_SWAP = "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
-  
+
   // Universal Router Events
   COMMAND_EXECUTED = "0x7737965cdb777c891128c8c79c26b0b4d1d8e261a5c3551fd8f5a8aa939d0b4c",
   NATIVE_TRANSFER_RECEIVED = "0x0a7bb2c1cf6269d1f1c8c4c10bf8e1417e1b64352001305552e89fea8d01db16",
@@ -120,16 +120,16 @@ export const contracts: IProtocolContractDefinitions = {
     events: {
       [EVENT_ENUM.V2_SWAP]: {
         abi: new ethers.Interface([
-          "event Swap(address indexed sender, uint amount0In, uint amount1In, uint amount0Out, uint amount1Out, address indexed to)"
-        ])
-      }
-    }
+          "event Swap(address indexed sender, uint amount0In, uint amount1In, uint amount0Out, uint amount1Out, address indexed to)",
+        ]),
+      },
+    },
   },
   [CONTRACT_ENUM.UNIVERSAL_ROUTER]: {
     interface: new ethers.Interface([
       ...UniswapUniversalRouterAbi,
       "function execute(bytes commands, bytes[] inputs) payable",
-      "function execute(bytes commands, bytes[] inputs, uint256 deadline) payable"
+      "function execute(bytes commands, bytes[] inputs, uint256 deadline) payable",
     ]),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
@@ -184,103 +184,103 @@ export const contracts: IProtocolContractDefinitions = {
     events: {
       [EVENT_ENUM.COMMAND_EXECUTED]: {
         abi: new ethers.Interface([
-          "event CommandExecuted(bytes32 indexed commandHash, uint256 indexed commandType)"
-        ])
+          "event CommandExecuted(bytes32 indexed commandHash, uint256 indexed commandType)",
+        ]),
       },
       [EVENT_ENUM.NATIVE_TRANSFER_RECEIVED]: {
         abi: new ethers.Interface([
-          "event NativeTransferReceived(address indexed recipient, uint256 amount)"
-        ])
-      }
-    }
+          "event NativeTransferReceived(address indexed recipient, uint256 amount)",
+        ]),
+      },
+    },
   },
   [CONTRACT_ENUM.ROUTER_V3_01]: {
     interface: new ethers.Interface(SwapRouter01Abi),
     deployments: {
       [CHAIN_ID.ARBITRUM]: {
         address: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.ETHEREUM]: {
         address: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.OPTIMISM]: {
         address: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.POLYGON]: {
         address: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
     },
     events: {
       [EVENT_ENUM.V3_SWAP]: {
         abi: new ethers.Interface([
-          "event Swap(address indexed sender, address indexed recipient, int256 amount0, int256 amount1, uint160 sqrtPriceX96, uint128 liquidity, int24 tick)"
-        ])
-      }
-    }
+          "event Swap(address indexed sender, address indexed recipient, int256 amount0, int256 amount1, uint160 sqrtPriceX96, uint128 liquidity, int24 tick)",
+        ]),
+      },
+    },
   },
   [CONTRACT_ENUM.ROUTER_V3_02]: {
     interface: new ethers.Interface(SwapRouter02Abi),
     deployments: {
       [CHAIN_ID.AVALANCHE]: {
         address: "0xbb00FF08d01D300023C629E8fFfFcb65A5a578cE",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.ETHEREUM]: {
         address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.ARBITRUM]: {
         address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.BSC]: {
         address: "0xB971eF87ede563556b2ED4b1C0b0019111Dd85d2",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.BASE]: {
         address: "0x2626664c2603336E57B271c5C0b26F421741e481",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.BLAST]: {
         address: "0x549FEB8c9bd4c12Ad2AB27022dA12492aC452B66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.CELO]: {
         address: "0x5615CDAb10dc425a742d643d949a7F474C01abc4",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.OPTIMISM]: {
         address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.POLYGON]: {
         address: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.WORLDCHAIN]: {
         address: "0x091AD9e2e6e5eD44c1c66dB50e49A601F9f36cF6",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.ZKSYNC_ERA]: {
         address: "0x99c56385daBCE3E81d8499d0b8d0257aBC07E8A3",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.ZORA]: {
         address: "0x7De04c96BE5159c3b5CeffC82aa176dc81281557",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.OUTGOING],
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
     },
     events: {
       [EVENT_ENUM.V3_SWAP]: {
         abi: new ethers.Interface([
-          "event Swap(address indexed sender, address indexed recipient, int256 amount0, int256 amount1, uint160 sqrtPriceX96, uint128 liquidity, int24 tick)"
-        ])
-      }
-    }
+          "event Swap(address indexed sender, address indexed recipient, int256 amount0, int256 amount1, uint160 sqrtPriceX96, uint128 liquidity, int24 tick)",
+        ]),
+      },
+    },
   },
   [CONTRACT_ENUM.LIMIT_ORDER_ROUTER]: {
     interface: new ethers.Interface(LimitOrderRouterAbi),
@@ -288,15 +288,15 @@ export const contracts: IProtocolContractDefinitions = {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x00000011F84B9aa48e5f8aA8B9897600006289Be",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      }
+      },
     },
     events: {
       [EVENT_ENUM.LIMIT_ORDER_FILL]: {
         abi: new ethers.Interface([
-          "event LimitOrderFilled(bytes32 indexed orderHash, address indexed maker, address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 deadline)"
-        ])
-      }
-    }
+          "event LimitOrderFilled(bytes32 indexed orderHash, address indexed maker, address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 deadline)",
+        ]),
+      },
+    },
   },
   [CONTRACT_ENUM.EXCLUSIVE_LIMIT_ORDER_ROUTER]: {
     interface: new ethers.Interface(LimitOrderRouterAbi),
@@ -304,14 +304,14 @@ export const contracts: IProtocolContractDefinitions = {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x6000da47483062A0D734Ba3dc7576Ce6A0B645C4",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      }
+      },
     },
     events: {
       [EVENT_ENUM.LIMIT_ORDER_FILL]: {
         abi: new ethers.Interface([
-          "event LimitOrderFilled(bytes32 indexed orderHash, address indexed maker, address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 deadline)"
-        ])
-      }
-    }
-  }
+          "event LimitOrderFilled(bytes32 indexed orderHash, address indexed maker, address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 deadline)",
+        ]),
+      },
+    },
+  },
 };
