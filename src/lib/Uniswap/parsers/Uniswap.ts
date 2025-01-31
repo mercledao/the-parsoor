@@ -4,7 +4,7 @@ import { ProtocolHelper } from "../../../helpers";
 import {
   ISingleSwapAction,
   ITransaction,
-  ITransactionAction
+  ITransactionAction,
 } from "../../../types";
 import { COMMAND_ENUM, CONTRACT_ENUM, contracts } from "../contracts";
 
@@ -22,35 +22,65 @@ interface IV3SwapParams {
 interface CommandConfig {
   decodeFormat: Array<string>;
   processPath: (path: any) => string[];
-  getTokenOrder: (path: string[], isExactIn: boolean) => { fromToken: string; toToken: string };
-  getAmountOrder: (amounts: any[], isExactIn: boolean) => { fromAmount: string; toAmount: string };
+  getTokenOrder: (
+    path: string[],
+    isExactIn: boolean
+  ) => { fromToken: string; toToken: string };
+  getAmountOrder: (
+    amounts: any[],
+    isExactIn: boolean
+  ) => { fromAmount: string; toAmount: string };
 }
 
 const COMMAND_CONFIGS: Partial<Record<COMMAND_ENUM, CommandConfig>> = {
   [COMMAND_ENUM.V3_SWAP_EXACT_IN]: {
-    decodeFormat: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
+    decodeFormat: ["address", "uint256", "uint256", "bytes", "bool"],
     processPath: (pathBytes: string) => UniswapParser.decodeV3Path(pathBytes),
-    getTokenOrder: (path) => ({ fromToken: path[0], toToken: path[path.length - 1] }),
-    getAmountOrder: (amounts) => ({ fromAmount: amounts[1].toString(), toAmount: amounts[2].toString() })
+    getTokenOrder: (path) => ({
+      fromToken: path[0],
+      toToken: path[path.length - 1],
+    }),
+    getAmountOrder: (amounts) => ({
+      fromAmount: amounts[1].toString(),
+      toAmount: amounts[2].toString(),
+    }),
   },
   [COMMAND_ENUM.V3_SWAP_EXACT_OUT]: {
-    decodeFormat: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
+    decodeFormat: ["address", "uint256", "uint256", "bytes", "bool"],
     processPath: (pathBytes: string) => UniswapParser.decodeV3Path(pathBytes),
-    getTokenOrder: (path) => ({ fromToken: path[path.length - 1], toToken: path[0] }),
-    getAmountOrder: (amounts) => ({ fromAmount: amounts[2].toString(), toAmount: amounts[1].toString() })
+    getTokenOrder: (path) => ({
+      fromToken: path[path.length - 1],
+      toToken: path[0],
+    }),
+    getAmountOrder: (amounts) => ({
+      fromAmount: amounts[2].toString(),
+      toAmount: amounts[1].toString(),
+    }),
   },
   [COMMAND_ENUM.V2_SWAP_EXACT_IN]: {
-    decodeFormat: ['address', 'uint256', 'uint256', 'address[]', 'bool'],
+    decodeFormat: ["address", "uint256", "uint256", "address[]", "bool"],
     processPath: (path: string[]) => path,
-    getTokenOrder: (path) => ({ fromToken: path[0], toToken: path[path.length - 1] }),
-    getAmountOrder: (amounts) => ({ fromAmount: amounts[1].toString(), toAmount: amounts[2].toString() })
+    getTokenOrder: (path) => ({
+      fromToken: path[0],
+      toToken: path[path.length - 1],
+    }),
+    getAmountOrder: (amounts) => ({
+      fromAmount: amounts[1].toString(),
+      toAmount: amounts[2].toString(),
+    }),
   },
   [COMMAND_ENUM.V2_SWAP_EXACT_OUT]: {
-    decodeFormat: ['address', 'uint256', 'uint256', 'address[]', 'bool'],
+    decodeFormat: ["address", "uint256", "uint256", "address[]", "bool"],
     processPath: (path: string[]) => path,
-    getTokenOrder: (path) => ({ fromToken: path[path.length - 1], toToken: path[0] }),
-    getAmountOrder: (amounts) => ({ fromAmount: amounts[2].toString(), toAmount: amounts[1].toString() })
-  }
+    getTokenOrder: (path) => ({
+      fromToken: path[path.length - 1],
+      toToken: path[0],
+    }),
+    getAmountOrder: (amounts) => ({
+      fromAmount: amounts[2].toString(),
+      toAmount: amounts[1].toString(),
+    }),
+  },
 };
 
 export class UniswapParser {
@@ -59,9 +89,11 @@ export class UniswapParser {
   private static readonly EXACT_INPUT = "exactInput";
   private static readonly EXACT_OUTPUT = "exactOutput";
 
-  public static async parseV2Transaction(transaction: ITransaction): Promise<ITransactionAction[]> {
+  public static async parseV2Transaction(
+    transaction: ITransaction
+  ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
-    
+
     const parsedTxn = ProtocolHelper.parseTransaction(
       transaction,
       CONTRACT_ENUM.ROUTER_V2,
@@ -69,30 +101,44 @@ export class UniswapParser {
     );
 
     if (!parsedTxn || !parsedTxn.args.path || parsedTxn.args.path.length < 2) {
-      throw new Error("Failed to parse V2 transaction: Invalid or missing path");
+      return actions;
     }
 
     const functionName = parsedTxn.name.toLowerCase();
-    
-    const isEthInput = functionName.includes('exacteth') || functionName.includes('ethforexact');
-    const isEthOutput = functionName.includes('foreth');
-    const isExactInput = functionName.includes('exact') && !functionName.includes('forexact');
+
+    const isEthInput =
+      functionName.includes("exacteth") || functionName.includes("ethforexact");
+    const isEthOutput = functionName.includes("foreth");
+    const isExactInput =
+      functionName.includes("exact") && !functionName.includes("forexact");
 
     const action: ISingleSwapAction = {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: isEthInput ? ethers.ZeroAddress : parsedTxn.args.path[0],
-      toToken: isEthOutput ? ethers.ZeroAddress : parsedTxn.args.path[parsedTxn.args.path.length - 1],
-      fromAmount: this.parseAmount(isExactInput, isEthInput, parsedTxn.args, transaction),
+      toToken: isEthOutput
+        ? ethers.ZeroAddress
+        : parsedTxn.args.path[parsedTxn.args.path.length - 1],
+      fromAmount: this.parseAmount(
+        isExactInput,
+        isEthInput,
+        parsedTxn.args,
+        transaction
+      ),
       toAmount: this.parseOutputAmount(isExactInput, parsedTxn.args),
-      recipient: parsedTxn.args.to || transaction.from
+      recipient: parsedTxn.args.to || transaction.from,
     };
 
     actions.push(action);
     return actions;
   }
 
-  public static async parseV3Transaction(transaction: ITransaction, routerType: CONTRACT_ENUM): Promise<ITransactionAction[]> {
-    const parsedTxn = contracts[routerType].interface.parseTransaction({ data: transaction.data });
+  public static async parseV3Transaction(
+    transaction: ITransaction,
+    routerType: CONTRACT_ENUM
+  ): Promise<ITransactionAction[]> {
+    const parsedTxn = contracts[routerType].interface.parseTransaction({
+      data: transaction.data,
+    });
     if (!parsedTxn) {
       throw new Error("Failed to parse V3 transaction data");
     }
@@ -105,7 +151,12 @@ export class UniswapParser {
     return [action];
   }
 
-  private static parseAmount(isExactInput: boolean, isEthInput: boolean, args: any, transaction: ITransaction): string {
+  private static parseAmount(
+    isExactInput: boolean,
+    isEthInput: boolean,
+    args: any,
+    transaction: ITransaction
+  ): string {
     if (isExactInput) {
       return isEthInput ? transaction.value : args.amountIn.toString();
     }
@@ -114,57 +165,69 @@ export class UniswapParser {
 
   private static parseOutputAmount(isExactInput: boolean, args: any): string {
     return isExactInput
-      ? (args.amountOutMin?.toString() || '0')
+      ? args.amountOutMin?.toString() || "0"
       : args.amountOut.toString();
   }
 
   public static decodeV3Path(path: string): string[] {
-    if (!path.startsWith('0x')) return [];
-    
+    if (!path.startsWith("0x")) return [];
+
     const cleanPath = path.slice(2);
     const tokens: string[] = [];
-    
+
     // V3 paths are encoded as: tokenIn (20 bytes) + fee (3 bytes) + tokenOut (20 bytes)
     // For each hop: address (20 bytes) = 40 hex chars, fee (3 bytes) = 6 hex chars
     let i = 0;
     while (i < cleanPath.length) {
-      const token = '0x' + cleanPath.slice(i, i + 40);
+      const token = "0x" + cleanPath.slice(i, i + 40);
       tokens.push(token.toLowerCase());
-      
+
       // Skip the token address (40 chars) and fee (6 chars)
       i += 46;
     }
-    
+
     return tokens;
   }
 
   private static async createV3SwapAction(
-    parsedTxn: ethers.TransactionDescription, 
+    parsedTxn: ethers.TransactionDescription,
     transaction: ITransaction
   ): Promise<ISingleSwapAction | null> {
     const functionName = parsedTxn.name.toLowerCase();
     const params: IV3SwapParams = {
       tokenIn: parsedTxn.args.tokenIn || parsedTxn.args.params?.tokenIn,
       tokenOut: parsedTxn.args.tokenOut || parsedTxn.args.params?.tokenOut,
-      amountIn: parsedTxn.args.amountIn?.toString() || parsedTxn.args.params?.amountIn?.toString(),
-      amountInMaximum: parsedTxn.args.amountInMaximum?.toString() || parsedTxn.args.params?.amountInMaximum?.toString(),
-      amountOut: parsedTxn.args.amountOut?.toString() || parsedTxn.args.params?.amountOut?.toString(),
-      amountOutMinimum: parsedTxn.args.amountOutMinimum?.toString() || parsedTxn.args.params?.amountOutMinimum?.toString(),
+      amountIn:
+        parsedTxn.args.amountIn?.toString() ||
+        parsedTxn.args.params?.amountIn?.toString(),
+      amountInMaximum:
+        parsedTxn.args.amountInMaximum?.toString() ||
+        parsedTxn.args.params?.amountInMaximum?.toString(),
+      amountOut:
+        parsedTxn.args.amountOut?.toString() ||
+        parsedTxn.args.params?.amountOut?.toString(),
+      amountOutMinimum:
+        parsedTxn.args.amountOutMinimum?.toString() ||
+        parsedTxn.args.params?.amountOutMinimum?.toString(),
       recipient: parsedTxn.args.recipient || parsedTxn.args.params?.recipient,
-      path: parsedTxn.args.path || parsedTxn.args.params?.path
+      path: parsedTxn.args.path || parsedTxn.args.params?.path,
     };
-    const isExactInput = functionName.includes('exactinput');
+    const isExactInput = functionName.includes("exactinput");
 
-    if (functionName === this.EXACT_INPUT_SINGLE.toLowerCase() || 
-        functionName === this.EXACT_OUTPUT_SINGLE.toLowerCase()) {
+    if (
+      functionName === this.EXACT_INPUT_SINGLE.toLowerCase() ||
+      functionName === this.EXACT_OUTPUT_SINGLE.toLowerCase()
+    ) {
       return this.createSingleV3SwapAction(params, isExactInput, transaction);
     }
 
-    if (functionName === this.EXACT_INPUT.toLowerCase() || 
-        functionName === this.EXACT_OUTPUT.toLowerCase()) {
+    if (
+      functionName === this.EXACT_INPUT.toLowerCase() ||
+      functionName === this.EXACT_OUTPUT.toLowerCase()
+    ) {
       return this.createMultiHopV3SwapAction(params, isExactInput, transaction);
     }
-    
+
     return null;
   }
 
@@ -177,9 +240,15 @@ export class UniswapParser {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: isExactInput ? params.tokenIn : params.tokenOut,
       toToken: isExactInput ? params.tokenOut : params.tokenIn,
-      fromAmount: (isExactInput ? params.amountIn : params.amountInMaximum || transaction.value).toString(),
-      toAmount: (isExactInput ? params.amountOutMinimum : params.amountOut || '0').toString(),
-      recipient: params.recipient || transaction.from
+      fromAmount: (isExactInput
+        ? params.amountIn
+        : params.amountInMaximum || transaction.value
+      ).toString(),
+      toAmount: (isExactInput
+        ? params.amountOutMinimum
+        : params.amountOut || "0"
+      ).toString(),
+      recipient: params.recipient || transaction.from,
     };
   }
 
@@ -189,26 +258,40 @@ export class UniswapParser {
     transaction: ITransaction
   ): ISingleSwapAction | null {
     if (!params.path) return null;
-    
+
     const decodedPath = this.decodeV3Path(params.path);
     if (decodedPath.length < 2) return null;
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: isExactInput ? decodedPath[0] : decodedPath[decodedPath.length - 1],
-      toToken: isExactInput ? decodedPath[decodedPath.length - 1] : decodedPath[0],
-      fromAmount: (isExactInput ? params.amountIn : params.amountInMaximum || transaction.value).toString(),
-      toAmount: (isExactInput ? params.amountOutMinimum : params.amountOut || '0').toString(),
-      recipient: params.recipient || transaction.from
+      fromToken: isExactInput
+        ? decodedPath[0]
+        : decodedPath[decodedPath.length - 1],
+      toToken: isExactInput
+        ? decodedPath[decodedPath.length - 1]
+        : decodedPath[0],
+      fromAmount: (isExactInput
+        ? params.amountIn
+        : params.amountInMaximum || transaction.value
+      ).toString(),
+      toAmount: (isExactInput
+        ? params.amountOutMinimum
+        : params.amountOut || "0"
+      ).toString(),
+      recipient: params.recipient || transaction.from,
     };
   }
 
-  public static async parseUniversalRouterTransaction(transaction: ITransaction): Promise<ITransactionAction[]> {
+  public static async parseUniversalRouterTransaction(
+    transaction: ITransaction
+  ): Promise<ITransactionAction[]> {
     if (!transaction.data) {
       throw new Error("No transaction data found");
     }
 
-    const decoded = contracts[CONTRACT_ENUM.UNIVERSAL_ROUTER].interface.parseTransaction({ data: transaction.data });
+    const decoded = contracts[
+      CONTRACT_ENUM.UNIVERSAL_ROUTER
+    ].interface.parseTransaction({ data: transaction.data });
     if (!decoded) {
       throw new Error("Failed to decode Universal Router transaction");
     }
@@ -222,7 +305,7 @@ export class UniswapParser {
       const command = commands[i];
       const input = inputs[i];
 
-      const commandType = command & 0x1F;
+      const commandType = command & 0x1f;
       const config = COMMAND_CONFIGS[commandType];
 
       if (config) {
@@ -233,7 +316,10 @@ export class UniswapParser {
 
         const path = config.processPath(decodedInput[3]);
         const { fromToken, toToken } = config.getTokenOrder(path, true);
-        const { fromAmount, toAmount } = config.getAmountOrder(decodedInput, true);
+        const { fromAmount, toAmount } = config.getAmountOrder(
+          decodedInput,
+          true
+        );
 
         actions.push({
           type: ACTION_ENUM.SINGLE_SWAP,
@@ -241,7 +327,7 @@ export class UniswapParser {
           toToken,
           fromAmount,
           toAmount,
-          recipient: decodedInput[0]
+          recipient: decodedInput[0],
         });
       }
     }
