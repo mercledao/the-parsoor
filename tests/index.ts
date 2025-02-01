@@ -172,6 +172,7 @@ export class ProtocolParserUtils {
     expect(actualAction.toToken).toBe(expectedAction.toToken);
     expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
+    expect(actualAction.sender).toBe(expectedAction.sender);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
     if (expectedAction.fee !== undefined) {
       expect(actualAction.fee).toBe(expectedAction.fee);

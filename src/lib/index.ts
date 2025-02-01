@@ -5,6 +5,7 @@ import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
 import Across from "./Across";
 import Debridge from "./Debridge";
+import Balancer from "./Balancer"
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -13,4 +14,6 @@ export const parsers = {
   [protocols.odos.identifier]: new Odos(),
   [protocols.across.identifier]: new Across(),
   [protocols.debridge.identifier]: new Debridge(),
+  [protocols.balancer.identifier]: new Balancer(),
+  
 };
