@@ -43,4 +43,11 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
   },
+  balancer: {
+    identifier: "balancer",
+    name: "Balancer",
+    twitter: "https://x.com/Balancer",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/balancer.png",
+    website: "https://balancer.fi/",
+  },
 };
