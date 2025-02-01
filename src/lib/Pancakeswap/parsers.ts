@@ -35,19 +35,30 @@ export class SmartRouterContractParser {
     transaction: ITransaction,
     swapLog: ITransactionLog
   ): ISingleSwapAction {
-    const parsedFilledDepositLog = ProtocolHelper.parseLog(
+
+    const parsedSwapLog = ProtocolHelper.parseLog(
       swapLog,
       contracts.SMART_ROUTER_V3.events[EVENT_ENUM.SWAP]
     );
 
-    const args = parsedFilledDepositLog.args;
+    const erc20Transactions = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
+    
+    const incomingTxns = erc20Transactions.filter((t)=>{
+      return t.toAddress === transaction.from;
+    })
+    
+    const outgoingTxns = erc20Transactions.filter((t)=>{
+      return t.fromAddress === transaction.from;
+    })
+
+    const args = parsedSwapLog.args;
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: args.amount0,
-      toToken: args.amount1,
-      fromAmount: args.fromAmount.toString(),
-      toAmount: args.toAmount.toString(),
+      fromToken: outgoingTxns[0]?.contractAddress ?? null,
+      toToken: incomingTxns[0]?.contractAddress ?? null,
+      fromAmount: args.amount0 >= '0n' ? args.amount0.toString() : (-args.amount0).toString(),
+      toAmount: args.amount1.toString(),
       sender: transaction.from,
       recipient: args.recipient
     };
@@ -60,29 +71,101 @@ export class SwapRouterContractParser {
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
 
-    const parsedTxn = ProtocolHelper.parseTransaction(
-      transaction,
-      CONTRACT_ENUM.SWAP_ROUTER_V3,
-      contracts
+    const swapLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.SWAP
     );
-    if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.EXACT_INPUT_SINGLE) {
-      actions.push(this.parseExactInputTransaction(parsedTxn));
+
+    if (swapLog) {
+      actions.push(this.parseSingleswap(transaction, swapLog));
+      return actions;
     }
     return actions;
   }
 
-  private static parseExactInputTransaction(
-    parsedTxn: ethers.TransactionDescription
+  private static parseSingleswap(
+    transaction: ITransaction,
+    swapLog: ITransactionLog
   ): ISingleSwapAction {
+
+    const parsedSwapLog = ProtocolHelper.parseLog(
+      swapLog,
+      contracts.SWAP_ROUTER_V3.events[EVENT_ENUM.SWAP]
+    );
+
+    const erc20Transactions = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
+
+    const incomingTxns = erc20Transactions.filter((t)=>{
+      return t.toAddress === transaction.from;
+    })
+    
+    const outgoingTxns = erc20Transactions.filter((t)=>{
+      return t.fromAddress === transaction.from;
+    })
+
+    const args = parsedSwapLog.args;
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: parsedTxn.args.params.tokenIn,
-      toToken: parsedTxn.args.params.tokenOut,
-      fromAmount: parsedTxn.args.params.amountOutMinimum.toString(),
-      toAmount: parsedTxn.args.params.amountIn.toString(),
-      fee: parsedTxn.args.params.fee.toString(),
-      recipient: parsedTxn.args.params.recipient
+      fromToken: outgoingTxns[0].contractAddress,
+      toToken: incomingTxns[0].contractAddress,
+      fromAmount: args.amount0 >= '0n' ? args.amount0.toString() : (-args.amount0).toString(),
+      toAmount: args.amount1.toString(),
+      sender: transaction.from,
+      recipient: args.recipient
+    };
+  }
+}
+
+
+export class RouterV2ContractParser {
+  public static parseTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const swapLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.SWAP_V2
+    );
+
+    if (swapLog) {
+      actions.push(this.parseSingleswap(transaction, swapLog));
+      return actions;
+    }
+    return actions;
+  }
+
+  private static parseSingleswap(
+    transaction: ITransaction,
+    swapLog: ITransactionLog
+  ): ISingleSwapAction {
+
+    const parsedSwapLog = ProtocolHelper.parseLog(
+      swapLog,
+      contracts.ROUTER_V2.events[EVENT_ENUM.SWAP_V2]
+    );
+    console.log(parsedSwapLog);
+    
+
+    const erc20Transactions = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
+
+    const incomingTxns = erc20Transactions.filter((t)=>{
+      return t.toAddress === transaction.from;
+    })
+    
+    const outgoingTxns = erc20Transactions.filter((t)=>{
+      return t.fromAddress === transaction.from;
+    })
+
+    const args = parsedSwapLog.args;
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: outgoingTxns[0].contractAddress,
+      toToken: incomingTxns[0].contractAddress,
+      fromAmount: args.amount0Out.toString(),
+      toAmount: args.amount1In.toString(),
+      sender: transaction.from,
+      recipient: args.to
     };
   }
 }

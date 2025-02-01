@@ -7,7 +7,7 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import { SmartRouterContractParser, SwapRouterContractParser } from "./parsers";
+import { SmartRouterContractParser, SwapRouterContractParser, RouterV2ContractParser } from "./parsers";
 
 export default class Pancakeswap implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
@@ -38,6 +38,15 @@ export default class Pancakeswap implements IProtocolParserExport {
       )
     ) {
       const action = SwapRouterContractParser.parseTransaction(transaction);
+      actions.push(...action);
+    } else if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.ROUTER_V2,
+        contracts
+      )
+    ) {
+      const action = RouterV2ContractParser.parseTransaction(transaction);
       actions.push(...action);
     }
     return actions;
