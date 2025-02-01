@@ -3,10 +3,8 @@ import { ethers } from "ethers";
 import { ProtocolHelper } from "../../helpers";
 import {
   ISingleSwapAction,
-  IMultiSwapAction,
   ITransaction,
   ITransactionAction,
-  ITransactionLog,
 } from "../../types";
 import { contracts, EVENT_ENUM, CONTRACT_ENUM } from "./contracts";
 
