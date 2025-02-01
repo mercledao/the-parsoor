@@ -43,4 +43,11 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
   },
+  pancakeswap: {
+    identifier: "pancakeswap",
+    name: "Pancakeswap",
+    twitter: "https://x.com/PancakeSwap",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/pancakeswap.png",
+    website: "https://pancakeswap.finance/",
+  },
 };

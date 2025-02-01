@@ -47,6 +47,7 @@ export class ProtocolParserUtils {
       data.chainId,
       data.txnHash
     );
+    
     const actions =
       await parsers[this.protocolIdentifier].parseTransaction(formattedTxn);
     return actions;
