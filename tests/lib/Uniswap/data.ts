@@ -193,6 +193,21 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
     [UNISWAP_VERSIONS.V3]: [
       {
         txnHash:
+          "0x3c27a0d50ee09a819b14c2fdd90a5d69452bd0a06ecd6eaa9a0934832652dff1",
+        chainId: CHAIN_ID.ARBITRUM,
+        emittedActions: [
+          {
+            type: ACTION_ENUM.SINGLE_SWAP,
+            fromToken: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+            toToken: "0x0c880f6761F1af8d9Aa9C466984b80DAb9a8c9e8",
+            fromAmount: "735200000000000000",
+            toAmount: "627801737054184831883",
+            recipient: "0x0000000000000000000000000000000000000001",
+          },
+        ],
+      },
+      {
+        txnHash:
           "0xc74449edc8de913aadde6e9283e5fb0b7ee60933a8441150f772fddfde3be758",
         chainId: CHAIN_ID.ARBITRUM,
         emittedActions: [
