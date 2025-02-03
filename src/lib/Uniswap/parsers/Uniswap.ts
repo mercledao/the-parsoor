@@ -252,15 +252,15 @@ export class UniswapParser {
   ): ISingleSwapAction {
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: isExactInput ? params.tokenIn : params.tokenOut,
-      toToken: isExactInput ? params.tokenOut : params.tokenIn,
+      fromToken: params.tokenIn,
+      toToken: params.tokenOut,
       fromAmount: (isExactInput
         ? params.amountIn
-        : params.amountInMaximum || transaction.value
+        : params.amountInMaximum
       ).toString(),
       toAmount: (isExactInput
         ? params.amountOutMinimum
-        : params.amountOut || "0"
+        : params.amountOut
       ).toString(),
       recipient: params.recipient || transaction.from,
     };
