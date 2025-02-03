@@ -43,4 +43,11 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
   },
+  stargate: {
+    identifier: "stargate",
+    name: "Stargate",
+    twitter: "https://x.com/StargateFinance",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/stargate.png",
+    website: "https://stargate.finance/",
+  },
 };
