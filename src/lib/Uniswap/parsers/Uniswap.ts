@@ -139,16 +139,30 @@ export class UniswapParser {
     const parsedTxn = contracts[routerType].interface.parseTransaction({
       data: transaction.data,
     });
-    if (!parsedTxn) {
-      throw new Error("Failed to parse V3 transaction data");
-    }
 
-    const action = await this.createV3SwapAction(parsedTxn, transaction);
-    if (!action) {
-      throw new Error("Failed to create V3 swap action");
-    }
+    if (parsedTxn.name === "multicall") {
+      const result = [];
+      const calls =
+        parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
 
-    return [action];
+      for (const callData of calls) {
+        const subParsedTxn = contracts[routerType].interface.parseTransaction({
+          data: callData,
+        });
+
+        if (!subParsedTxn) continue;
+        const action = await this.createV3SwapAction(subParsedTxn, transaction);
+        if (action) {
+          result.push(action);
+        }
+      }
+
+      return result;
+    } else {
+      const action = await this.createV3SwapAction(parsedTxn, transaction);
+      if (!action) return [];
+      else return [action];
+    }
   }
 
   private static parseAmount(
@@ -285,15 +299,14 @@ export class UniswapParser {
   public static async parseUniversalRouterTransaction(
     transaction: ITransaction
   ): Promise<ITransactionAction[]> {
-    if (!transaction.data) {
-      throw new Error("No transaction data found");
-    }
+    const decoded = ProtocolHelper.parseTransaction(
+      transaction,
+      CONTRACT_ENUM.UNIVERSAL_ROUTER,
+      contracts
+    );
 
-    const decoded = contracts[
-      CONTRACT_ENUM.UNIVERSAL_ROUTER
-    ].interface.parseTransaction({ data: transaction.data });
     if (!decoded) {
-      throw new Error("Failed to decode Universal Router transaction");
+      throw new Error("Failed to parse Universal Router transaction");
     }
 
     const commands = ethers.getBytes(decoded.args[0]);
