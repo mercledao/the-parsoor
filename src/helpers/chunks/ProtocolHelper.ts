@@ -1,11 +1,12 @@
-import { ethers, AbiCoder, toBeHex, getAddress } from "ethers";
+import { AbiCoder, ethers, getAddress, toBeHex } from "ethers";
 import {
   IContractEventConfig,
   IProtocolContractDefinitions,
   ITransaction,
   ITransactionLog,
 } from "../../types";
-const ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+const ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE =
+  "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
 export class ProtocolHelper {
   /**
@@ -22,11 +23,6 @@ export class ProtocolHelper {
   ): ethers.TransactionDescription {
     const contractInterface = protocolContracts[contractName].interface;
     const decoded = contractInterface.parseTransaction(transaction);
-
-    if (!decoded) {
-      throw new Error("Failed to parse transaction");
-    }
-
     return decoded;
   }
 
@@ -126,9 +122,7 @@ export class ProtocolHelper {
     return listenerContracts;
   }
 
-  public static parseERC20TransferLogs(
-    logs: ITransactionLog[]
-  ): {
+  public static parseERC20TransferLogs(logs: ITransactionLog[]): {
     fromAddress: string;
     toAddress: string;
     value: bigint;
@@ -138,8 +132,11 @@ export class ProtocolHelper {
 
     // Filter and parse logs
     const parsedLogs = logs
-      .filter(log => log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE)
-      .map(log => {
+      .filter(
+        (log) =>
+          log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE
+      )
+      .map((log) => {
         // Decode `from` and `to` addresses from topics
         const fromAddress = getAddress(toBeHex(log.topics[1]));
         const toAddress = getAddress(toBeHex(log.topics[2]));
@@ -151,7 +148,7 @@ export class ProtocolHelper {
           fromAddress,
           toAddress,
           value: BigInt(value.toString()),
-          contractAddress: log.contractAddress
+          contractAddress: log.contractAddress,
         };
       });
 
