@@ -432,9 +432,9 @@ export class UniswapParser {
       fromToken,
       toToken,
       fromAmount:
-        parsedOutgoingLog.args.amount0In != 0
-          ? parsedOutgoingLog.args.amount0In.toString()
-          : parsedOutgoingLog.args.amount1In.toString(),
+        parsedOutgoingLog.args.amount1In != 0
+          ? parsedOutgoingLog.args.amount1In.toString()
+          : parsedOutgoingLog.args.amount0In.toString(),
       toAmount:
         parsedIncomingLog.args.amount0Out != 0
           ? parsedIncomingLog.args.amount0Out.toString()
