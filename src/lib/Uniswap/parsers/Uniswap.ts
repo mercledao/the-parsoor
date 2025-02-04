@@ -400,12 +400,12 @@ export class UniswapParser {
       this.getIncomingOutgoingLogEvents(swapLogs);
 
     let fromAmount = "0";
-
-    console.log(parsedTxn.args.path);
     
     const sortedPath = [...parsedTxn.args.path].sort((a, b) =>
-      a.toLowerCase().localeCompare(b.toLowerCase())
+      a.toLowerCase() > b.toLowerCase() ? 1 : -1
     );
+    
+
     const fromTokenIndex = sortedPath.indexOf(fromToken)
     
     if(fromTokenIndex === 0 ){
@@ -443,8 +443,9 @@ export class UniswapParser {
     let fromAmount = "0";
 
     const sortedPath = [...parsedTxn.args.path].sort((a, b) =>
-      a.toLowerCase().localeCompare(b.toLowerCase())
+      a.toLowerCase() > b.toLowerCase() ? 1 : -1
     );
+    
 
     const fromTokenIndex = sortedPath.indexOf(fromToken)
     
