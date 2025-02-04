@@ -1,4 +1,4 @@
-import { AbiCoder, ethers, getAddress, toBeHex } from "ethers";
+import { AbiCoder, ethers, getAddress, toBeHex, ZeroAddress } from "ethers";
 import {
   IContractEventConfig,
   IProtocolContractDefinitions,
@@ -137,10 +137,11 @@ export class ProtocolHelper {
           log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE
       )
       .map((log) => {
+        
         // Decode `from` and `to` addresses from topics
-        const fromAddress = getAddress(toBeHex(log.topics[1]));
-        const toAddress = getAddress(toBeHex(log.topics[2]));
-
+        const fromAddress = "0x" + log.topics[1].slice(-40) === ZeroAddress ? ZeroAddress :getAddress(toBeHex(log.topics[1]));
+        const toAddress = "0x" + log.topics[2].slice(-40) === ZeroAddress ? ZeroAddress : getAddress(toBeHex(log.topics[2]));
+      
         // Decode `value` from the data field
         const [value] = abiCoder.decode(["uint256"], log.data);
 
