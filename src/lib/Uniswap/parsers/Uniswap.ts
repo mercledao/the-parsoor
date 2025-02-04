@@ -13,7 +13,6 @@ import {
   contracts,
   EVENT_ENUM,
 } from "../contracts";
-import { format } from "path";
 
 interface IV3SwapParams {
   tokenIn: string;
