@@ -137,11 +137,19 @@ export class ProtocolHelper {
           log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE
       )
       .map((log) => {
-        
         // Decode `from` and `to` addresses from topics
-        const fromAddress = "0x" + log.topics[1].slice(-40) === ZeroAddress ? ZeroAddress :getAddress(toBeHex(log.topics[1]));
-        const toAddress = "0x" + log.topics[2].slice(-40) === ZeroAddress ? ZeroAddress : getAddress(toBeHex(log.topics[2]));
-      
+        const fromRaw = "0x" + log.topics[1].slice(-40);
+        const fromAddress =
+          fromRaw.toLowerCase() === ZeroAddress.toLowerCase()
+            ? ZeroAddress
+            : getAddress(fromRaw);
+
+        const toRaw = "0x" + log.topics[2].slice(-40);
+        const toAddress =
+          toRaw.toLowerCase() === ZeroAddress.toLowerCase()
+            ? ZeroAddress
+            : getAddress(toRaw);
+
         // Decode `value` from the data field
         const [value] = abiCoder.decode(["uint256"], log.data);
 
