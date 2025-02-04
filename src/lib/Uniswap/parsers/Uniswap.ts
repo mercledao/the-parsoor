@@ -204,7 +204,7 @@ export class UniswapParser {
     const swapLogs = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
-    
+
     if (swapLogs.length > 1) {
       swapLogs.sort((a, b) => a.logIndex - b.logIndex);
     }
@@ -398,14 +398,21 @@ export class UniswapParser {
     const { parsedIncomingLog, parsedOutgoingLog } =
       this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const amount0 = parsedOutgoingLog.args.amount0In;
+    const amount1 = parsedOutgoingLog.args.amount1In;
+
+    let fromAmount = "0";
+    if(amount0 > 0 && amount1 > 0){
+      fromAmount = amount0 > amount1 ? amount1.toString() : amount0.toString();
+    }else {
+      fromAmount = amount0 > 0 ? amount0.toString() : amount1.toString()
+    }
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
-      fromAmount:
-        parsedOutgoingLog.args.amount0In != 0
-          ? parsedOutgoingLog.args.amount0In.toString()
-          : parsedOutgoingLog.args.amount1In.toString(),
+      fromAmount,
       toAmount:
         parsedIncomingLog.args.amount1Out != 0
           ? parsedIncomingLog.args.amount1Out.toString()
@@ -427,14 +434,20 @@ export class UniswapParser {
     const { parsedIncomingLog, parsedOutgoingLog } =
       this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const amount0 = parsedOutgoingLog.args.amount0In;
+    const amount1 = parsedOutgoingLog.args.amount1In;
+    let fromAmount = "0";
+    if(amount0 > 0 && amount1 > 0){
+      fromAmount = amount0 > amount1 ? amount1.toString() : amount0.toString();
+    }else {
+      fromAmount = amount0 > 0 ? amount0.toString() : amount1.toString()
+    }
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
-      fromAmount:
-        parsedOutgoingLog.args.amount0In != 0
-          ? parsedOutgoingLog.args.amount0In.toString()
-          : parsedOutgoingLog.args.amount1In.toString(),
+      fromAmount,
       toAmount:
         parsedIncomingLog.args.amount0Out != 0
           ? parsedIncomingLog.args.amount0Out.toString()
