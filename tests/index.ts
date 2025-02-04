@@ -79,6 +79,7 @@ export class ProtocolParserUtils {
         contractAddress: log.address,
         topics: log.topics as string[],
         data: log.data,
+        logIndex: log.index
       })),
     };
 
