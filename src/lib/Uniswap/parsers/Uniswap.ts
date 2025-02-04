@@ -243,14 +243,22 @@ export class UniswapParser {
   ): ISingleSwapAction {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
+      
+    console.log('fromToken', fromToken);
+    console.log('toToken', toToken);
+    
 
     const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
       transaction.logs
     );
 
+    console.log('erc20TransferLogs', erc20TransferLogs);
+    
     const toTxn = erc20TransferLogs.find((log) => {
       return log.contractAddress === toToken;
     });
+
+    console.log('erc20TransferLogs', erc20TransferLogs);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
