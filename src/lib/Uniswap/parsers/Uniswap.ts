@@ -400,18 +400,15 @@ export class UniswapParser {
       this.getIncomingOutgoingLogEvents(swapLogs);
 
     let fromAmount = "0";
-    
-    const sortedPath = [...parsedTxn.args.path].sort((a, b) =>
-      a.toLowerCase() > b.toLowerCase() ? 1 : -1
-    );
-    
 
-    const fromTokenIndex = sortedPath.indexOf(fromToken)
-    
-    if(fromTokenIndex === 0 ){
-      fromAmount = parsedOutgoingLog.args.amount0In.toString()
-    }else {
-      fromAmount = parsedOutgoingLog.args.amount1In.toString()
+    const sortedPath = [...parsedTxn.args.path].sort((a, b) => a - b);
+
+    const fromTokenIndex = sortedPath.indexOf(fromToken);
+
+    if (fromTokenIndex === 0) {
+      fromAmount = parsedOutgoingLog.args.amount0In.toString();
+    } else {
+      fromAmount = parsedOutgoingLog.args.amount1In.toString();
     }
 
     return {
@@ -442,17 +439,14 @@ export class UniswapParser {
 
     let fromAmount = "0";
 
-    const sortedPath = [...parsedTxn.args.path].sort((a, b) =>
-      a.toLowerCase() > b.toLowerCase() ? 1 : -1
-    );
-    
+    const sortedPath = [...parsedTxn.args.path].sort((a, b) => a - b);
 
-    const fromTokenIndex = sortedPath.indexOf(fromToken)
-    
-    if(fromTokenIndex === 0 ){
-      fromAmount = parsedOutgoingLog.args.amount0In.toString()
-    }else {
-      fromAmount = parsedOutgoingLog.args.amount1In.toString()
+    const fromTokenIndex = sortedPath.indexOf(fromToken);
+
+    if (fromTokenIndex === 0) {
+      fromAmount = parsedOutgoingLog.args.amount0In.toString();
+    } else {
+      fromAmount = parsedOutgoingLog.args.amount1In.toString();
     }
 
     return {
