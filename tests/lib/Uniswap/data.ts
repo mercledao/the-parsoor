@@ -385,6 +385,36 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
           },
         ],
       },
+      {
+        txnHash:
+          "0x32f726fb7d3413da04b6b376b4367290a46c540d5a8b54bbca1b10a2d11a9764",
+        chainId: CHAIN_ID.ETHEREUM,
+        emittedActions: [
+          {
+            type: ACTION_ENUM.SINGLE_SWAP,
+            fromToken: "0x8C7424c3000942e5A93De4a01Ce2eC86c06333Cb",
+            toToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            fromAmount: "1552790000000000000000",
+            toAmount: "325189544647192673",
+            recipient: "0x8fd3a93633DCA8763EAe1f0e50b8961101Dc07e5",
+          },
+        ],
+      },
+      {
+        txnHash:
+          "0x9071fe6a52ba76847e3120333cf55284fa8ad5a92bcb0b0e2f5f9584414f7629",
+        chainId: CHAIN_ID.ETHEREUM,
+        emittedActions: [
+          {
+            type: ACTION_ENUM.SINGLE_SWAP,
+            fromToken: "0x255Aa6DF07540Cb5d3d297f0D0D4D84cb52bc8e6",
+            toToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            fromAmount: "2521826227014346473472",
+            toAmount: "1008429920914286047",
+            recipient: "0x005FdE5294199d5C3Eb5Eb7a6E51954123b74b1c",
+          },
+        ],
+      },
     ],
     [UNISWAP_VERSIONS.V3]: [
       {
