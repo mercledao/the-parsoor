@@ -204,8 +204,13 @@ export class UniswapParser {
     const swapLogs = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
+    
+    if (swapLogs.length > 1) {
+      swapLogs.sort((a, b) => a.logIndex - b.logIndex);
+    }
     return swapLogs;
   }
+
   private static handleSwapETHForExactTokens(
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
