@@ -401,10 +401,11 @@ export class UniswapParser {
 
     let fromAmount = "0";
 
+    console.log(parsedTxn.args.path);
+    
     const sortedPath = [...parsedTxn.args.path].sort((a, b) =>
       a.toLowerCase().localeCompare(b.toLowerCase())
     );
-
     const fromTokenIndex = sortedPath.indexOf(fromToken)
     
     if(fromTokenIndex === 0 ){
@@ -417,7 +418,7 @@ export class UniswapParser {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
-      fromAmount: "0",
+      fromAmount,
       toAmount:
         parsedIncomingLog.args.amount1Out != 0
           ? parsedIncomingLog.args.amount1Out.toString()
