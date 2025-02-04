@@ -222,15 +222,18 @@ export class UniswapParser {
 
     const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: transaction.value.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      toAmount: toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -247,15 +250,18 @@ export class UniswapParser {
 
     const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: transaction.value.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -272,15 +278,18 @@ export class UniswapParser {
 
     const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: transaction.value.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount0Out != 0
-          ? parsedIncomingLog.args.amount0Out.toString()
-          : parsedIncomingLog.args.amount1Out.toString(),
+      toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -297,15 +306,18 @@ export class UniswapParser {
 
     const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: parsedTxn.args.amountIn.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -322,15 +334,18 @@ export class UniswapParser {
 
     const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: parsedTxn.args.amountIn.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount0Out != 0
-          ? parsedIncomingLog.args.amount0Out.toString()
-          : parsedIncomingLog.args.amount1Out.toString(),
+      toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -347,15 +362,18 @@ export class UniswapParser {
 
     const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: parsedTxn.args.amountIn.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount0Out != 0
-          ? parsedIncomingLog.args.amount0Out.toString()
-          : parsedIncomingLog.args.amount1Out.toString(),
+      toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -372,15 +390,18 @@ export class UniswapParser {
 
     const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
 
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: parsedTxn.args.amountIn.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -399,19 +420,22 @@ export class UniswapParser {
       this.getIncomingOutgoingLogEvents(swapLogs);
 
     const fromAmount =
-      fromToken < parsedTxn.args.path[1]
+      fromToken.toLowerCase() < parsedTxn.args.path[1].toLowerCase()
         ? parsedOutgoingLog.args.amount0In.toString()
         : parsedOutgoingLog.args.amount1In.toString();
+
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount,
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -429,20 +453,23 @@ export class UniswapParser {
     const { parsedIncomingLog, parsedOutgoingLog } =
       this.getIncomingOutgoingLogEvents(swapLogs);
 
-    const fromAmount =
-      fromToken < parsedTxn.args.path[1]
+      const fromAmount =
+      fromToken.toLowerCase() < parsedTxn.args.path[1].toLowerCase()
         ? parsedOutgoingLog.args.amount0In.toString()
         : parsedOutgoingLog.args.amount1In.toString();
+
+    const toAmount =
+      toToken.toLowerCase() <
+      parsedTxn.args.path[parsedTxn.args.path.length - 2].toLowerCase()
+        ? parsedIncomingLog.args.amount0Out.toString()
+        : parsedIncomingLog.args.amount1Out.toString();
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount,
-      toAmount:
-        parsedIncomingLog.args.amount0Out != 0
-          ? parsedIncomingLog.args.amount0Out.toString()
-          : parsedIncomingLog.args.amount1Out.toString(),
+      toAmount,
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
