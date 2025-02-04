@@ -348,7 +348,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const swapLogs = this.getSwapLogEvents(transaction);
 
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
@@ -376,7 +375,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const swapLogs = this.getSwapLogEvents(transaction);
 
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
@@ -404,8 +402,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const swapLogs = this.getSwapLogEvents(transaction);
-
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
@@ -436,7 +432,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const swapLogs = this.getSwapLogEvents(transaction);
 
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
