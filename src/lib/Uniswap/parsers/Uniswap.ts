@@ -174,23 +174,41 @@ export class UniswapParser {
     return actions;
   }
 
+  private static getTokenTransfersFromCallData(parsedTxn) {
+    const fromToken = parsedTxn.args.path[0];
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    return { fromToken, toToken };
+  }
+
+  private static getIncomingOutgoingLogEvents(swapLog) {
+    const incomingLog = swapLog[swapLog.length - 1];
+    const outgoingLog = swapLog[0];
+
+    const parsedIncomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    const parsedOutgoingLog = ProtocolHelper.parseLog(
+      outgoingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return { parsedIncomingLog, parsedOutgoingLog };
+  }
+
   private static handleSwapETHForExactTokens(
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const fromToken = parsedTxn.args.path[0];
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
     const swapLog = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const parsedInomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -198,9 +216,9 @@ export class UniswapParser {
       toToken,
       fromAmount: transaction.value.toString(),
       toAmount:
-        parsedInomingLog.args.amount1Out != 0
-          ? parsedInomingLog.args.amount1Out.toString()
-          : parsedInomingLog.args.amount0Out.toString(),
+        parsedIncomingLog.args.amount1Out != 0
+          ? parsedIncomingLog.args.amount1Out.toString()
+          : parsedIncomingLog.args.amount0Out.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -210,19 +228,14 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const fromToken = parsedTxn.args.path[0];
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
     const swapLog = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const parsedInomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -230,9 +243,9 @@ export class UniswapParser {
       toToken,
       fromAmount: transaction.value.toString(),
       toAmount:
-        parsedInomingLog.args.amount1Out != 0
-          ? parsedInomingLog.args.amount1Out.toString()
-          : parsedInomingLog.args.amount0Out.toString(),
+        parsedIncomingLog.args.amount1Out != 0
+          ? parsedIncomingLog.args.amount1Out.toString()
+          : parsedIncomingLog.args.amount0Out.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -242,19 +255,14 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const fromToken = parsedTxn.args.path[0];
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
     const swapLog = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const parsedInomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -262,9 +270,9 @@ export class UniswapParser {
       toToken,
       fromAmount: transaction.value.toString(),
       toAmount:
-        parsedInomingLog.args.amount0Out != 0
-          ? parsedInomingLog.args.amount0Out.toString()
-          : parsedInomingLog.args.amount1Out.toString(),
+        parsedIncomingLog.args.amount0Out != 0
+          ? parsedIncomingLog.args.amount0Out.toString()
+          : parsedIncomingLog.args.amount1Out.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -278,15 +286,10 @@ export class UniswapParser {
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const fromToken = parsedTxn.args.path[0];
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const parsedIncomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -310,15 +313,10 @@ export class UniswapParser {
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const fromToken = parsedTxn.args.path[0];
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const parsedIncomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -342,16 +340,10 @@ export class UniswapParser {
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const fromToken = parsedTxn.args.path[0];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
-
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const parsedIncomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -375,16 +367,10 @@ export class UniswapParser {
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const fromToken = parsedTxn.args.path[0];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
-
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const parsedIncomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -408,22 +394,11 @@ export class UniswapParser {
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const fromToken = parsedTxn.args.path[0];
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const outgoingLog = swapLog[0];
-
-    const parsedIncomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
-
-    const parsedOutgoingLog = ProtocolHelper.parseLog(
-      outgoingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog, parsedOutgoingLog } =
+      this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
@@ -450,22 +425,11 @@ export class UniswapParser {
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
 
-    const fromToken = parsedTxn.args.path[0];
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    const { fromToken, toToken } =
+      this.getTokenTransfersFromCallData(parsedTxn);
 
-    const incomingLog = swapLog[swapLog.length - 1];
-
-    const outgoingLog = swapLog[0];
-
-    const parsedIncomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
-
-    const parsedOutgoingLog = ProtocolHelper.parseLog(
-      outgoingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
+    const { parsedIncomingLog, parsedOutgoingLog } =
+      this.getIncomingOutgoingLogEvents(swapLog);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
