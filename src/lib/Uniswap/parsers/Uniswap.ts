@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers, ZeroAddress } from "ethers";
 import { ACTION_ENUM } from "../../../enums";
 import { ProtocolHelper } from "../../../helpers";
 import {
@@ -6,7 +6,12 @@ import {
   ITransaction,
   ITransactionAction,
 } from "../../../types";
-import { COMMAND_ENUM, CONTRACT_ENUM, contracts } from "../contracts";
+import {
+  COMMAND_ENUM,
+  CONTRACT_ENUM,
+  contracts,
+  EVENT_ENUM,
+} from "../contracts";
 
 interface IV3SwapParams {
   tokenIn: string;
@@ -83,6 +88,18 @@ const COMMAND_CONFIGS: Partial<Record<COMMAND_ENUM, CommandConfig>> = {
   },
 };
 
+enum CONTRACT_FUNCTION_NAMES {
+  SWAP_ETH_FOR_EXACT_TOKENS = "swapETHForExactTokens",
+  SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens",
+  SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE = "swapExactETHForTokensSupportingFeeOnTransferTokens",
+  SWAP_EXACT_TOKENS_FOR_ETH = "swapExactTokensForETH",
+  SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE = "swapExactTokensForETHSupportingFeeOnTransferTokens",
+  SWAP_EXACT_TOKENS_FOR_TOKENS = "swapExactTokensForTokens",
+  SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE = "swapExactTokensForTokensSupportingFeeOnTransferTokens",
+  SWAP_TOKENS_FOR_EXACT_ETH = "swapTokensForExactETH",
+  SWAP_TOKENS_FOR_EXACT_TOKENS = "swapTokensForExactTokens",
+}
+
 export class UniswapParser {
   private static readonly EXACT_INPUT_SINGLE = "exactInputSingle";
   private static readonly EXACT_OUTPUT_SINGLE = "exactOutputSingle";
@@ -104,32 +121,367 @@ export class UniswapParser {
       return actions;
     }
 
-    const functionName = parsedTxn.name.toLowerCase();
+    switch (parsedTxn.name) {
+      case CONTRACT_FUNCTION_NAMES.SWAP_ETH_FOR_EXACT_TOKENS:
+        actions.push(this.handleSwapETHForExactTokens(transaction, parsedTxn));
+        break;
 
-    const isEthInput = functionName.includes("ethfor");
-    const isEthOutput =
-      functionName.includes("foreth") || functionName.includes("forexacteth");
-    const isExactInput =
-      functionName.includes("exact") && !functionName.includes("forexact");
+      case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_ETH_FOR_TOKENS:
+        actions.push(this.handleSwapExactETHForTokens(transaction, parsedTxn));
+        break;
 
-    const action: ISingleSwapAction = {
-      type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: isEthInput ? ethers.ZeroAddress : parsedTxn.args.path[0],
-      toToken: isEthOutput
-        ? ethers.ZeroAddress
-        : parsedTxn.args.path[parsedTxn.args.path.length - 1],
-      fromAmount: this.parseAmount(
-        isExactInput,
-        isEthInput,
-        parsedTxn.args,
-        transaction
-      ),
-      toAmount: this.parseOutputAmount(isExactInput, parsedTxn.args),
-      recipient: parsedTxn.args.to || transaction.from,
-    };
+      case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE:
+        actions.push(
+          this.handleSwapExactETHForTokensWithFee(transaction, parsedTxn)
+        );
+        break;
 
-    actions.push(action);
+      case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_TOKENS_FOR_ETH:
+        actions.push(this.handleSwapExactTokensForETH(transaction, parsedTxn));
+        break;
+
+      case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE:
+        actions.push(
+          this.handleSwapExactTokensForETHWithFee(transaction, parsedTxn)
+        );
+        break;
+
+      case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_TOKENS_FOR_TOKENS:
+        actions.push(
+          this.handleSwapExactTokensForTokens(transaction, parsedTxn)
+        );
+        break;
+
+      case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE:
+        actions.push(
+          this.handleSwapExactTokensForTokensWithFee(transaction, parsedTxn)
+        );
+        break;
+
+      case CONTRACT_FUNCTION_NAMES.SWAP_TOKENS_FOR_EXACT_ETH:
+        actions.push(this.handleSwapTokensForExactETH(transaction, parsedTxn));
+        break;
+
+      case CONTRACT_FUNCTION_NAMES.SWAP_TOKENS_FOR_EXACT_TOKENS:
+        actions.push(
+          this.handleSwapTokensForExactTokens(transaction, parsedTxn)
+        );
+        break;
+
+      default:
+        break;
+    }
     return actions;
+  }
+
+  private static handleSwapETHForExactTokens(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const fromToken = parsedTxn.args.path[0];
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const parsedInomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount: transaction.value.toString(),
+      toAmount:
+        parsedInomingLog.args.amount1Out != 0
+          ? parsedInomingLog.args.amount1Out.toString()
+          : parsedInomingLog.args.amount0Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
+  }
+
+  private static handleSwapExactETHForTokens(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const fromToken = parsedTxn.args.path[0];
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const parsedInomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount: transaction.value.toString(),
+      toAmount:
+        parsedInomingLog.args.amount1Out != 0
+          ? parsedInomingLog.args.amount1Out.toString()
+          : parsedInomingLog.args.amount0Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
+  }
+
+  private static handleSwapExactETHForTokensWithFee(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const fromToken = parsedTxn.args.path[0];
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const parsedInomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount: transaction.value.toString(),
+      toAmount:
+        parsedInomingLog.args.amount0Out != 0
+          ? parsedInomingLog.args.amount0Out.toString()
+          : parsedInomingLog.args.amount1Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
+  }
+
+  private static handleSwapExactTokensForETH(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const fromToken = parsedTxn.args.path[0];
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const parsedIncomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount: parsedTxn.args.amountIn.toString(),
+      toAmount:
+        parsedIncomingLog.args.amount1Out != 0
+          ? parsedIncomingLog.args.amount1Out.toString()
+          : parsedIncomingLog.args.amount0Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
+  }
+
+  private static handleSwapExactTokensForETHWithFee(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const fromToken = parsedTxn.args.path[0];
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const parsedIncomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount: parsedTxn.args.amountIn.toString(),
+      toAmount:
+        parsedIncomingLog.args.amount0Out != 0
+          ? parsedIncomingLog.args.amount0Out.toString()
+          : parsedIncomingLog.args.amount1Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
+  }
+
+  private static handleSwapExactTokensForTokens(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const fromToken = parsedTxn.args.path[0];
+
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const parsedIncomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount: parsedTxn.args.amountIn.toString(),
+      toAmount:
+        parsedIncomingLog.args.amount0Out != 0
+          ? parsedIncomingLog.args.amount0Out.toString()
+          : parsedIncomingLog.args.amount1Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
+  }
+
+  private static handleSwapExactTokensForTokensWithFee(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const fromToken = parsedTxn.args.path[0];
+
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const parsedIncomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount: parsedTxn.args.amountIn.toString(),
+      toAmount:
+        parsedIncomingLog.args.amount1Out != 0
+          ? parsedIncomingLog.args.amount1Out.toString()
+          : parsedIncomingLog.args.amount0Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
+  }
+
+  private static handleSwapTokensForExactETH(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const fromToken = parsedTxn.args.path[0];
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const outgoingLog = swapLog[0];
+
+    const parsedIncomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    const parsedOutgoingLog = ProtocolHelper.parseLog(
+      outgoingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount:
+        parsedOutgoingLog.args.amount0In != 0
+          ? parsedOutgoingLog.args.amount0In.toString()
+          : parsedOutgoingLog.args.amount1In.toString(),
+      toAmount:
+        parsedIncomingLog.args.amount1Out != 0
+          ? parsedIncomingLog.args.amount1Out.toString()
+          : parsedIncomingLog.args.amount0Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
+  }
+
+  private static handleSwapTokensForExactTokens(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): ISingleSwapAction {
+    const swapLog = transaction.logs.filter(
+      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
+    );
+
+    const fromToken = parsedTxn.args.path[0];
+    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+
+    const incomingLog = swapLog[swapLog.length - 1];
+
+    const outgoingLog = swapLog[0];
+
+    const parsedIncomingLog = ProtocolHelper.parseLog(
+      incomingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    const parsedOutgoingLog = ProtocolHelper.parseLog(
+      outgoingLog,
+      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
+    );
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken,
+      toToken,
+      fromAmount:
+        parsedOutgoingLog.args.amount0In != 0
+          ? parsedOutgoingLog.args.amount0In.toString()
+          : parsedOutgoingLog.args.amount1In.toString(),
+      toAmount:
+        parsedIncomingLog.args.amount0Out != 0
+          ? parsedIncomingLog.args.amount0Out.toString()
+          : parsedIncomingLog.args.amount1Out.toString(),
+      sender: transaction.from,
+      recipient: parsedTxn.args.to,
+    };
   }
 
   public static async parseV3Transaction(
