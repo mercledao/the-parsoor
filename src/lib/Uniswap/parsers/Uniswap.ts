@@ -13,6 +13,7 @@ import {
   contracts,
   EVENT_ENUM,
 } from "../contracts";
+import { format } from "path";
 
 interface IV3SwapParams {
   tokenIn: string;
@@ -398,21 +399,25 @@ export class UniswapParser {
     const { parsedIncomingLog, parsedOutgoingLog } =
       this.getIncomingOutgoingLogEvents(swapLogs);
 
-    const amount0 = parsedOutgoingLog.args.amount0In;
-    const amount1 = parsedOutgoingLog.args.amount1In;
-
     let fromAmount = "0";
-    if(amount0 > 0 && amount1 > 0){
-      fromAmount = amount0 > amount1 ? amount1.toString() : amount0.toString();
+
+    const sortedPath = [...parsedTxn.args.path].sort((a, b) =>
+      a.toLowerCase().localeCompare(b.toLowerCase())
+    );
+
+    const fromTokenIndex = sortedPath.indexOf(fromToken)
+    
+    if(fromTokenIndex === 0 ){
+      fromAmount = parsedOutgoingLog.args.amount0In.toString()
     }else {
-      fromAmount = amount0 > 0 ? amount0.toString() : amount1.toString()
+      fromAmount = parsedOutgoingLog.args.amount1In.toString()
     }
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
-      fromAmount,
+      fromAmount: "0",
       toAmount:
         parsedIncomingLog.args.amount1Out != 0
           ? parsedIncomingLog.args.amount1Out.toString()
@@ -434,13 +439,18 @@ export class UniswapParser {
     const { parsedIncomingLog, parsedOutgoingLog } =
       this.getIncomingOutgoingLogEvents(swapLogs);
 
-    const amount0 = parsedOutgoingLog.args.amount0In;
-    const amount1 = parsedOutgoingLog.args.amount1In;
     let fromAmount = "0";
-    if(amount0 > 0 && amount1 > 0){
-      fromAmount = amount0 > amount1 ? amount1.toString() : amount0.toString();
+
+    const sortedPath = [...parsedTxn.args.path].sort((a, b) =>
+      a.toLowerCase().localeCompare(b.toLowerCase())
+    );
+
+    const fromTokenIndex = sortedPath.indexOf(fromToken)
+    
+    if(fromTokenIndex === 0 ){
+      fromAmount = parsedOutgoingLog.args.amount0In.toString()
     }else {
-      fromAmount = amount0 > 0 ? amount0.toString() : amount1.toString()
+      fromAmount = parsedOutgoingLog.args.amount1In.toString()
     }
 
     return {
