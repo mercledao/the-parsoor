@@ -20,10 +20,10 @@ describe('UniswapParser', () => {
     await testTransactions(v2Transactions, 'V2');
   });
 
-  // it('should parse V3 transactions correctly', async () => {
-  //   const v3Transactions = uniswapData[UNISWAP_VERSIONS.V3];
-  //   await testTransactions(v3Transactions, 'V3');
-  // });
+  it('should parse V3 transactions correctly', async () => {
+    const v3Transactions = uniswapData[UNISWAP_VERSIONS.V3];
+    await testTransactions(v3Transactions, 'V3');
+  });
 
   async function testTransactions(transactions: IProtocolTestTransaction[], version: string) {
     for (const transaction of transactions) {
