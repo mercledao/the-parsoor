@@ -320,7 +320,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const swapLogs = this.getSwapLogEvents(transaction);
 
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
@@ -332,7 +331,7 @@ export class UniswapParser {
     const toTxn = erc20TransferLogs.find((log) => {
       return log.contractAddress === toToken;
     });
-
+    
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
