@@ -413,7 +413,7 @@ export class UniswapParser {
     });
 
     const fromTxn = erc20TransferLogs.find((log) => {
-      return log.contractAddress.toLowerCase() === fromToken.toLowerCase();;
+      return log.contractAddress.toLowerCase() === fromToken.toLowerCase();
     });
 
     return {
