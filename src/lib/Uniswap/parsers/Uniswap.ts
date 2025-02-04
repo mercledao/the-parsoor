@@ -481,24 +481,6 @@ export class UniswapParser {
     }
   }
 
-  private static parseAmount(
-    isExactInput: boolean,
-    isEthInput: boolean,
-    args: any,
-    transaction: ITransaction
-  ): string {
-    if (isExactInput) {
-      return isEthInput ? transaction.value : args.amountIn.toString();
-    }
-    return args.amountInMax?.toString() || transaction.value;
-  }
-
-  private static parseOutputAmount(isExactInput: boolean, args: any): string {
-    return isExactInput
-      ? args.amountOutMin?.toString() || "0"
-      : args.amountOut.toString();
-  }
-
   public static decodeV3Path(path: string): string[] {
     if (!path.startsWith("0x")) return [];
 
