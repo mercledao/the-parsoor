@@ -204,7 +204,7 @@ export class UniswapParser {
     const swapLogs = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
     );
-    
+
     if (swapLogs.length > 1) {
       swapLogs.sort((a, b) => a.logIndex - b.logIndex);
     }
@@ -218,19 +218,20 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const swapLogs = this.getSwapLogEvents(transaction);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
 
-    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: transaction.value.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      toAmount: toTxn.value.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -243,20 +244,20 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const swapLogs = this.getSwapLogEvents(transaction);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
 
-    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: transaction.value.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
-      sender: transaction.from,
+      toAmount: toTxn.value.toString(),
       recipient: parsedTxn.args.to,
     };
   }
@@ -268,19 +269,20 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const swapLogs = this.getSwapLogEvents(transaction);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
 
-    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: transaction.value.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount0Out != 0
-          ? parsedIncomingLog.args.amount0Out.toString()
-          : parsedIncomingLog.args.amount1Out.toString(),
+      toAmount: toTxn.value.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -295,17 +297,20 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
+
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: parsedTxn.args.amountIn.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      toAmount: toTxn.value.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -320,17 +325,20 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
+
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: parsedTxn.args.amountIn.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount0Out != 0
-          ? parsedIncomingLog.args.amount0Out.toString()
-          : parsedIncomingLog.args.amount1Out.toString(),
+      toAmount: toTxn.value.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -345,17 +353,20 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
+
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: parsedTxn.args.amountIn.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount0Out != 0
-          ? parsedIncomingLog.args.amount0Out.toString()
-          : parsedIncomingLog.args.amount1Out.toString(),
+      toAmount: toTxn.value.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -370,17 +381,20 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const { parsedIncomingLog } = this.getIncomingOutgoingLogEvents(swapLogs);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
+
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
       fromAmount: parsedTxn.args.amountIn.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      toAmount: toTxn.value.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -395,21 +409,24 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const { parsedIncomingLog, parsedOutgoingLog } =
-      this.getIncomingOutgoingLogEvents(swapLogs);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
+
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
+
+    const fromTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === fromToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
-      fromAmount:
-        parsedOutgoingLog.args.amount0In != 0
-          ? parsedOutgoingLog.args.amount0In.toString()
-          : parsedOutgoingLog.args.amount1In.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount1Out != 0
-          ? parsedIncomingLog.args.amount1Out.toString()
-          : parsedIncomingLog.args.amount0Out.toString(),
+      fromAmount: fromTxn.value.toString(),
+      toAmount: toTxn.value.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
@@ -424,21 +441,24 @@ export class UniswapParser {
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
-    const { parsedIncomingLog, parsedOutgoingLog } =
-      this.getIncomingOutgoingLogEvents(swapLogs);
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
+
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === toToken;
+    });
+
+    const fromTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress === fromToken;
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
-      fromAmount:
-        parsedOutgoingLog.args.amount0In != 0
-          ? parsedOutgoingLog.args.amount0In.toString()
-          : parsedOutgoingLog.args.amount1In.toString(),
-      toAmount:
-        parsedIncomingLog.args.amount0Out != 0
-          ? parsedIncomingLog.args.amount0Out.toString()
-          : parsedIncomingLog.args.amount1Out.toString(),
+      fromAmount: fromTxn.value.toString(),
+      toAmount: toTxn.value.toString(),
       sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
