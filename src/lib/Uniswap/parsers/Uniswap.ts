@@ -247,7 +247,7 @@ export class UniswapParser {
     const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
       transaction.logs
     );
-    
+
     const toTxn = erc20TransferLogs.find((log) => {
       return log.contractAddress.toLowerCase() === toToken.toLowerCase();
     });
@@ -320,7 +320,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
@@ -331,7 +330,7 @@ export class UniswapParser {
     const toTxn = erc20TransferLogs.find((log) => {
       return log.contractAddress.toLowerCase() === toToken.toLowerCase();
     });
-    
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
@@ -347,7 +346,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
@@ -374,7 +372,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
@@ -431,7 +428,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
@@ -465,31 +461,28 @@ export class UniswapParser {
     const parsedTxn = contracts[routerType].interface.parseTransaction({
       data: transaction.data,
     });
-
-    if (parsedTxn.name === "multicall") {
-      const result = [];
-      const calls =
-        parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
-
-      for (const callData of calls) {
-        const subParsedTxn = contracts[routerType].interface.parseTransaction({
-          data: callData,
-        });
-
-        if (!subParsedTxn) continue;
-        const action = await this.createV3SwapAction(subParsedTxn, transaction);
-        if (action) {
-          result.push(action);
-        }
-      }
-
-      return result;
-    } else {
+  
+    if (!parsedTxn) return [];
+  
+    if (parsedTxn.name !== "multicall") {
       const action = await this.createV3SwapAction(parsedTxn, transaction);
-      if (!action) return [];
-      else return [action];
+      return action ? [action] : [];
     }
+  
+    const calls = parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
+    const result: ITransactionAction[] = [];
+  
+    for (const callData of calls) {
+      const subParsedTxn = contracts[routerType].interface.parseTransaction({ data: callData });
+      if (!subParsedTxn) continue;
+  
+      const action = await this.createV3SwapAction(subParsedTxn, transaction);
+      if (action) result.push(action);
+    }
+  
+    return result;
   }
+  
 
   public static decodeV3Path(path: string): string[] {
     if (!path.startsWith("0x")) return [];
@@ -558,7 +551,6 @@ export class UniswapParser {
     isExactInput: boolean,
     transaction: ITransaction
   ): ISingleSwapAction {
-
     const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
       transaction.logs
     );
@@ -568,10 +560,11 @@ export class UniswapParser {
     });
 
     const toTxn = erc20TransferLogs.find((log) => {
-      return log.contractAddress.toLowerCase() === params.tokenOut.toLowerCase();
+      return (
+        log.contractAddress.toLowerCase() === params.tokenOut.toLowerCase()
+      );
     });
-    
-    
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: params.tokenIn,
@@ -593,12 +586,12 @@ export class UniswapParser {
     if (decodedPath.length < 2) return null;
 
     const fromToken = isExactInput
-    ? decodedPath[0]
-    : decodedPath[decodedPath.length - 1];
+      ? decodedPath[0]
+      : decodedPath[decodedPath.length - 1];
 
     const toToken = isExactInput
-    ? decodedPath[decodedPath.length - 1]
-    : decodedPath[0];
+      ? decodedPath[decodedPath.length - 1]
+      : decodedPath[0];
 
     const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
       transaction.logs
@@ -611,7 +604,7 @@ export class UniswapParser {
     const toTxn = erc20TransferLogs.find((log) => {
       return log.contractAddress.toLowerCase() === toToken.toLowerCase();
     });
-    
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
@@ -667,7 +660,7 @@ export class UniswapParser {
         const fromTxn = erc20TransferLogs.find((log) => {
           return log.contractAddress.toLowerCase() === fromToken.toLowerCase();
         });
-    
+
         const toTxn = erc20TransferLogs.find((log) => {
           return log.contractAddress.toLowerCase() === toToken.toLowerCase();
         });
