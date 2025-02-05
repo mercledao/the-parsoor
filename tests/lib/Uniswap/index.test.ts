@@ -15,10 +15,10 @@ describe('UniswapParser', () => {
     utils.isValidProtocol();
   });
 
-  // it('should parse V2 transactions correctly', async () => {
-  //   const v2Transactions = uniswapData[UNISWAP_VERSIONS.V2];
-  //   await testTransactions(v2Transactions, 'V2');
-  // });
+  it('should parse V2 transactions correctly', async () => {
+    const v2Transactions = uniswapData[UNISWAP_VERSIONS.V2];
+    await testTransactions(v2Transactions, 'V2');
+  });
 
   it('should parse V3 transactions correctly', async () => {
     const v3Transactions = uniswapData[UNISWAP_VERSIONS.V3];
