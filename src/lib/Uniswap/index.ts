@@ -70,25 +70,25 @@ export default class Uniswap implements IProtocolParserExport {
       );
     }
 
-    if (
-      ProtocolHelper.txnToIsListenerContract(
-        transaction,
-        CONTRACT_ENUM.LIMIT_ORDER_ROUTER,
-        contracts
-      )
-    ) {
-      return await LimitOrderParser.parseTransaction(transaction);
-    }
+    // if (
+    //   ProtocolHelper.txnToIsListenerContract(
+    //     transaction,
+    //     CONTRACT_ENUM.LIMIT_ORDER_ROUTER,
+    //     contracts
+    //   )
+    // ) {
+    //   return await LimitOrderParser.parseTransaction(transaction);
+    // }
 
-    if (
-      ProtocolHelper.txnToIsListenerContract(
-        transaction,
-        CONTRACT_ENUM.EXCLUSIVE_LIMIT_ORDER_ROUTER,
-        contracts
-      )
-    ) {
-      return await LimitOrderParser.parseTransaction(transaction);
-    }
+    // if (
+    //   ProtocolHelper.txnToIsListenerContract(
+    //     transaction,
+    //     CONTRACT_ENUM.EXCLUSIVE_LIMIT_ORDER_ROUTER,
+    //     contracts
+    //   )
+    // ) {
+    //   return await LimitOrderParser.parseTransaction(transaction);
+    // }
 
     return actions;
   }
