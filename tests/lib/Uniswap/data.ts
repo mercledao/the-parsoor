@@ -905,5 +905,21 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
           },
         ],
       },
+      {
+        txnHash:
+          "0x62e3d7d9116ddeb864d4f457d0dd9967335c34397932a34c569c8de5ae1ba5d9",
+        chainId: CHAIN_ID.ETHEREUM,
+        emittedActions: [
+          {
+            type: ACTION_ENUM.SINGLE_SWAP,
+            fromToken: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+            toToken: "0x9e32b13ce7f2e80a01932b42553652e053d6ed8e",
+            fromAmount: "872367507782029231",
+            toAmount: "105000000000000000000",
+            recipient: "0xBbB34ffB832146D599aE08091B096d982C76A2e2",
+            sender: "0xBbB34ffB832146D599aE08091B096d982C76A2e2",
+          },
+        ],
+      },
     ],
   };
