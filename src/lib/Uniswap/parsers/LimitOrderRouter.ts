@@ -6,7 +6,6 @@ import {
   ITransactionAction
 } from "../../../types";
 import { CONTRACT_ENUM, contracts } from "../contracts";
-import { log } from "node:console";
 
 export class LimitOrderParser {
   private static readonly TRANSFER_EVENT_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
