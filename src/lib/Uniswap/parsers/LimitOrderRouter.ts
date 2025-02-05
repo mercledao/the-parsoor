@@ -6,6 +6,7 @@ import {
   ITransactionAction
 } from "../../../types";
 import { CONTRACT_ENUM, contracts } from "../contracts";
+import { log } from "node:console";
 
 export class LimitOrderParser {
   private static readonly TRANSFER_EVENT_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
@@ -48,26 +49,25 @@ export class LimitOrderParser {
     });
 
     const swapper = parsedFillLog.args.swapper;
-    
-    const inputTransfer = transferLogs.find(l => 
-      ethers.getAddress(`0x${l.topics[1].slice(-40)}`) === ethers.getAddress(swapper)
-    );
-    
-    const outputTransfer = transferLogs.find(l => 
-      ethers.getAddress(`0x${l.topics[2].slice(-40)}`) === ethers.getAddress(swapper)
+
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
     );
 
-    if (!inputTransfer || !outputTransfer) return null;
-
-    const inputAmount = ethers.getBigInt(inputTransfer.data || '0');
-    const outputAmount = ethers.getBigInt(outputTransfer.data || '0');
+    const fromTxn = erc20TransferLogs.filter((log) => {
+      return log.fromAddress.toLowerCase() === swapper.toLowerCase();
+    });
+  
+    const toTxn = erc20TransferLogs.filter((log) => {
+      return log.toAddress.toLowerCase() === swapper.toLowerCase();
+    });
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: ethers.getAddress(`0x${inputTransfer.topics[1].slice(-40)}`),
-      toToken: ethers.getAddress(`0x${outputTransfer.topics[1].slice(-40)}`),
-      fromAmount: inputAmount.toString(),
-      toAmount: outputAmount.toString(),
+      fromToken: fromTxn[0].contractAddress,
+      toToken: toTxn[0].contractAddress,
+      fromAmount: fromTxn[0].value.toString(),
+      toAmount: toTxn[0].value.toString(),
       recipient: ethers.getAddress(swapper),
       sender: ethers.getAddress(swapper)
     };

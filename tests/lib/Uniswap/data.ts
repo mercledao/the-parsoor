@@ -769,8 +769,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0xFADDeC79a21f9B74469A4e62DaFbBbCE15c06005",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            toToken: "0x6982508145454Ce325dDbE47a25d4ec3d2311933",
             fromAmount: "58000000000000000",
             toAmount: "8367120281343387728741250",
             recipient: "0xFADDeC79a21f9B74469A4e62DaFbBbCE15c06005",
@@ -784,8 +784,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0x80b920fb4B3C0d5EC678e6B8A56C801B8e23eA1B",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            toToken: "0x6982508145454Ce325dDbE47a25d4ec3d2311933",
             fromAmount: "600000000",
             toAmount: "28272550317241935686507500",
             recipient: "0x80b920fb4B3C0d5EC678e6B8A56C801B8e23eA1B",
@@ -800,8 +800,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0xb3eAe6166CF48016fbf421F3BF338B943bc13F27",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            toToken: "0xcf0C122c6b73ff809C693DB761e7BaeBe62b6a2E",
             fromAmount: "72801736550229234",
             toAmount: "842255575115868",
             recipient: "0xb3eAe6166CF48016fbf421F3BF338B943bc13F27",
@@ -816,8 +816,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0x03995404Da03690eEBd7CfFbdE09d2194ded4D2A",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            toToken: "0xD31a59c85aE9D8edEFeC411D448f90841571b89c",
             fromAmount: "652170852",
             toAmount: "2654453423",
             recipient: "0x03995404Da03690eEBd7CfFbdE09d2194ded4D2A",
@@ -832,8 +832,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0xde6D4120A5d34468c405Cd8Aae7F6f3d047fFA28",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+            toToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
             fromAmount: "531101625776840134956",
             toAmount: "7780146335",
             recipient: "0xde6D4120A5d34468c405Cd8Aae7F6f3d047fFA28",
@@ -848,8 +848,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0x5c2BE1bd3204aE5b56589b900F789F0fB823bAAE",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            toToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
             fromAmount: "325093000",
             toAmount: "319778448",
             recipient: "0x5c2BE1bd3204aE5b56589b900F789F0fB823bAAE",
@@ -864,8 +864,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0xD7d52A2642CFafeadFb0199f53aC942E19565F38",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            toToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
             fromAmount: "2900410000000000000",
             toAmount: "8966848150",
             recipient: "0xD7d52A2642CFafeadFb0199f53aC942E19565F38",
@@ -880,8 +880,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0xB96e6885CB6319b5E0dAf782CeA2441907874123",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            toToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
             fromAmount: "322414283179975086",
             toAmount: "994405256",
             recipient: "0xB96e6885CB6319b5E0dAf782CeA2441907874123",
@@ -896,8 +896,8 @@ export const uniswapData: Record<UNISWAP_VERSIONS, IProtocolTestTransaction[]> =
         emittedActions: [
           {
             type: ACTION_ENUM.SINGLE_SWAP,
-            fromToken: "0x2882C4Bbd5Bd3c9F75E75b4BE37EbEE37d68ddDA",
-            toToken: "0xff8Ba4D1fC3762f6154cc942CCF30049A2A0cEC6",
+            fromToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            toToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
             fromAmount: "1000000000000000000",
             toAmount: "3643908812",
             recipient: "0x2882C4Bbd5Bd3c9F75E75b4BE37EbEE37d68ddDA",
