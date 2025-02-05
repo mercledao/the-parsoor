@@ -558,18 +558,26 @@ export class UniswapParser {
     isExactInput: boolean,
     transaction: ITransaction
   ): ISingleSwapAction {
+
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
+
+    const fromTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress.toLowerCase() === params.tokenIn.toLowerCase();
+    });
+
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress.toLowerCase() === params.tokenOut.toLowerCase();
+    });
+    
+    
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: params.tokenIn,
       toToken: params.tokenOut,
-      fromAmount: (isExactInput
-        ? params.amountIn
-        : params.amountInMaximum
-      ).toString(),
-      toAmount: (isExactInput
-        ? params.amountOutMinimum
-        : params.amountOut
-      ).toString(),
+      fromAmount: fromTxn.value.toString(),
+      toAmount: toTxn.value.toString(),
       recipient: params.recipient || transaction.from,
     };
   }
@@ -584,22 +592,32 @@ export class UniswapParser {
     const decodedPath = this.decodeV3Path(params.path);
     if (decodedPath.length < 2) return null;
 
+    const fromToken = isExactInput
+    ? decodedPath[0]
+    : decodedPath[decodedPath.length - 1];
+
+    const toToken = isExactInput
+    ? decodedPath[decodedPath.length - 1]
+    : decodedPath[0];
+
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+      transaction.logs
+    );
+
+    const fromTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress.toLowerCase() === fromToken.toLowerCase();
+    });
+
+    const toTxn = erc20TransferLogs.find((log) => {
+      return log.contractAddress.toLowerCase() === toToken.toLowerCase();
+    });
+    
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: isExactInput
-        ? decodedPath[0]
-        : decodedPath[decodedPath.length - 1],
-      toToken: isExactInput
-        ? decodedPath[decodedPath.length - 1]
-        : decodedPath[0],
-      fromAmount: (isExactInput
-        ? params.amountIn
-        : params.amountInMaximum || transaction.value
-      ).toString(),
-      toAmount: (isExactInput
-        ? params.amountOutMinimum
-        : params.amountOut || "0"
-      ).toString(),
+      fromToken,
+      toToken,
+      fromAmount: fromTxn.value.toString(),
+      toAmount: toTxn.value.toString(),
       recipient: params.recipient || transaction.from,
     };
   }
@@ -642,12 +660,24 @@ export class UniswapParser {
           true
         );
 
+        const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
+          transaction.logs
+        );
+
+        const fromTxn = erc20TransferLogs.find((log) => {
+          return log.contractAddress.toLowerCase() === fromToken.toLowerCase();
+        });
+    
+        const toTxn = erc20TransferLogs.find((log) => {
+          return log.contractAddress.toLowerCase() === toToken.toLowerCase();
+        });
+
         actions.push({
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken,
           toToken,
-          fromAmount,
-          toAmount,
+          fromAmount: fromTxn.value.toString(),
+          toAmount: toTxn.value.toString(),
           recipient: decodedInput[0],
         });
       }

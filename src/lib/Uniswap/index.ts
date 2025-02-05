@@ -24,15 +24,15 @@ export default class Uniswap implements IProtocolParserExport {
   ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
 
-    // if (
-    //   ProtocolHelper.txnToIsListenerContract(
-    //     transaction,
-    //     CONTRACT_ENUM.UNIVERSAL_ROUTER,
-    //     contracts
-    //   )
-    // ) {
-    //   return await UniswapParser.parseUniversalRouterTransaction(transaction);
-    // }
+    if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.UNIVERSAL_ROUTER,
+        contracts
+      )
+    ) {
+      return await UniswapParser.parseUniversalRouterTransaction(transaction);
+    }
 
     if (
       ProtocolHelper.txnToIsListenerContract(
@@ -44,51 +44,51 @@ export default class Uniswap implements IProtocolParserExport {
       return await UniswapParser.parseV2Transaction(transaction);
     }
 
-    // if (
-    //   ProtocolHelper.txnToIsListenerContract(
-    //     transaction,
-    //     CONTRACT_ENUM.ROUTER_V3_01,
-    //     contracts
-    //   )
-    // ) {
-    //   return await UniswapParser.parseV3Transaction(
-    //     transaction,
-    //     CONTRACT_ENUM.ROUTER_V3_01
-    //   );
-    // }
+    if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.ROUTER_V3_01,
+        contracts
+      )
+    ) {
+      return await UniswapParser.parseV3Transaction(
+        transaction,
+        CONTRACT_ENUM.ROUTER_V3_01
+      );
+    }
 
-    // if (
-    //   ProtocolHelper.txnToIsListenerContract(
-    //     transaction,
-    //     CONTRACT_ENUM.ROUTER_V3_02,
-    //     contracts
-    //   )
-    // ) {
-    //   return await UniswapParser.parseV3Transaction(
-    //     transaction,
-    //     CONTRACT_ENUM.ROUTER_V3_02
-    //   );
-    // }
+    if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.ROUTER_V3_02,
+        contracts
+      )
+    ) {
+      return await UniswapParser.parseV3Transaction(
+        transaction,
+        CONTRACT_ENUM.ROUTER_V3_02
+      );
+    }
 
-    // if (
-    //   ProtocolHelper.txnToIsListenerContract(
-    //     transaction,
-    //     CONTRACT_ENUM.LIMIT_ORDER_ROUTER,
-    //     contracts
-    //   )
-    // ) {
-    //   return await LimitOrderParser.parseTransaction(transaction);
-    // }
+    if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.LIMIT_ORDER_ROUTER,
+        contracts
+      )
+    ) {
+      return await LimitOrderParser.parseTransaction(transaction);
+    }
 
-    // if (
-    //   ProtocolHelper.txnToIsListenerContract(
-    //     transaction,
-    //     CONTRACT_ENUM.EXCLUSIVE_LIMIT_ORDER_ROUTER,
-    //     contracts
-    //   )
-    // ) {
-    //   return await LimitOrderParser.parseTransaction(transaction);
-    // }
+    if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.EXCLUSIVE_LIMIT_ORDER_ROUTER,
+        contracts
+      )
+    ) {
+      return await LimitOrderParser.parseTransaction(transaction);
+    }
 
     return actions;
   }
