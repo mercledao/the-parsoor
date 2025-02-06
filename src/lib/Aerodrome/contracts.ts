@@ -24,13 +24,7 @@ const contracts: IProtocolContractDefinitions = {
       },
     },
 
-    events: {
-      [EVENT_ENUM.ROUTER_SWAP]: {
-        abi: new ethers.Interface([
-          "event Swap (address indexed sender, address indexed to, uint256 amount0In, uint256 amount1In, uint256 amount0Out, uint256 amount1Out)",
-        ]),
-      },
-    },
+    events: {},
   },
   [CONTRACT_ENUM.SWAP_ROUTER_CONTRACT]: {
     interface: new ethers.Interface(SwapRouterAbi),

@@ -23,7 +23,7 @@ describe('AerodromeParser', () => {
       utils.assertTestTransactionForData(transaction, actions);
 
       console.log(
-        chalk.green('Successfully parsed filled deposit transaction with actions:', actions.map((action) => action.type).join(',')),
+        chalk.green('Successfully parsed swap transaction with actions:', actions.map((action) => action.type).join(',')),
         'and hash:',
         transaction.txnHash
       );
