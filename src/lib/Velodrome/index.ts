@@ -7,18 +7,13 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import {
-  DlnBridgeContractParseTransaction,
-  DlnCrossChainContractParseTransaction,
-  DlnDestinationContractParseTransaction,
-  DlnSourceContractParseTransaction,
-} from "./parser";
+import { RouterContractParser } from "./parsers";
 
 export default class Debridge implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
 
   constructor() {
-    this.protocolIdentifier = protocols.debridge.identifier;
+    this.protocolIdentifier = protocols.velodrome.identifier;
   }
 
   public async parseTransaction(
@@ -29,42 +24,11 @@ export default class Debridge implements IProtocolParserExport {
     if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
-        CONTRACT_ENUM.DLN_SOURCE,
+        CONTRACT_ENUM.ROUTER,
         contracts
       )
     ) {
-      const action =
-        DlnSourceContractParseTransaction.parseTransaction(transaction);
-      actions.push(...action);
-    } else if (
-      ProtocolHelper.txnToIsListenerContract(
-        transaction,
-        CONTRACT_ENUM.DLN_DESTINATION,
-        contracts
-      )
-    ) {
-      const action =
-        DlnDestinationContractParseTransaction.parseTransaction(transaction);
-      actions.push(...action);
-    } else if (
-      ProtocolHelper.txnToIsListenerContract(
-        transaction,
-        CONTRACT_ENUM.DLN_CROSS_CHAIN,
-        contracts
-      )
-    ) {
-      const action =
-        DlnCrossChainContractParseTransaction.parseTransaction(transaction);
-      actions.push(...action);
-    } else if (
-      ProtocolHelper.txnToIsListenerContract(
-        transaction,
-        CONTRACT_ENUM.DEBRIDGE_GATE,
-        contracts
-      )
-    ) {
-      const action =
-        DlnBridgeContractParseTransaction.parseTransaction(transaction);
+      const action = RouterContractParser.parseTransaction(transaction);
       actions.push(...action);
     }
     return actions;
