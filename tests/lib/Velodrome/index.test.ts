@@ -3,11 +3,11 @@ import { protocols } from '../../../src';
 import { ProtocolParserUtils } from '../../index';
 import { VELODROME_VERSIONS, velodromeData } from './data';
 
-describe('AcrossParser', () => {
+describe('VelodromeParser', () => {
   let utils: ProtocolParserUtils;
 
   beforeAll(async () => {
-    utils = new ProtocolParserUtils(protocols.across.identifier);
+    utils = new ProtocolParserUtils(protocols.velodrome.identifier);
     await utils.initialize();
   });
 
@@ -23,7 +23,7 @@ describe('AcrossParser', () => {
       utils.assertTestTransactionForData(transaction, actions);
 
       console.log(
-        chalk.green('Successfully parsed filled deposit transaction with actions:', actions.map((action) => action.type).join(',')),
+        chalk.green('Successfully parsed swap transaction with actions:', actions.map((action) => action.type).join(',')),
         'and hash:',
         transaction.txnHash
       );

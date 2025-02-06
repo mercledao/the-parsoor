@@ -9,7 +9,7 @@ import {
 import { CONTRACT_ENUM, contracts } from "./contracts";
 import { RouterContractParser } from "./parsers";
 
-export default class Debridge implements IProtocolParserExport {
+export default class Velodrome implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
 
   constructor() {

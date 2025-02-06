@@ -6,7 +6,7 @@ import {
   ITransaction,
   ITransactionAction,
 } from "../../types";
-import { CONTRACT_ENUM, contracts, EVENT_ENUM } from "./contracts";
+import { CONTRACT_ENUM, contracts } from "./contracts";
 
 enum CONTRACT_FUNCTION_NAMES {
   UNSAFE_SWAP_EXACT_TOKENS_FOR_TOKENS = "UNSAFE_swapExactTokensForTokens",
