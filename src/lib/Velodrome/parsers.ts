@@ -2,21 +2,21 @@ import { ethers } from "ethers";
 import { ACTION_ENUM } from "../../enums";
 import { ProtocolHelper } from "../../helpers";
 import {
-  IBridgeInAction,
-  IBridgeOutAction,
+  ISingleSwapAction,
   ITransaction,
   ITransactionAction,
-  ITransactionLog,
 } from "../../types";
 import { CONTRACT_ENUM, contracts, EVENT_ENUM } from "./contracts";
 
 enum CONTRACT_FUNCTION_NAMES {
-  SEND = "send",
-  CLAIM = "claim",
-  SWAP_CALL = "strictlySwapAndCall",
-  SWAP_CALL_DLN = "strictlySwapAndCallDln",
+  UNSAFE_SWAP_EXACT_TOKENS_FOR_TOKENS = "UNSAFE_swapExactTokensForTokens",
+  SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens",
+  SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE = "swapExactETHForTokensSupportingFeeOnTransferTokens",
+  SWAP_EXACT_TOKENS_FOR_ETH = "swapExactTokensForETH",
+  SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE = "swapExactTokensForETHSupportingFeeOnTransferTokens",
+  SWAP_EXACT_TOKENS_FOR_TOKENS = "swapExactTokensForTokens",
+  SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE = "swapExactTokensForTokensSupportingFeeOnTransferTokens",
 }
-
 
 export class RouterContractParser {
   public static parseTransaction(

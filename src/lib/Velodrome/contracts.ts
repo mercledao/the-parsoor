@@ -16,68 +16,8 @@ export const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.ROUTER]: {
     interface: new ethers.Interface(RouterAbi),
     deployments: {
-      [CHAIN_ID.BASE]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.ARBITRUM]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.ETHEREUM]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
       [CHAIN_ID.OPTIMISM]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.BLAST]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.AVALANCHE]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.ZKSYNC_ERA]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.SONIC]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.ZORA]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.METIS]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.BSC]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.GNOSIS]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.FANTOM]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.LINEA]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.SCROLL]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
-        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      },
-      [CHAIN_ID.NEON]: {
-        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        address: "0xa062aE8A9c5e11aaA026fc2670B0D65cCc8B2858",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
     },
