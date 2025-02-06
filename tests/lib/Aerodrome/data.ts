@@ -133,5 +133,35 @@ export const aerodromeData: IProtocolTestingData = {
         },
       ],
     },
+    {
+      txnHash:
+        "0x4cf196b0fe9cf5f56bfebd4fd67f7ae784ea7519620424763521e3ebd97915ed",
+      chainId: CHAIN_ID.BASE,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          toToken: "0x4200000000000000000000000000000000000006",
+          fromAmount: "500000000",
+          toAmount: "175997093775881681",
+          recipient: "0x6A00277E6F9E5b5773772BDE0f8F154f2875Dc26",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xffdc06d888194ee1180610d2651e8df78fd48d11dcdeb27b49357d35d9be66c0",
+      chainId: CHAIN_ID.BASE,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b",
+          toToken: "0x4200000000000000000000000000000000000006",
+          fromAmount: "428483394137568000000",
+          toAmount: "199536324189055922",
+          recipient: "0x10fA4Bf4d2F352153B8FFc6743b858c8Fa81E88E",
+        },
+      ],
+    },
   ],
 };
