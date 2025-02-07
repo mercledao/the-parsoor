@@ -42,12 +42,5 @@ export const protocols: IProtocolDefinitionMap = {
     twitter: "https://x.com/deBridgeFinance",
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
-  },
-  oneinch: {
-    identifier: "oneinch",
-    name: "Oneinch",
-    twitter: "https://x.com/1inch",
-    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/oneinch.png",
-    website: "https://1inch.io/",
-  },
+  }
 };
