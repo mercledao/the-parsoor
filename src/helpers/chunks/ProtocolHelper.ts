@@ -163,4 +163,40 @@ export class ProtocolHelper {
 
     return parsedLogs;
   }
+
+  public static analyzeSingleSwapFromLogs(
+    txLogs: ITransactionLog[],
+    txn: ITransaction
+  ) {
+    const userAddress = txn.from.toLowerCase();
+    const transfers = this.parseERC20TransferLogs(txLogs);
+    
+
+    let fromToken: string | null = null;
+    let toToken: string | null = null;
+    let fromAmount = BigInt(0);
+    let toAmount = BigInt(0);
+
+    transfers.forEach(({ fromAddress, toAddress, value, contractAddress }) => {
+      
+      // If the user is the sender, it's the amount being deducted (fromAmount)
+      if (fromAddress.toLowerCase() === userAddress) {
+        fromToken = contractAddress;
+        fromAmount += BigInt(value);
+      }
+
+      // If the user is the recipient, it's the amount being credited (toAmount)
+      if (toAddress.toLowerCase() === userAddress) {
+        toToken = contractAddress;
+        toAmount += BigInt(value);
+      }
+    });
+
+    return {
+      fromToken,
+      toToken,
+      fromAmount: fromAmount.toString(),
+      toAmount: toAmount.toString(),
+    };
+  }
 }
