@@ -6,6 +6,7 @@ import Uniswap from "./Uniswap";
 import Across from "./Across";
 import Debridge from "./Debridge";
 import Aerodrome from "./Aerodrome";
+import Pancakeswap from "./Pancakeswap";
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -15,4 +16,5 @@ export const parsers = {
   [protocols.across.identifier]: new Across(),
   [protocols.debridge.identifier]: new Debridge(),
   [protocols.aerodrome.identifier]: new Aerodrome(),
+  [protocols.pancakeswap.identifier]: new Pancakeswap()
 };
