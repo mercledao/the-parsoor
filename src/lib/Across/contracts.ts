@@ -10,6 +10,7 @@ enum CONTRACT_ENUM {
 enum EVENT_ENUM {
   DEPOSIT = "0xa123dc29aebf7d0c3322c8eeb5b999e859f39937950ed31056532713d0de396f",
   FILLED_DEPOSIT = "0x571749edf1d5c9599318cdbc4e28a6475d65e87fd3b2ddbe1e9a8d5e7a0f0ff7",
+  FILLED_DEPOSIT_V2 = "0x8ab9dc6c19fe88e69bc70221b339c84332752fdd49591b7c51e66bae3947b73c",
 }
 
 const contracts: IProtocolContractDefinitions = {
@@ -75,7 +76,7 @@ const contracts: IProtocolContractDefinitions = {
       [CHAIN_ID.ZORA]: {
         address: "0x13fDac9F9b4777705db45291bbFF3c972c6d1d97",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      }
+      },
     },
 
     events: {
@@ -88,9 +89,36 @@ const contracts: IProtocolContractDefinitions = {
         abi: new ethers.Interface([
           "event FilledV3Relay(address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 repaymentChainId, uint256 indexed originChainId, uint32 indexed depositId, uint32 fillDeadline, uint32 exclusivityDeadline, address exclusiveRelayer, address indexed relayer, address depositor, address recipient, bytes message, tuple(address updatedRecipient, bytes updatedMessage, uint256 updatedOutputAmount, uint8 fillType) relayExecutionInfo)",
         ]),
-      }
+      },
+      [EVENT_ENUM.FILLED_DEPOSIT_V2]: {
+        abi: new ethers.Interface([
+          `event FilledRelay(
+            uint256 amount, 
+            uint256 totalFilledAmount, 
+            uint256 fillAmount, 
+            uint256 repaymentChainId, 
+            uint256 indexed originChainId, 
+            uint256 destinationChainId, 
+            int64 relayerFeePct, 
+            int64 realizedLpFeePct, 
+            uint32 indexed depositId, 
+            address destinationToken, 
+            address relayer, 
+            address indexed depositor, 
+            address recipient, 
+            bytes message, 
+            tuple(
+              address recipient, 
+              bytes message, 
+              int64 relayerFeePct, 
+              bool isSlowRelay, 
+              int256 payoutAdjustmentPct
+            ) updatableRelayData
+          )`,
+        ]),
+      },
     },
-  }
+  },
 };
 
 export { CONTRACT_ENUM, contracts, EVENT_ENUM };
