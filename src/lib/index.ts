@@ -7,6 +7,7 @@ import Across from "./Across";
 import Debridge from "./Debridge";
 import Bungee from "./Bungee"
 import Aerodrome from "./Aerodrome";
+import Pancakeswap from "./Pancakeswap";
 import Stargate from "./Stargate";
 
 export const parsers = {
@@ -18,5 +19,6 @@ export const parsers = {
   [protocols.debridge.identifier]: new Debridge(),
   [protocols.bungee.identifier]: new Bungee(),
   [protocols.aerodrome.identifier]: new Aerodrome(),
+  [protocols.pancakeswap.identifier]: new Pancakeswap(),
   [protocols.stargate.identifier]: new Stargate(),
 };
