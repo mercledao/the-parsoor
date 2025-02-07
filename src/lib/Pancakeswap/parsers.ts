@@ -55,6 +55,8 @@ export class PancakeswapParser {
   private static readonly EXACT_OUTPUT_SINGLE = "exactOutputSingle";
   private static readonly EXACT_INPUT = "exactInput";
   private static readonly EXACT_OUTPUT = "exactOutput";
+  private static readonly SWAP_EXACT_TOKENS_FOR_TOKENS = "swapExactTokensForTokens";
+  private static readonly SWAP_TOKENS_FOR_EXACT_TOKENS = "swapTokensForExactTokens";
 
   public static async parseV2Transaction(
     transaction: ITransaction
@@ -441,6 +443,8 @@ export class PancakeswapParser {
     transaction: ITransaction
   ): Promise<ISingleSwapAction | null> {
     const functionName = parsedTxn.name.toLowerCase();
+    console.log(functionName);
+    
     const params: IV3SwapParams = {
       tokenIn: parsedTxn.args.tokenIn || parsedTxn.args.params?.tokenIn,
       tokenOut: parsedTxn.args.tokenOut || parsedTxn.args.params?.tokenOut,
@@ -475,7 +479,11 @@ export class PancakeswapParser {
       return this.createMultiHopV3SwapAction(params, isExactInput, transaction);
     }
 
-    return null;
+    if(functionName === this.SWAP_EXACT_TOKENS_FOR_TOKENS.toLowerCase())
+    return PancakeswapParser.handleSwapExactTokensForTokens(transaction, parsedTxn);
+
+    if(functionName === this.SWAP_TOKENS_FOR_EXACT_TOKENS.toLowerCase())
+      return PancakeswapParser.handleSwapTokensForExactTokens(transaction, parsedTxn);
   }
 
   private static createSingleV3SwapAction(
@@ -486,6 +494,9 @@ export class PancakeswapParser {
     const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
       transaction.logs
     );
+
+    console.log(erc20TransferLogs);
+    
 
     const fromTxn = erc20TransferLogs.find((log) => {
       return log.contractAddress.toLowerCase() === params.tokenIn.toLowerCase();

@@ -68,6 +68,36 @@ export const pancakeswapData: IProtocolTestingData = {
         },
       ],
     },
+    {
+      txnHash:
+        "0xd1b5b2133f8fd7ca475af18e011d8a85669bb94393e26257fc987a6f6e7ea397",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x630d98424eFe0Ea27fB1b3Ab7741907DFFEaAd78",
+          toToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          fromAmount: "45508212425965",
+          toAmount: "66256172420619375",
+          recipient: "0x0000000000000000000000000000000000000002",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x25a7d1c2d0aa7e1ef0af0c76fbcbc3eb341843c8ec1ab783b82b2f3aab5d2091",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          toToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          fromAmount: "999842",
+          toAmount: "943907",
+          recipient: "0xe78CcCf8262CDeEd0F539A34a593baAf89D39510",
+        },
+      ],
+    },
   ],
   [PANCAKESWAP_VERSIONS.V2]: [
     {
@@ -82,6 +112,21 @@ export const pancakeswapData: IProtocolTestingData = {
           fromAmount: "65000000",
           toAmount: "181052374527533741139",
           recipient: "0x464fC339aDD314932920d3e060745bd7Ea3e92AD",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x53e5278333c80d70eb1a464858b99c7ff1a0c68bd926a11ff8a3dde3c96d4ea6",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          toToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          fromAmount: "409651509497864000",
+          toAmount: "1102694132",
+          recipient: "0x7DcB717570125cE4fe48d9F6d207A3559eEE258c",
         },
       ],
     },
