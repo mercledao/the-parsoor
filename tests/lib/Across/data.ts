@@ -2,10 +2,31 @@ import { ACTION_ENUM, CHAIN_ID } from "../../../src";
 import { IProtocolTestingData } from "../../../src/types";
 
 export enum ACROSS_VERSIONS {
+  V2 = "v2",
   V3 = "v3",
 }
 
 export const acrossFilledDepositData: IProtocolTestingData = {
+  [ACROSS_VERSIONS.V2]: [
+    {
+      txnHash:
+        "0xf51edcffbe108069829006eae28feb4e8d3f6d77a749cbb23e72f219f8b922e0",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.BRIDGE_IN,
+          fromChain: CHAIN_ID.POLYGON.toString(),
+          toChain: CHAIN_ID.ETHEREUM,
+          fromToken: null,
+          toToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          fromAmount: null,
+          toAmount: "1012527917664467247",
+          sender: "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          recipient: "0x3a86E9C1947f9ff49Abf2bCC3301008165636a5D",
+        },
+      ],
+    },
+  ],
   [ACROSS_VERSIONS.V3]: [
     {
       txnHash:

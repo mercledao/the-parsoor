@@ -2,16 +2,61 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_factoryV2", "type": "address" },
-      { "internalType": "address", "name": "factoryV3", "type": "address" },
+      { "internalType": "address", "name": "_deployer", "type": "address" },
+      { "internalType": "address", "name": "_factoryV3", "type": "address" },
       {
         "internalType": "address",
         "name": "_positionManager",
         "type": "address"
       },
+      {
+        "internalType": "address",
+        "name": "_stableFactory",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "_stableInfo", "type": "address" },
       { "internalType": "address", "name": "_WETH9", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "factory",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "info",
+        "type": "address"
+      }
+    ],
+    "name": "SetStableSwap",
+    "type": "event"
   },
   {
     "inputs": [],
@@ -95,6 +140,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "deployer",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -153,6 +205,21 @@
   },
   {
     "inputs": [
+      { "internalType": "address[]", "name": "path", "type": "address[]" },
+      { "internalType": "uint256[]", "name": "flag", "type": "uint256[]" },
+      { "internalType": "uint256", "name": "amountIn", "type": "uint256" },
+      { "internalType": "uint256", "name": "amountOutMin", "type": "uint256" },
+      { "internalType": "address", "name": "to", "type": "address" }
+    ],
+    "name": "exactInputStableSwap",
+    "outputs": [
+      { "internalType": "uint256", "name": "amountOut", "type": "uint256" }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "components": [
           { "internalType": "bytes", "name": "path", "type": "bytes" },
@@ -202,6 +269,21 @@
       }
     ],
     "name": "exactOutputSingle",
+    "outputs": [
+      { "internalType": "uint256", "name": "amountIn", "type": "uint256" }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address[]", "name": "path", "type": "address[]" },
+      { "internalType": "uint256[]", "name": "flag", "type": "uint256[]" },
+      { "internalType": "uint256", "name": "amountOut", "type": "uint256" },
+      { "internalType": "uint256", "name": "amountInMax", "type": "uint256" },
+      { "internalType": "address", "name": "to", "type": "address" }
+    ],
+    "name": "exactOutputStableSwap",
     "outputs": [
       { "internalType": "uint256", "name": "amountIn", "type": "uint256" }
     ],
@@ -330,6 +412,24 @@
   },
   {
     "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "int256", "name": "amount0Delta", "type": "int256" },
+      { "internalType": "int256", "name": "amount1Delta", "type": "int256" },
+      { "internalType": "bytes", "name": "_data", "type": "bytes" }
+    ],
+    "name": "pancakeV3SwapCallback",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "positionManager",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
@@ -350,6 +450,13 @@
     "name": "refundETH",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -406,6 +513,30 @@
     "name": "selfPermitIfNecessary",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_factory", "type": "address" },
+      { "internalType": "address", "name": "_info", "type": "address" }
+    ],
+    "name": "setStableSwap",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stableSwapFactory",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stableSwapInfo",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -484,11 +615,9 @@
   },
   {
     "inputs": [
-      { "internalType": "int256", "name": "amount0Delta", "type": "int256" },
-      { "internalType": "int256", "name": "amount1Delta", "type": "int256" },
-      { "internalType": "bytes", "name": "_data", "type": "bytes" }
+      { "internalType": "address", "name": "newOwner", "type": "address" }
     ],
-    "name": "uniswapV3SwapCallback",
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -497,15 +626,6 @@
     "inputs": [
       { "internalType": "uint256", "name": "amountMinimum", "type": "uint256" },
       { "internalType": "address", "name": "recipient", "type": "address" }
-    ],
-    "name": "unwrapWETH9",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "amountMinimum", "type": "uint256" }
     ],
     "name": "unwrapWETH9",
     "outputs": [],

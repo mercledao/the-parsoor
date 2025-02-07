@@ -1,18 +1,12 @@
 import { ethers } from "ethers";
-import { ACTION_ENUM } from "../../../enums";
-import { ProtocolHelper } from "../../../helpers";
+import { ACTION_ENUM } from "../../enums";
+import { ProtocolHelper } from "../../helpers";
 import {
   ISingleSwapAction,
   ITransaction,
   ITransactionAction,
-  ITransactionLog,
-} from "../../../types";
-import {
-  COMMAND_ENUM,
-  CONTRACT_ENUM,
-  contracts,
-  EVENT_ENUM,
-} from "../contracts";
+} from "../../types";
+import { COMMAND_ENUM, CONTRACT_ENUM, contracts } from "./contracts";
 
 interface IV3SwapParams {
   tokenIn: string;
@@ -41,7 +35,7 @@ interface CommandConfig {
 const COMMAND_CONFIGS: Partial<Record<COMMAND_ENUM, CommandConfig>> = {
   [COMMAND_ENUM.V3_SWAP_EXACT_IN]: {
     decodeFormat: ["address", "uint256", "uint256", "bytes", "bool"],
-    processPath: (pathBytes: string) => UniswapParser.decodeV3Path(pathBytes),
+    processPath: (pathBytes: string) => SwapRouterContractParser.decodeV3Path(pathBytes),
     getTokenOrder: (path) => ({
       fromToken: path[0],
       toToken: path[path.length - 1],
@@ -53,7 +47,7 @@ const COMMAND_CONFIGS: Partial<Record<COMMAND_ENUM, CommandConfig>> = {
   },
   [COMMAND_ENUM.V3_SWAP_EXACT_OUT]: {
     decodeFormat: ["address", "uint256", "uint256", "bytes", "bool"],
-    processPath: (pathBytes: string) => UniswapParser.decodeV3Path(pathBytes),
+    processPath: (pathBytes: string) => SwapRouterContractParser.decodeV3Path(pathBytes),
     getTokenOrder: (path) => ({
       fromToken: path[path.length - 1],
       toToken: path[0],
@@ -90,41 +84,34 @@ const COMMAND_CONFIGS: Partial<Record<COMMAND_ENUM, CommandConfig>> = {
 };
 
 enum CONTRACT_FUNCTION_NAMES {
-  SWAP_ETH_FOR_EXACT_TOKENS = "swapETHForExactTokens",
+  UNSAFE_SWAP_EXACT_TOKENS_FOR_TOKENS = "UNSAFE_swapExactTokensForTokens",
   SWAP_EXACT_ETH_FOR_TOKENS = "swapExactETHForTokens",
   SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE = "swapExactETHForTokensSupportingFeeOnTransferTokens",
   SWAP_EXACT_TOKENS_FOR_ETH = "swapExactTokensForETH",
   SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE = "swapExactTokensForETHSupportingFeeOnTransferTokens",
   SWAP_EXACT_TOKENS_FOR_TOKENS = "swapExactTokensForTokens",
   SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE = "swapExactTokensForTokensSupportingFeeOnTransferTokens",
-  SWAP_TOKENS_FOR_EXACT_ETH = "swapTokensForExactETH",
-  SWAP_TOKENS_FOR_EXACT_TOKENS = "swapTokensForExactTokens",
 }
-
-export class UniswapParser {
-  private static readonly EXACT_INPUT_SINGLE = "exactInputSingle";
-  private static readonly EXACT_OUTPUT_SINGLE = "exactOutputSingle";
-  private static readonly EXACT_INPUT = "exactInput";
-  private static readonly EXACT_OUTPUT = "exactOutput";
-
-  public static async parseV2Transaction(
+export class RouterContractParser {
+  public static parseTransaction(
     transaction: ITransaction
-  ): Promise<ITransactionAction[]> {
+  ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
-
     const parsedTxn = ProtocolHelper.parseTransaction(
       transaction,
-      CONTRACT_ENUM.ROUTER_V2,
+      CONTRACT_ENUM.ROUTER_CONTRACT,
       contracts
     );
 
-    if (!parsedTxn || !parsedTxn.args.path || parsedTxn.args.path.length < 2) {
+    if (!parsedTxn) {
       return actions;
     }
 
     switch (parsedTxn.name) {
-      case CONTRACT_FUNCTION_NAMES.SWAP_ETH_FOR_EXACT_TOKENS:
-        actions.push(this.handleSwapETHForExactTokens(transaction, parsedTxn));
+      case CONTRACT_FUNCTION_NAMES.UNSAFE_SWAP_EXACT_TOKENS_FOR_TOKENS:
+        actions.push(
+          this.handleUnsafeSwapExactTokensForTokens(transaction, parsedTxn)
+        );
         break;
 
       case CONTRACT_FUNCTION_NAMES.SWAP_EXACT_ETH_FOR_TOKENS:
@@ -159,59 +146,22 @@ export class UniswapParser {
         );
         break;
 
-      case CONTRACT_FUNCTION_NAMES.SWAP_TOKENS_FOR_EXACT_ETH:
-        actions.push(this.handleSwapTokensForExactETH(transaction, parsedTxn));
-        break;
-
-      case CONTRACT_FUNCTION_NAMES.SWAP_TOKENS_FOR_EXACT_TOKENS:
-        actions.push(
-          this.handleSwapTokensForExactTokens(transaction, parsedTxn)
-        );
-        break;
-
       default:
         break;
     }
+
     return actions;
   }
 
   private static getTokenTransfersFromCallData(
     parsedTxn: ethers.TransactionDescription
   ) {
-    const fromToken = parsedTxn.args.path[0];
-    const toToken = parsedTxn.args.path[parsedTxn.args.path.length - 1];
+    const fromToken = parsedTxn.args.routes[0].from;
+    const toToken = parsedTxn.args.routes[0].to;
     return { fromToken, toToken };
   }
 
-  private static getIncomingOutgoingLogEvents(swapLog: ITransactionLog[]) {
-    const incomingLog = swapLog[swapLog.length - 1];
-    const outgoingLog = swapLog[0];
-
-    const parsedIncomingLog = ProtocolHelper.parseLog(
-      incomingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
-
-    const parsedOutgoingLog = ProtocolHelper.parseLog(
-      outgoingLog,
-      contracts[CONTRACT_ENUM.ROUTER_V2].events[EVENT_ENUM.V2_SWAP]
-    );
-
-    return { parsedIncomingLog, parsedOutgoingLog };
-  }
-
-  private static getSwapLogEvents(transaction: ITransaction) {
-    const swapLogs = transaction.logs.filter(
-      (log) => log.topics[0] === EVENT_ENUM.V2_SWAP
-    );
-
-    if (swapLogs.length > 1) {
-      swapLogs.sort((a, b) => a.logIndex - b.logIndex);
-    }
-    return swapLogs;
-  }
-
-  private static handleSwapETHForExactTokens(
+  private static handleUnsafeSwapExactTokensForTokens(
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
@@ -232,7 +182,6 @@ export class UniswapParser {
       toToken,
       fromAmount: transaction.value.toString(),
       toAmount: toTxn.value.toString(),
-      sender: transaction.from,
       recipient: parsedTxn.args.to,
     };
   }
@@ -292,8 +241,6 @@ export class UniswapParser {
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
-    const swapLogs = this.getSwapLogEvents(transaction);
-
     const { fromToken, toToken } =
       this.getTokenTransfersFromCallData(parsedTxn);
 
@@ -393,115 +340,44 @@ export class UniswapParser {
       recipient: parsedTxn.args.to,
     };
   }
+}
 
-  private static handleSwapTokensForExactETH(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): ISingleSwapAction {
-    const { fromToken, toToken } =
-      this.getTokenTransfersFromCallData(parsedTxn);
+export class SwapRouterContractParser {
+  private static readonly EXACT_INPUT_SINGLE = "exactInputSingle";
+  private static readonly EXACT_OUTPUT_SINGLE = "exactOutputSingle";
+  private static readonly EXACT_INPUT = "exactInput";
+  private static readonly EXACT_OUTPUT = "exactOutput";
 
-    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
-      transaction.logs
-    );
-
-    const toTxn = erc20TransferLogs.find((log) => {
-      return log.contractAddress.toLowerCase() === toToken.toLowerCase();
-    });
-
-    const fromTxn = erc20TransferLogs.find((log) => {
-      return log.contractAddress.toLowerCase() === fromToken.toLowerCase();
-    });
-
-    return {
-      type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken,
-      toToken,
-      fromAmount: fromTxn.value.toString(),
-      toAmount: toTxn.value.toString(),
-      sender: transaction.from,
-      recipient: parsedTxn.args.to,
-    };
-  }
-
-  private static handleSwapTokensForExactTokens(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): ISingleSwapAction {
-    const { fromToken, toToken } =
-      this.getTokenTransfersFromCallData(parsedTxn);
-
-    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(
-      transaction.logs
-    );
-
-    const toTxn = erc20TransferLogs.find((log) => {
-      return log.contractAddress.toLowerCase() === toToken.toLowerCase();
-    });
-
-    const fromTxn = erc20TransferLogs.find((log) => {
-      return log.contractAddress.toLowerCase() === fromToken.toLowerCase();
-    });
-
-    return {
-      type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken,
-      toToken,
-      fromAmount: fromTxn.value.toString(),
-      toAmount: toTxn.value.toString(),
-      sender: transaction.from,
-      recipient: parsedTxn.args.to,
-    };
-  }
-
-  public static async parseV3Transaction(
+  public static async parseTransaction(
     transaction: ITransaction,
     routerType: CONTRACT_ENUM
   ): Promise<ITransactionAction[]> {
     const parsedTxn = contracts[routerType].interface.parseTransaction({
       data: transaction.data,
     });
-  
+
     if (!parsedTxn) return [];
-  
+
     if (parsedTxn.name !== "multicall") {
       const action = await this.createV3SwapAction(parsedTxn, transaction);
       return action ? [action] : [];
     }
-  
-    const calls = parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
+
+    const calls =
+      parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
     const result: ITransactionAction[] = [];
-  
+
     for (const callData of calls) {
-      const subParsedTxn = contracts[routerType].interface.parseTransaction({ data: callData });
+      const subParsedTxn = contracts[routerType].interface.parseTransaction({
+        data: callData,
+      });
       if (!subParsedTxn) continue;
-  
+
       const action = await this.createV3SwapAction(subParsedTxn, transaction);
       if (action) result.push(action);
     }
-  
+
     return result;
-  }
-  
-
-  public static decodeV3Path(path: string): string[] {
-    if (!path.startsWith("0x")) return [];
-
-    const cleanPath = path.slice(2);
-    const tokens: string[] = [];
-
-    // V3 paths are encoded as: tokenIn (20 bytes) + fee (3 bytes) + tokenOut (20 bytes)
-    // For each hop: address (20 bytes) = 40 hex chars, fee (3 bytes) = 6 hex chars
-    let i = 0;
-    while (i < cleanPath.length) {
-      const token = "0x" + cleanPath.slice(i, i + 40);
-      tokens.push(token.toLowerCase());
-
-      // Skip the token address (40 chars) and fee (6 chars)
-      i += 46;
-    }
-
-    return tokens;
   }
 
   private static async createV3SwapAction(
@@ -615,12 +491,35 @@ export class UniswapParser {
     };
   }
 
-  public static async parseUniversalRouterTransaction(
+  public static decodeV3Path(path: string): string[] {
+    if (!path.startsWith("0x")) return [];
+
+    const cleanPath = path.slice(2);
+    const tokens: string[] = [];
+
+    // V3 paths are encoded as: tokenIn (20 bytes) + fee (3 bytes) + tokenOut (20 bytes)
+    // For each hop: address (20 bytes) = 40 hex chars, fee (3 bytes) = 6 hex chars
+    let i = 0;
+    while (i < cleanPath.length) {
+      const token = "0x" + cleanPath.slice(i, i + 40);
+      tokens.push(token.toLowerCase());
+
+      // Skip the token address (40 chars) and fee (6 chars)
+      i += 46;
+    }
+
+    return tokens;
+  }
+}
+
+export class UniversalRouterContractParser {
+  
+  public static async parseTransaction(
     transaction: ITransaction
   ): Promise<ITransactionAction[]> {
     const decoded = ProtocolHelper.parseTransaction(
       transaction,
-      CONTRACT_ENUM.UNIVERSAL_ROUTER,
+      CONTRACT_ENUM.UNIVERSAL_ROUTER_CONTRACT,
       contracts
     );
 
