@@ -9,7 +9,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:protocol": "jest tests/lib/$PROTOCOL"
+    "test:protocol": "jest tests/lib/$PROTOCOL",
+    "test:chain": "jest tests/chain/$CHAIN"
   },
   "keywords": [],
   "author": "",

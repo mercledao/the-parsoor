@@ -60,7 +60,7 @@ const contracts: IProtocolContractDefinitions = {
         address: "0x9295ee1d8C5b022Be115A2AD3c30C72E34e7F096",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
-      [CHAIN_ID.READ_STONE]: {
+      [CHAIN_ID.RED_STONE]: {
         address: "0x13fDac9F9b4777705db45291bbFF3c972c6d1d97",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
@@ -75,7 +75,7 @@ const contracts: IProtocolContractDefinitions = {
       [CHAIN_ID.ZORA]: {
         address: "0x13fDac9F9b4777705db45291bbFF3c972c6d1d97",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
-      }
+      },
     },
 
     events: {
@@ -88,9 +88,9 @@ const contracts: IProtocolContractDefinitions = {
         abi: new ethers.Interface([
           "event FilledV3Relay(address inputToken, address outputToken, uint256 inputAmount, uint256 outputAmount, uint256 repaymentChainId, uint256 indexed originChainId, uint32 indexed depositId, uint32 fillDeadline, uint32 exclusivityDeadline, address exclusiveRelayer, address indexed relayer, address depositor, address recipient, bytes message, tuple(address updatedRecipient, bytes updatedMessage, uint256 updatedOutputAmount, uint8 fillType) relayExecutionInfo)",
         ]),
-      }
+      },
     },
-  }
+  },
 };
 
 export { CONTRACT_ENUM, contracts, EVENT_ENUM };
