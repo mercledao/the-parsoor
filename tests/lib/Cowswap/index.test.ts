@@ -15,7 +15,7 @@ describe('CowswapParser', () => {
     utils.isValidProtocol();
   });
 
-  it('should parse v3 transactions correctly', async () => {
+  it('should parse v2 transactions correctly', async () => {
     const v2Transactions = cowswapSwapData[COWSWAP_VERSIONS.V2];
 
     for (const transaction of v2Transactions) {
