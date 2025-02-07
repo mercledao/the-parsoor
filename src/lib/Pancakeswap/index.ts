@@ -28,7 +28,6 @@ export default class Pancakeswap implements IProtocolParserExport {
         contracts
       )
     ) {
-      console.log('SMART_ROUTER_V3');
       const action = await PancakeswapParser.parseV3Transaction(transaction,CONTRACT_ENUM.SMART_ROUTER_V3);
       actions.push(...action);
     } else if (
@@ -38,7 +37,6 @@ export default class Pancakeswap implements IProtocolParserExport {
         contracts
       )
     ) {
-      console.log('SWAP_ROUTER_V3');
       const action = await PancakeswapParser.parseV3Transaction(transaction, CONTRACT_ENUM.SWAP_ROUTER_V3);
       actions.push(...action);
     } else if (
@@ -48,7 +46,6 @@ export default class Pancakeswap implements IProtocolParserExport {
         contracts
       )
     ) {
-      console.log('ROUTER_V2');
       const action = await PancakeswapParser.parseV2Transaction(transaction);
       actions.push(...action);
     }
