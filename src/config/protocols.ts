@@ -43,4 +43,11 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
   },
+  velodrome: {
+    identifier: "velodrome",
+    name: "Velodrome",
+    twitter: "https://x.com/VelodromeFi",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/velodrome.png",
+    website: "https://velodrome.finance/",
+  },
 };
