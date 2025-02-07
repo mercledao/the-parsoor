@@ -5,7 +5,6 @@ import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
 import Across from "./Across";
 import Debridge from "./Debridge";
-import Oneinch from "./Oneinch";
 import Paraswap from "./Paraswap";
 
 export const parsers = {
@@ -15,6 +14,5 @@ export const parsers = {
   [protocols.odos.identifier]: new Odos(),
   [protocols.across.identifier]: new Across(),
   [protocols.debridge.identifier]: new Debridge(),
-  [protocols.oneinch.identifier]: new Oneinch(),
   [protocols.paraswap.identifier]: new Paraswap(),
 };
