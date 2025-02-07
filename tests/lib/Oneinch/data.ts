@@ -186,17 +186,17 @@ export const oneinchAggregationRouterData: IProtocolTestingData = {
     },
     {
       txnHash:
-        "0x69ee3a2673d69b6aeb3ae7e71ec65fce89e0e6648b692825a07c52dcc1fef33d",
-      chainId: CHAIN_ID.ETHEREUM,
+        "0xa7a09c1a2af972b05cca27f550f24d33ae96ae515c1cb7b12a557547056f58a2",
+      chainId: CHAIN_ID.ARBITRUM,
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0xFe2e637202056d30016725477c5da089Ab0A043A",
-          toToken: "0x7a7A0C588173f10845C66e6d86A7aCc2495D778E",
-          fromAmount: "250000000000000000",
-          toAmount: "500000000000000000000",
+          fromToken: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+          toToken: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+          fromAmount: "2048669",
+          toAmount: "725100527597945378",
           sender: "0x973c37FD15fe837fD3cf341420e6e70cC5078575",
-          recipient: "0x973c37FD15fe837fD3cf341420e6e70cC5078575",
+          recipient: "0xBc21CcDF4A312b372E979A661E5b9c84d313483d",
         },
       ],
     },
