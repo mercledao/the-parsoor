@@ -13,7 +13,6 @@ import {
   parsers,
   protocols,
 } from "../src";
-import { log } from "console";
 
 export class ProtocolParserUtils {
   public readonly protocolIdentifier: string;
@@ -80,6 +79,7 @@ export class ProtocolParserUtils {
         contractAddress: log.address,
         topics: log.topics as string[],
         data: log.data,
+        logIndex: log.index
       })),
     };
 
@@ -144,7 +144,6 @@ export class ProtocolParserUtils {
     } else {
       expect(actualAction.fee).toBeUndefined();
     }
-    
   }
 
   public assertBridgeOutAction(
@@ -164,7 +163,6 @@ export class ProtocolParserUtils {
     } else {
       expect(actualAction.fee).toBeUndefined();
     }
-    
   }
 
   public assertSingleSwapAction(
@@ -181,7 +179,6 @@ export class ProtocolParserUtils {
     } else {
       expect(actualAction.fee).toBeUndefined();
     }
-    
   }
 
   public assertMultiSwapAction(
@@ -198,6 +195,5 @@ export class ProtocolParserUtils {
     } else {
       expect(actualAction.fee).toBeUndefined();
     }
-    
   }
 }

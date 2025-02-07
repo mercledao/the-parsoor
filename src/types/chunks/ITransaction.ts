@@ -44,4 +44,6 @@ export type ITransactionLog = {
 
   /** Data of the log */
   data: string;
+
+  logIndex: number
 };
