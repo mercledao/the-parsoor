@@ -43,20 +43,25 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/debridge.png",
     website: "https://app.debridge.finance/",
   },
-<<<<<<< HEAD
-  stargate: {
-    identifier: "stargate",
-    name: "Stargate",
-    twitter: "https://x.com/StargateFinance",
-    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/stargate.png",
-    website: "https://stargate.finance/",
-=======
   bungee: {
     identifier: "bungee",
     name: "Bungee",
     twitter: "https://x.com/BungeeExchange",
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/bungee.png",
     website: "https://www.bungee.exchange/",
->>>>>>> d198654 (feat: add Bungee protocol implementation with transaction parsing)
+  },
+  aerodrome: {
+    identifier: "aerodrome",
+    name: "Aerodrome",
+    twitter: "https://x.com/AerodromeFi",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/aerodrome.png",
+    website: "https://aerodrome.finance/",
+  },
+  stargate: {
+    identifier: "stargate",
+    name: "Stargate",
+    twitter: "https://x.com/StargateFinance",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/stargate.png",
+    website: "https://stargate.finance/",
   },
 };
