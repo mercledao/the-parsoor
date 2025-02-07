@@ -137,4 +137,5 @@ const contracts: IProtocolContractDefinitions = {
   },
 };
 
+
 export { CONTRACT_ENUM, contracts, EVENT_ENUM };
