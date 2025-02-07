@@ -32,12 +32,12 @@ export class CowswapContractParser {
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: parsedLog.args.sellToken.toLowerCase(),
-      toToken: parsedLog.args.buyToken.toLowerCase(),
+      fromToken: parsedLog.args.sellToken,
+      toToken: parsedLog.args.buyToken,
       fromAmount: parsedLog.args.sellAmount.toString(),
       toAmount: parsedLog.args.buyAmount.toString(),
-      sender: transaction.from.toLowerCase(),
-      recipient: `0x${parsedLog.args.orderUid.slice(66,106)}`
+      sender: transaction.from,
+      recipient: parsedLog.args.owner ?? `0x${parsedLog.args.orderUid.slice(66,106)}`
     };
   }
 }
