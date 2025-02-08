@@ -36,7 +36,7 @@ export class CowswapContractParser {
       toToken: parsedLog.args.buyToken,
       fromAmount: parsedLog.args.sellAmount.toString(),
       toAmount: parsedLog.args.buyAmount.toString(),
-      sender: transaction.from,
+      sender: parsedLog.args.owner ?? `0x${parsedLog.args.orderUid.slice(66,106)}`,
       recipient: parsedLog.args.owner ?? `0x${parsedLog.args.orderUid.slice(66,106)}`
     };
   }
