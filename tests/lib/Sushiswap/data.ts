@@ -86,6 +86,54 @@ export const sushiswapData: IProtocolTestingData = {
           recipient: "0xB4765Bee75A0fa0a2f66Bf68CE1796c55854c154",
         },
       ],
+    },
+    {
+      txnHash:
+        "0x26db144b5ac565dc321a8378bebac1876aa3fb57e536479919f8121179be68d8",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+          toToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+          fromAmount: "245185",
+          toAmount: "89588035995809445",
+          sender: "0x0d0a3c6DC8a7352A69b2B31E9DB99f05A4c779F1",
+          recipient: "0x0d0a3c6DC8a7352A69b2B31E9DB99f05A4c779F1",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x46239f13bc16a9344f0b37573edd535cee9cd79c7ef14f585dcc6f31e76212a0",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          toToken: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+          fromAmount: "270830019",
+          toAmount: "270748156",
+          sender: "0x188c6FF67A50b965752ed4D906D39260F9cC97EC",
+          recipient: "0x188c6FF67A50b965752ed4D906D39260F9cC97EC",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xd79f74b9ba4ff7f05e5d44f201562ce5cad6bac72a730c91d5a69372902db72b",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          toToken: "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+          fromAmount: "116397988",
+          toAmount: "43615333555846695133",
+          sender: "0xdEf76dC86C5003a7382bb97900b4C6c475FDBfbA",
+          recipient: "0xdEf76dC86C5003a7382bb97900b4C6c475FDBfbA",
+        },
+      ],
     }
   ],
 };

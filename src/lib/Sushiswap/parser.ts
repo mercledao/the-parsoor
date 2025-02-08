@@ -35,7 +35,7 @@ export class SushiswapParser {
       contracts.SUSHISWAP_CONTRACT.events[EVENT_ENUM.ROUTE]
     );
 
-    const args = parsedSwapLog.args;
+    const args = parsedSwapLog.args;    
 
     const parsedLogs = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
 
