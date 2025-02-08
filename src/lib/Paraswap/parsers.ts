@@ -8,6 +8,7 @@ import {
   ITransactionLog,
 } from "../../types";
 import { contracts, EVENT_ENUM, CONTRACT_ENUM } from "./contracts";
+import { IncomingMessage } from "http";
 
 enum CONTRACT_FUNCTION_NAMES {
   SWAP_EXACT_AMOUNT_IN = "swapExactAmountIn",
@@ -20,6 +21,7 @@ enum CONTRACT_FUNCTION_NAMES {
   SWAP_EXACT_AMOUNT_OUT_ON_UNISWAP_V2 = "swapExactAmountOutOnUniswapV2",
   SWAP_EXACT_AMOUNT_OUT_ON_UNISWAP_V3 = "swapExactAmountOutOnUniswapV3",
   SWAP_EXACT_AMOUNT_OUT_ON_BALANCER_V2 = "swapExactAmountOutOnBalancerV2",
+  SWAP_ON_UNISWAP_V2 = "swapOnUniswapV2Fork"
 }
 
 export class AugustusV5Parser {
@@ -27,6 +29,7 @@ export class AugustusV5Parser {
     transaction: ITransaction
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
+
 
     const SwappedV5Log = transaction.logs.find(
       (log) => log.topics[0] === EVENT_ENUM.SWAPPED_V3
@@ -36,11 +39,18 @@ export class AugustusV5Parser {
       (log) => log.topics[0] === EVENT_ENUM.SWAPPED_DIRECT
     );
 
+    const SwapLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.SWAP
+    );
+
     if (SwappedV5Log) {
       actions.push(this.parseSwappedV3(transaction, SwappedV5Log));
       return actions;
     } else if (SwappedDirectLog) {
       actions.push(this.parseSwappedDirect(transaction, SwappedDirectLog));
+      return actions;
+    } else {
+      actions.push(this.parseSwap(transaction, SwapLog));
       return actions;
     }
 
@@ -88,6 +98,31 @@ export class AugustusV5Parser {
       toAmount: args.receivedAmount.toString(),
       recipient: args.beneficiary,
       sender: args.initiator,
+    };
+  }
+
+  private static parseSwap(
+    transaction: ITransaction,
+    depositLog: ITransactionLog
+  ): ISingleSwapAction {
+    const erc20Transfers = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
+
+    const outGoingTxn = erc20Transfers.filter((t) => {
+      return t.fromAddress === transaction.from;
+    });
+
+    const inComingTxn = erc20Transfers.filter((t) => {
+      return t.toAddress === transaction.from;
+    });
+    
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: outGoingTxn[0].contractAddress,
+      toToken: inComingTxn[0].contractAddress,
+      fromAmount: outGoingTxn[0].value.toString(),
+      toAmount: inComingTxn[0].value.toString(),
+      recipient: transaction.from,
+      sender: transaction.from,
     };
   }
 }
@@ -242,7 +277,7 @@ export class AugustusRFQParser {
   ): ISingleSwapAction {
     const parsedFilledOrderLog = ProtocolHelper.parseLog(
       depositLog,
-      contracts.AUGUSTUS_RFQ.events[EVENT_ENUM.ORDER_FILLED]
+      contracts[CONTRACT_ENUM.AUGUSTUS_RFQ].events[EVENT_ENUM.ORDER_FILLED]
     );
 
     const args = parsedFilledOrderLog.args;
@@ -254,6 +289,45 @@ export class AugustusRFQParser {
       fromAmount: args.makerAmount.toString(),
       toAmount: args.takerAmount.toString(),
       recipient: args.taker,
+      sender: transaction.from,
+    };
+  }
+}
+
+export class DeltaParser {
+  public static parseTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const filledOrderLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.ORDER_SETTLED
+    );
+
+    if (filledOrderLog) {
+      actions.push(this.parseSettledOrder(transaction, filledOrderLog));
+      return actions;
+    }
+  }
+
+  private static parseSettledOrder(
+    transaction: ITransaction,
+    depositLog: ITransactionLog
+  ): ISingleSwapAction {
+    const parsedFilledOrderLog = ProtocolHelper.parseLog(
+      depositLog,
+      contracts[CONTRACT_ENUM.DELTA_V2].events[EVENT_ENUM.ORDER_SETTLED]
+    );
+
+    const args = parsedFilledOrderLog.args;
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: args.srcToken,
+      toToken: args.destToken,
+      fromAmount: args.srcAmount.toString(),
+      toAmount: args.destAmount.toString(),
+      recipient: args.beneficiary,
       sender: transaction.from,
     };
   }

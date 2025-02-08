@@ -5,7 +5,8 @@ import { IProtocolTestingData } from "../../../src/types";
 export enum PARASWAP_VERSIONS {
   V5 = "v5",
   V6 = "v6.2",
-  LIMIT = "1"
+  LIMIT = "1",
+  DELTA = "2"
 }
 
 export const paraswapSimpleSwappedData: IProtocolTestingData = {
@@ -71,6 +72,70 @@ export const paraswapSimpleSwappedData: IProtocolTestingData = {
           toAmount: "5099038756",
           sender: "0x89B537D4E0dE035303Dc1BDae18394f7A6C15c36",
           recipient: "0x89B537D4E0dE035303Dc1BDae18394f7A6C15c36",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x463e2c0494f22d3e8d9008e77eb2452423c4f242888006221cc11e2f25f9db65",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+          toToken: "0x6Db8b088c4d41d622B44CD81B900bA690f2d496C",
+          fromAmount: "300000000000000000",
+          toAmount: "21462173430482231184606",
+          sender: "0x45D11F7EbBc79F18467dd534e2865d0DBA6aA435",
+          recipient: "0x45D11F7EbBc79F18467dd534e2865d0DBA6aA435",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xe45e9c410312e8247b5546599a89baf2cdfb6435c19106401140e2d8c628a935",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          toToken: "0x8eD97a637A790Be1feff5e888d43629dc05408F6",
+          fromAmount: "800000000000000000",
+          toAmount: "201515740280215459047739",
+          sender: "0xcA74F404E0C7bfA35B13B511097df966D5a65597",
+          recipient: "0xcA74F404E0C7bfA35B13B511097df966D5a65597",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x9168ab860baa734aa98154bc3c076a4f8e014cca611e8bbfa3e7d1890ca84d9f",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x0d88eD6E74bbFD96B831231638b66C05571e824F",
+          toToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          fromAmount: "388548117420000000000",
+          toAmount: "1026420783",
+          sender: "0x89B537D4E0dE035303Dc1BDae18394f7A6C15c36",
+          recipient: "0x89B537D4E0dE035303Dc1BDae18394f7A6C15c36",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x0d9ae6fb89f02d640fdce3a9e3a548ea7eba5c19f2f0400b4f87913a59cad3de",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x772598E9e62155D7fDFe65FdF01EB5a53a8465BE",
+          toToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+          fromAmount: "9871930068861891987",
+          toAmount: "303116168627775787",
+          sender: "0x45D11F7EbBc79F18467dd534e2865d0DBA6aA435",
+          recipient: "0x45D11F7EbBc79F18467dd534e2865d0DBA6aA435",
         },
       ],
     },
@@ -187,6 +252,40 @@ export const paraswapSimpleSwappedData: IProtocolTestingData = {
           toAmount: "49034555000",
           sender: "0xfcFEE36a053063751FdbeeBC6414aDac514b8410",
           recipient: "0xfcFEE36a053063751FdbeeBC6414aDac514b8410",
+        },
+      ],
+    }
+  ],
+  [PARASWAP_VERSIONS.DELTA]: [
+    {
+      txnHash:
+        "0x27ce0fc300e3331e26f69fc8ef51f3e5de4c505572cafcbac7c686c59456d621",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          toToken: "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+          fromAmount: "2700000000",
+          toAmount: "11023634444362157032",
+          sender: "0x2e5eF37Ade8afb712B8Be858fEc7389Fe32857e2",
+          recipient: "0x7f5d01e3A2A552122651f67974548A410995f94B",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x4dc2e9f2aa3ef07caf8ea572831750b270bd7450bbcc1741e39ec99d8d0f60c5",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x66761Fa41377003622aEE3c7675Fc7b5c1C2FaC5",
+          toToken: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          fromAmount: "97236801283921403774658",
+          toAmount: "29719718214",
+          sender: "0x2e5eF37Ade8afb712B8Be858fEc7389Fe32857e2",
+          recipient: "0x7c12DBb4Cf9a8Ee886E0904EC362B51937b30bDb",
         },
       ],
     }

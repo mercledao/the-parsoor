@@ -2,19 +2,23 @@ import { ethers } from "ethers";
 import { CHAIN_ID, LISTEN_FOR_TRANSACTIONS } from "../../enums";
 import { IProtocolContractDefinitions } from "../../types";
 import AugustusV5Abi from "./abis/AugustusV5.json";
-import AugustusV6Abi from "./abis/AugustusV6.json"
-import AugustusRFQAbi from "./abis/AugustusRFQ.json"
+import AugustusV6Abi from "./abis/AugustusV6.json";
+import AugustusRFQAbi from "./abis/AugustusRFQ.json";
+import DeltaV2Abi from "./abis/DeltaV2.json";
 
 enum CONTRACT_ENUM {
   AUGUSTUS_V5 = "AUGUSTUS_V5",
   AUGUSTUS_V6 = "AUGUSTUS_V6.2",
-  AUGUSTUS_RFQ = "AUGUSTUS_RFQ"
+  AUGUSTUS_RFQ = "AUGUSTUS_RFQ",
+  DELTA_V2 = "DELTA_V2",
 }
 
 enum EVENT_ENUM {
   SWAPPED_V3 = "0xe00361d207b252a464323eb23d45d42583e391f2031acdd2e9fa36efddd43cb0",
   SWAPPED_DIRECT = "0xd2d73da2b5fd52cd654d8fd1b514ad57355bad741de639e3a1c3a20dd9f17347",
-  ORDER_FILLED = "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473"
+  ORDER_FILLED = "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473",
+  ORDER_SETTLED = "0x75d5267369ab1e5d036f575e588260a9d604f045d27109fdc44442c4f12bd61a",
+  SWAP = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822"
 }
 
 const contracts: IProtocolContractDefinitions = {
@@ -67,6 +71,11 @@ const contracts: IProtocolContractDefinitions = {
       [EVENT_ENUM.SWAPPED_DIRECT]: {
         abi: new ethers.Interface([
           "event SwappedDirect (bytes16 uuid, address partner, uint256 feePercent, address initiator, uint8 kind, address indexed beneficiary, address indexed srcToken, address indexed destToken, uint256 srcAmount, uint256 receivedAmount, uint256 expectedAmount)",
+        ]),
+      },
+      [EVENT_ENUM.SWAP]: {
+        abi: new ethers.Interface([
+          "event Swap (address indexed sender, uint256 amount0In, uint256 amount1In, uint256 amount0Out, uint256 amount1Out, address indexed to)",
         ]),
       },
     },
@@ -177,9 +186,29 @@ const contracts: IProtocolContractDefinitions = {
         abi: new ethers.Interface([
           "event OrderFilled (bytes32 indexed orderHash, address indexed maker, address makerAsset, uint256 makerAmount, address indexed taker, address takerAsset, uint256 takerAmount)",
         ]),
-      }
+      },
     },
-  }
+  },
+  [CONTRACT_ENUM.DELTA_V2]: {
+    interface: new ethers.Interface(DeltaV2Abi),
+    deployments: {
+      [CHAIN_ID.ETHEREUM]: {
+        address: "0x0000000000bbf5c5fd284e657f01bd000933c96d",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.BASE]: {
+        address: "0x0000000000bbf5c5fd284e657f01bd000933c96d",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+    },
+    events: {
+      [EVENT_ENUM.ORDER_SETTLED]: {
+        abi: new ethers.Interface([
+          "event OrderSettled (address indexed owner, address indexed beneficiary, address srcToken, address destToken, uint256 srcAmount, uint256 destAmount, uint256 returnAmount, uint256 protocolFee, uint256 partnerFee, bytes32 indexed orderHash)",
+        ]),
+      },
+    },
+  },
 };
 
 export { CONTRACT_ENUM, contracts, EVENT_ENUM };
