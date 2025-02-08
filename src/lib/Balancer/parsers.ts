@@ -1,5 +1,5 @@
 import { ACTION_ENUM } from "../../enums";
-import { ethers } from "ethers";
+import { ethers, ZeroAddress } from "ethers";
 import { ProtocolHelper } from "../../helpers";
 import {
   ISingleSwapAction,
@@ -55,7 +55,7 @@ export class BalancerV2Parser {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: args.tokenIn,
       toToken: args.tokenOut,
-      fromAmount: args.amountIn.toString(),
+      fromAmount: args.tokenIn === ZeroAddress ? transaction.from : args.amountIn.toString(),
       toAmount: args.amountOut.toString(),
       sender: parsedTxn.args.funds.sender,
       recipient: parsedTxn.args.funds.recipient,
@@ -78,6 +78,10 @@ export class BalancerV2Parser {
     const swapLogs = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.SWAP
     );
+
+    console.log('fromToken', fromToken);
+    console.log('toToken', toToken);
+    
   
     swapLogs.forEach((swapLog) => {
       const { args } = ProtocolHelper.parseLog(
@@ -99,7 +103,7 @@ export class BalancerV2Parser {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: fromToken,
       toToken: toToken,
-      fromAmount: fromAmount > 0 ? fromAmount.toString() : null,
+      fromAmount: fromToken === ZeroAddress ? transaction.from : fromAmount > 0 ? fromAmount.toString() : null,
       toAmount: toAmount > 0 ? toAmount.toString() : null,
       sender: parsedTxn.args.funds.sender,
       recipient: parsedTxn.args.funds.recipient,
