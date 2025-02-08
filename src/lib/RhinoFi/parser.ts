@@ -1,31 +1,43 @@
-import { ethers } from 'ethers';
-import { ACTION_ENUM } from '../../enums';
-import { ProtocolHelper } from '../../helpers';
-import { IBridgeInAction, IBridgeOutAction, ITransaction, ITransactionAction, ITransactionLog } from '../../types';
-import { CONTRACT_ENUM, contracts, EVENT_ENUM } from './contracts';
+import { ethers } from "ethers";
+import { ACTION_ENUM } from "../../enums";
+import { ProtocolHelper } from "../../helpers";
+import {
+  IBridgeInAction,
+  IBridgeOutAction,
+  ITransaction,
+  ITransactionAction,
+  ITransactionLog,
+} from "../../types";
+import { CONTRACT_ENUM, contracts, EVENT_ENUM } from "./contracts";
 
 enum CONTRACT_FUNCTION_NAMES {
   // Function for depositing tokens to the bridge
-  DEPOSIT = 'deposit',
+  DEPOSIT = "deposit",
 
   // Function for depositing native tokens to the bridge
-  DEPOSIT_NATIVE = 'depositNative',
+  DEPOSIT_NATIVE = "depositNative",
 
   // Function for withdrawing tokens from the bridge
-  WITHDRAW = 'withdrawV2',
+  WITHDRAW = "withdrawV2",
 
   // Function for withdrawing native tokens from the bridge
-  WITHDRAW_NATIVE = 'withdrawNativeV2',
+  WITHDRAW_NATIVE = "withdrawNativeV2",
 
   // Function for withdrawing tokens from the bridge with native + erc20
-  WITHDRAW_WITH_NATIVE = 'withdrawV2WithNative'
+  WITHDRAW_WITH_NATIVE = "withdrawV2WithNative",
 }
 
 export class DepositContractParser {
-  public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
+  public static parseTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
 
-    const parsedTxn = ProtocolHelper.parseTransaction(transaction, CONTRACT_ENUM.DEPOSIT_CONTRACT, contracts);
+    const parsedTxn = ProtocolHelper.parseTransaction(
+      transaction,
+      CONTRACT_ENUM.DEPOSIT_CONTRACT,
+      contracts
+    );
 
     switch (parsedTxn.name) {
       case CONTRACT_FUNCTION_NAMES.DEPOSIT:
@@ -48,7 +60,10 @@ export class DepositContractParser {
     return actions;
   }
 
-  private static parseWithdraw(transaction: ITransaction, parsedTxn: ethers.TransactionDescription): IBridgeInAction {
+  private static parseWithdraw(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): IBridgeInAction {
     return {
       type: ACTION_ENUM.BRIDGE_IN,
 
@@ -62,7 +77,7 @@ export class DepositContractParser {
       toAmount: parsedTxn.args.amount.toString(),
 
       sender: null,
-      recipient: parsedTxn.args.to
+      recipient: parsedTxn.args.to,
     };
   }
 
@@ -83,7 +98,7 @@ export class DepositContractParser {
       toAmount: parsedTxn.args.amount.toString(),
 
       sender: null,
-      recipient: parsedTxn.args.to
+      recipient: parsedTxn.args.to,
     };
   }
 
@@ -105,7 +120,7 @@ export class DepositContractParser {
         toAmount: parsedTxn.args.amountToken.toString(),
 
         sender: null,
-        recipient: parsedTxn.args.to
+        recipient: parsedTxn.args.to,
       },
       {
         type: ACTION_ENUM.BRIDGE_IN,
@@ -120,12 +135,15 @@ export class DepositContractParser {
         toAmount: parsedTxn.args.amountNative.toString(),
 
         sender: null,
-        recipient: parsedTxn.args.to
-      }
+        recipient: parsedTxn.args.to,
+      },
     ];
   }
 
-  private static parseDeposit(transaction: ITransaction, parsedTxn: ethers.TransactionDescription): IBridgeOutAction {
+  private static parseDeposit(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): IBridgeOutAction {
     return {
       type: ACTION_ENUM.BRIDGE_OUT,
 
@@ -139,7 +157,7 @@ export class DepositContractParser {
       toAmount: null,
 
       sender: transaction.from,
-      recipient: null
+      recipient: null,
     };
   }
 
@@ -160,38 +178,48 @@ export class DepositContractParser {
       toAmount: null,
 
       sender: transaction.from,
-      recipient: null
+      recipient: null,
     };
   }
 }
 
 export class RhinoFiEthL1DepositContractParser {
-  private static contractDefiniton = contracts[CONTRACT_ENUM.RHINOFI_ETH_L1_DEPOSIT_CONTRACT];
+  private static contractDefiniton =
+    contracts[CONTRACT_ENUM.RHINOFI_ETH_L1_DEPOSIT_CONTRACT];
   private static assetTypesToTokenAddress = {
     // ETH
-    '316623735692853304525146192642758839706355829840274185964789512850136103846': ethers.ZeroAddress,
+    "316623735692853304525146192642758839706355829840274185964789512850136103846":
+      ethers.ZeroAddress,
 
     // USDC
-    '1147032829293317481173155891309375254605214077236177772270270553197624560221':
-      '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    "1147032829293317481173155891309375254605214077236177772270270553197624560221":
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
 
     // USDT
-    '1269275113502683198091459784363068703822460788394621599952252545182480283333':
-      '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    "1269275113502683198091459784363068703822460788394621599952252545182480283333":
+      "0xdAC17F958D2ee523a2206206994597C13D831ec7",
 
     // MATIC
-    '1185226704337141674006093426533180511074316762223073934096998563450566746144':
-      '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
+    "1185226704337141674006093426533180511074316762223073934096998563450566746144":
+      "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
 
     // WBNB
-    '96015668771000514794597866745001602613849475661094490757698210630013973673':
-      '0x418D75f65a02b3D53B2418FB8E1fe493759c7605'
+    "96015668771000514794597866745001602613849475661094490757698210630013973673":
+      "0x418D75f65a02b3D53B2418FB8E1fe493759c7605",
+
+    // YFI
+    "1744965180054291264381444568283831268850780558100531687196082006490436268837":
+      "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
   };
 
-  public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
+  public static parseTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
 
-    const hasDepositLog = transaction.logs.find((log) => log.topics[0] === EVENT_ENUM.L1_DEPOSIT_LOG);
+    const hasDepositLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.L1_DEPOSIT_LOG
+    );
 
     if (hasDepositLog) {
       actions.push(this.parseDeposit(transaction, hasDepositLog));
@@ -200,13 +228,22 @@ export class RhinoFiEthL1DepositContractParser {
     return actions;
   }
 
-  private static parseDeposit(transaction: ITransaction, depositLog: ITransactionLog): IBridgeOutAction {
-    const parsedLog = ProtocolHelper.parseLog(depositLog, this.contractDefiniton.events[EVENT_ENUM.L1_DEPOSIT_LOG]);
+  private static parseDeposit(
+    transaction: ITransaction,
+    depositLog: ITransactionLog
+  ): IBridgeOutAction {
+    const parsedLog = ProtocolHelper.parseLog(
+      depositLog,
+      this.contractDefiniton.events[EVENT_ENUM.L1_DEPOSIT_LOG]
+    );
 
-    const fromToken = this.assetTypesToTokenAddress[parsedLog.args.assetType.toString()];
+    const fromToken =
+      this.assetTypesToTokenAddress[parsedLog.args.assetType.toString()];
 
     if (!fromToken) {
-      throw new Error(`No token found for asset type ${parsedLog.args.assetType.toString()}`);
+      throw new Error(
+        `No token found for asset type ${parsedLog.args.assetType.toString()}`
+      );
     }
 
     return {
@@ -218,18 +255,23 @@ export class RhinoFiEthL1DepositContractParser {
       fromAmount: parsedLog.args.nonQuantizedAmount.toString(),
       toAmount: null,
       sender: transaction.from,
-      recipient: null
+      recipient: null,
     };
   }
 }
 
 export class RhinofiL1WithdrawalRegistryParser {
-  private static contractDefiniton = contracts[CONTRACT_ENUM.L1_WITHDRAWAL_REGISTRY];
+  private static contractDefiniton =
+    contracts[CONTRACT_ENUM.L1_WITHDRAWAL_REGISTRY];
 
-  public static parseTransaction(transaction: ITransaction): ITransactionAction[] {
+  public static parseTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
 
-    const hasWithdrawalLog = transaction.logs.find((log) => log.topics[0] === EVENT_ENUM.L1_WITHDRAWAL_LOG);
+    const hasWithdrawalLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.L1_WITHDRAWAL_LOG
+    );
 
     if (hasWithdrawalLog) {
       actions.push(this.parseWithdrawal(transaction, hasWithdrawalLog));
@@ -238,7 +280,10 @@ export class RhinofiL1WithdrawalRegistryParser {
     return actions;
   }
 
-  private static parseWithdrawal(transaction: ITransaction, withdrawalLog: ITransactionLog): IBridgeInAction {
+  private static parseWithdrawal(
+    transaction: ITransaction,
+    withdrawalLog: ITransactionLog
+  ): IBridgeInAction {
     const parsedLog = ProtocolHelper.parseLog(
       withdrawalLog,
       this.contractDefiniton.events[EVENT_ENUM.L1_WITHDRAWAL_LOG]
@@ -253,7 +298,7 @@ export class RhinofiL1WithdrawalRegistryParser {
       fromAmount: null,
       toAmount: parsedLog.args.amount.toString(),
       sender: null,
-      recipient: parsedLog.args.recipient.toString()
+      recipient: parsedLog.args.recipient.toString(),
     };
   }
 }

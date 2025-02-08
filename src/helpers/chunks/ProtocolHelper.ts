@@ -1,4 +1,4 @@
-import { ethers, AbiCoder, toBeHex, getAddress } from "ethers";
+import { AbiCoder, ethers, getAddress, toBeHex, ZeroAddress } from "ethers";
 import {
   IContractEventConfig,
   IProtocolContractDefinitions,
@@ -23,11 +23,6 @@ export class ProtocolHelper {
   ): ethers.TransactionDescription {
     const contractInterface = protocolContracts[contractName].interface;
     const decoded = contractInterface.parseTransaction(transaction);
-
-    if (!decoded) {
-      throw new Error("Failed to parse transaction");
-    }
-
     return decoded;
   }
 
@@ -139,31 +134,32 @@ export class ProtocolHelper {
     const parsedLogs = logs
       .filter(
         (log) =>
-          log.topics &&
-          log.topics.length >= 3 &&
-          log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE
+          log.topics && log.topics[0] === ERC20_TOKEN_TRANSFER_EVENT_SIGNATURE
       )
       .map((log) => {
-        try {
-          // Ensure topics contain valid addresses
-          const fromAddress = getAddress(`0x${log.topics[1].slice(-40)}`);
-          const toAddress = getAddress(`0x${log.topics[2].slice(-40)}`);
+        // Decode `from` and `to` addresses from topics
+        const fromRaw = "0x" + log.topics[1].slice(-40);
+        const fromAddress =
+          fromRaw.toLowerCase() === ZeroAddress.toLowerCase()
+            ? ZeroAddress
+            : getAddress(fromRaw);
 
-          // Decode `value` from data field
-          const [value] = abiCoder.decode(["uint256"], log.data);
+        const toRaw = "0x" + log.topics[2].slice(-40);
+        const toAddress =
+          toRaw.toLowerCase() === ZeroAddress.toLowerCase()
+            ? ZeroAddress
+            : getAddress(toRaw);
 
-          return {
-            fromAddress,
-            toAddress,
-            value: BigInt(value.toString()),
-            contractAddress: log.contractAddress,
-          };
-        } catch (error) {
-          console.error("Error parsing log:", log, error);
-          return null;
-        }
-      })
-      .filter(Boolean); // Remove null values
+        // Decode `value` from the data field
+        const [value] = abiCoder.decode(["uint256"], log.data);
+
+        return {
+          fromAddress,
+          toAddress,
+          value: BigInt(value.toString()),
+          contractAddress: log.contractAddress,
+        };
+      });
 
     return parsedLogs;
   }

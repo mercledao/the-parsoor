@@ -48,28 +48,39 @@ export class LimitOrderParser {
     });
 
     const swapper = parsedFillLog.args.swapper;
-    
-    const inputTransfer = transferLogs.find(l => 
-      ethers.getAddress(`0x${l.topics[1].slice(-40)}`) === ethers.getAddress(swapper)
-    );
-    
-    const outputTransfer = transferLogs.find(l => 
-      ethers.getAddress(`0x${l.topics[2].slice(-40)}`) === ethers.getAddress(swapper)
-    );
 
-    if (!inputTransfer || !outputTransfer) return null;
+    const erc20TransferLogs = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
 
-    const inputAmount = ethers.getBigInt(inputTransfer.data || '0');
-    const outputAmount = ethers.getBigInt(outputTransfer.data || '0');
+    let fromTxn = erc20TransferLogs.filter(log => log.fromAddress.toLowerCase() === swapper.toLowerCase());
+    let toTxn = erc20TransferLogs.filter(log => log.toAddress.toLowerCase() === swapper.toLowerCase());
 
-    return {
-      type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: ethers.getAddress(`0x${inputTransfer.topics[1].slice(-40)}`),
-      toToken: ethers.getAddress(`0x${outputTransfer.topics[1].slice(-40)}`),
-      fromAmount: inputAmount.toString(),
-      toAmount: outputAmount.toString(),
-      recipient: ethers.getAddress(swapper),
-      sender: ethers.getAddress(swapper)
+    const aggregateAmounts = (logs: any[]) => {
+        return logs.reduce((acc, log) => {
+            const key = log.contractAddress;
+            if (!acc[key]) {
+                acc[key] = BigInt(0);
+            }
+            acc[key] += BigInt(log.value);
+            return acc;
+        }, {} as Record<string, bigint>);
     };
-  }
+    
+
+    const fromTxnMap = aggregateAmounts(fromTxn);
+    const toTxnMap = aggregateAmounts(toTxn);
+    
+    const fromToken = Object.keys(fromTxnMap)[0];
+    const toToken = Object.keys(toTxnMap)[0];
+    
+    return {
+        type: ACTION_ENUM.SINGLE_SWAP,
+        fromToken: fromToken,
+        toToken: toToken,
+        fromAmount: fromTxnMap[fromToken]?.toString() || "0",
+        toAmount: toTxnMap[toToken]?.toString() || "0",
+        recipient: ethers.getAddress(swapper),
+        sender: ethers.getAddress(swapper)
+    };
+}
+
 }

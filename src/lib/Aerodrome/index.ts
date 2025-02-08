@@ -7,18 +7,13 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import {
-  DlnBridgeContractParseTransaction,
-  DlnCrossChainContractParseTransaction,
-  DlnDestinationContractParseTransaction,
-  DlnSourceContractParseTransaction,
-} from "./parser";
+import { RouterContractParser, SwapRouterContractParser, UniversalRouterContractParser } from "./parsers";
 
-export default class Debridge implements IProtocolParserExport {
+export default class Aerodrome implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
 
   constructor() {
-    this.protocolIdentifier = protocols.debridge.identifier;
+    this.protocolIdentifier = protocols.aerodrome.identifier;
   }
 
   public async parseTransaction(
@@ -29,42 +24,29 @@ export default class Debridge implements IProtocolParserExport {
     if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
-        CONTRACT_ENUM.DLN_SOURCE,
+        CONTRACT_ENUM.ROUTER_CONTRACT,
         contracts
       )
     ) {
-      const action =
-        DlnSourceContractParseTransaction.parseTransaction(transaction);
+      const action = RouterContractParser.parseTransaction(transaction);
       actions.push(...action);
     } else if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
-        CONTRACT_ENUM.DLN_DESTINATION,
+        CONTRACT_ENUM.SWAP_ROUTER_CONTRACT,
         contracts
       )
     ) {
-      const action =
-        DlnDestinationContractParseTransaction.parseTransaction(transaction);
+      const action = await SwapRouterContractParser.parseTransaction(transaction, CONTRACT_ENUM.SWAP_ROUTER_CONTRACT);
       actions.push(...action);
     } else if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
-        CONTRACT_ENUM.DLN_CROSS_CHAIN,
+        CONTRACT_ENUM.UNIVERSAL_ROUTER_CONTRACT,
         contracts
       )
     ) {
-      const action =
-        DlnCrossChainContractParseTransaction.parseTransaction(transaction);
-      actions.push(...action);
-    } else if (
-      ProtocolHelper.txnToIsListenerContract(
-        transaction,
-        CONTRACT_ENUM.DEBRIDGE_GATE,
-        contracts
-      )
-    ) {
-      const action =
-        DlnBridgeContractParseTransaction.parseTransaction(transaction);
+      const action = await UniversalRouterContractParser.parseTransaction(transaction);
       actions.push(...action);
     }
     return actions;

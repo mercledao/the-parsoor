@@ -13,7 +13,6 @@ import {
   parsers,
   protocols,
 } from "../src";
-import { log } from "console";
 
 export class ProtocolParserUtils {
   public readonly protocolIdentifier: string;
@@ -48,6 +47,7 @@ export class ProtocolParserUtils {
       data.chainId,
       data.txnHash
     );
+    
     const actions =
       await parsers[this.protocolIdentifier].parseTransaction(formattedTxn);
     return actions;
@@ -80,6 +80,7 @@ export class ProtocolParserUtils {
         contractAddress: log.address,
         topics: log.topics as string[],
         data: log.data,
+        logIndex: log.index
       })),
     };
 
@@ -144,7 +145,6 @@ export class ProtocolParserUtils {
     } else {
       expect(actualAction.fee).toBeUndefined();
     }
-    
   }
 
   public assertBridgeOutAction(
@@ -164,7 +164,6 @@ export class ProtocolParserUtils {
     } else {
       expect(actualAction.fee).toBeUndefined();
     }
-    
   }
 
   public assertSingleSwapAction(
@@ -175,13 +174,13 @@ export class ProtocolParserUtils {
     expect(actualAction.toToken).toBe(expectedAction.toToken);
     expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
+    expect(actualAction.sender).toBe(expectedAction.sender);
     expect(actualAction.recipient).toBe(expectedAction.recipient);
     if (expectedAction.fee !== undefined) {
       expect(actualAction.fee).toBe(expectedAction.fee);
     } else {
       expect(actualAction.fee).toBeUndefined();
     }
-    
   }
 
   public assertMultiSwapAction(
@@ -198,6 +197,5 @@ export class ProtocolParserUtils {
     } else {
       expect(actualAction.fee).toBeUndefined();
     }
-    
   }
 }
