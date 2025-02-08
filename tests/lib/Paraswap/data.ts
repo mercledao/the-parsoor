@@ -236,6 +236,38 @@ export const paraswapSimpleSwappedData: IProtocolTestingData = {
           recipient: "0x9Db28EFB4872b65C79BbD0dA9a3474519F5F0035",
         },
       ],
+    },
+    {
+      txnHash:
+        "0xb9820969eaddeb2188698b671d226a2d9d1e39f9708b88418e2a37afa67f1118",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          toToken: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+          fromAmount: "11196710",
+          toAmount: "11195997",
+          sender: "0xBF3f59C7cc8E0d49530712e3aB686d61c0096F2D",
+          recipient: "0xBF3f59C7cc8E0d49530712e3aB686d61c0096F2D",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xb1548798d4f10e4a3012ffb831f038d30c9c9f3d8befe63b5ea555c06141d199",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+          toToken: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          fromAmount: "375676732",
+          toAmount: "375750671",
+          sender: "0x778c81880Dfd2Ec9d02AAB661b17c01C3D2E0995",
+          recipient: "0x778c81880Dfd2Ec9d02AAB661b17c01C3D2E0995",
+        },
+      ],
     }
   ],
   [PARASWAP_VERSIONS.LIMIT]: [

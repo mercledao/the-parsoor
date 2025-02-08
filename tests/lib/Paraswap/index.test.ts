@@ -30,48 +30,48 @@ describe('ParaswapParser', () => {
     }
   });
 
-  // it('should parse v6.2 transactions correctly', async () => {
-  //   const v6Transactions = paraswapSimpleSwappedData[PARASWAP_VERSIONS.V6];
+  it('should parse v6.2 transactions correctly', async () => {
+    const v6Transactions = paraswapSimpleSwappedData[PARASWAP_VERSIONS.V6];
 
-  //   for (const transaction of v6Transactions) {
-  //     const actions = await utils.fetchAndParseTestTxn(transaction);
-  //     utils.assertTestTransactionForData(transaction, actions);
+    for (const transaction of v6Transactions) {
+      const actions = await utils.fetchAndParseTestTxn(transaction);
+      utils.assertTestTransactionForData(transaction, actions);
 
-  //     console.log(
-  //       chalk.green('Successfully parsed v6.2 swapped transaction with actions:', actions.map((action) => action.type).join(',')),
-  //       'and hash:',
-  //       transaction.txnHash
-  //     );
-  //   }
-  // });
+      console.log(
+        chalk.green('Successfully parsed v6.2 swapped transaction with actions:', actions.map((action) => action.type).join(',')),
+        'and hash:',
+        transaction.txnHash
+      );
+    }
+  });
 
-  // it('should parse limit transactions correctly', async () => {
-  //   const limitOrderTransactions = paraswapSimpleSwappedData[PARASWAP_VERSIONS.LIMIT];
+  it('should parse limit transactions correctly', async () => {
+    const limitOrderTransactions = paraswapSimpleSwappedData[PARASWAP_VERSIONS.LIMIT];
 
-  //   for (const transaction of limitOrderTransactions) {
-  //     const actions = await utils.fetchAndParseTestTxn(transaction);
-  //     utils.assertTestTransactionForData(transaction, actions);
+    for (const transaction of limitOrderTransactions) {
+      const actions = await utils.fetchAndParseTestTxn(transaction);
+      utils.assertTestTransactionForData(transaction, actions);
 
-  //     console.log(
-  //       chalk.green('Successfully parsed limit swapped transaction with actions:', actions.map((action) => action.type).join(',')),
-  //       'and hash:',
-  //       transaction.txnHash
-  //     );
-  //   }
-  // });
+      console.log(
+        chalk.green('Successfully parsed limit swapped transaction with actions:', actions.map((action) => action.type).join(',')),
+        'and hash:',
+        transaction.txnHash
+      );
+    }
+  });
 
-  // it('should parse delta v2 transactions correctly', async () => {
-  //   const deltaTransactions = paraswapSimpleSwappedData[PARASWAP_VERSIONS.DELTA];
+  it('should parse delta v2 transactions correctly', async () => {
+    const deltaTransactions = paraswapSimpleSwappedData[PARASWAP_VERSIONS.DELTA];
 
-  //   for (const transaction of deltaTransactions) {
-  //     const actions = await utils.fetchAndParseTestTxn(transaction);
-  //     utils.assertTestTransactionForData(transaction, actions);
+    for (const transaction of deltaTransactions) {
+      const actions = await utils.fetchAndParseTestTxn(transaction);
+      utils.assertTestTransactionForData(transaction, actions);
 
-  //     console.log(
-  //       chalk.green('Successfully parsed delta transaction with actions:', actions.map((action) => action.type).join(',')),
-  //       'and hash:',
-  //       transaction.txnHash
-  //     );
-  //   }
-  // });
+      console.log(
+        chalk.green('Successfully parsed delta transaction with actions:', actions.map((action) => action.type).join(',')),
+        'and hash:',
+        transaction.txnHash
+      );
+    }
+  });
 });
