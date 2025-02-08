@@ -86,7 +86,7 @@ export class DlnDestinationContractParseTransaction {
     );
 
     const order = parsedLog.args.order;
-    
+
     return {
       type: ACTION_ENUM.BRIDGE_IN,
       fromChain: order.giveChainId.toString(),
@@ -96,7 +96,7 @@ export class DlnDestinationContractParseTransaction {
       fromAmount: Number(order.giveAmount).toString(),
       toAmount: order.takeAmount.toString(),
       sender: order.allowedTakerDst,
-      recipient: order.receiverDst
+      recipient: order.receiverDst,
     };
   }
 }
@@ -113,14 +113,17 @@ export class DlnCrossChainContractParseTransaction {
       contracts
     );
     if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP_CALL) {
-      actions.push(...DlnSourceContractParseTransaction.parseTransaction(transaction));
+      actions.push(
+        ...DlnSourceContractParseTransaction.parseTransaction(transaction)
+      );
     } else if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP_CALL_DLN) {
-      actions.push(...DlnDestinationContractParseTransaction.parseTransaction(transaction));
+      actions.push(
+        ...DlnDestinationContractParseTransaction.parseTransaction(transaction)
+      );
     }
 
     return actions;
   }
-  
 }
 
 export class DlnBridgeContractParseTransaction {
@@ -139,7 +142,6 @@ export class DlnBridgeContractParseTransaction {
     } else if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.CLAIM) {
       actions.push(this.parseClaimTransaction(transaction, parsedTxn));
     }
-    
     return actions;
   }
 
@@ -156,7 +158,7 @@ export class DlnBridgeContractParseTransaction {
       fromAmount: parsedTxn.args._amount.toString(),
       toAmount: null,
       sender: transaction.from.toString(),
-      recipient: parsedTxn.args._receiver.toString()
+      recipient: parsedTxn.args._receiver.toString(),
     };
   }
 
@@ -165,31 +167,34 @@ export class DlnBridgeContractParseTransaction {
     parsedTxn: ethers.TransactionDescription
   ): IBridgeInAction {
     const log = transaction.logs;
-  
+
     // Parse ERC20 transfer logs
     const parsedLogs = ProtocolHelper.parseERC20TransferLogs(log);
-  
+
     if (parsedLogs.length === 0) {
       throw new Error("No ERC20 transfer logs found");
     }
-  
+
     // Group logs by token address
-    const tokenLogs = parsedLogs.reduce((acc, log) => {
-      acc[log.contractAddress] = (acc[log.contractAddress] ?? BigInt(0)) + BigInt(log.value);
-      return acc;
-    }, {} as Record<string, bigint>);
-    
-  
+    const tokenLogs = parsedLogs.reduce(
+      (acc, log) => {
+        acc[log.contractAddress] =
+          (acc[log.contractAddress] ?? BigInt(0)) + BigInt(log.value);
+        return acc;
+      },
+      {} as Record<string, bigint>
+    );
+
     // Check if logs are for multiple tokens
     const tokenAddresses = Object.keys(tokenLogs);
     if (tokenAddresses.length > 1) {
       throw new Error("Multiple token transfer logs detected");
     }
-  
+
     // Extract token address and summed value
     const contractAddress = tokenAddresses[0];
     const value = tokenLogs[contractAddress];
-  
+
     return {
       type: ACTION_ENUM.BRIDGE_IN,
       fromChain: parsedTxn.args._chainIdFrom.toString(),
@@ -202,5 +207,4 @@ export class DlnBridgeContractParseTransaction {
       recipient: parsedTxn.args._receiver.toString(),
     };
   }
-  
 }

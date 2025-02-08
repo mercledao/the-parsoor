@@ -235,5 +235,47 @@
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "data",
+                "type": "bytes[]"
+            }
+        ],
+        "name": "multicall",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bytes[]"
+            }
+        ],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "bytes[]"
+            }
+        ],
+        "name": "multicall",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bytes[]"
+            }
+        ],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
     }
 ]
