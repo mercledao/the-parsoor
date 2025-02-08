@@ -14,11 +14,13 @@ export class CowswapContractParser {
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
     
-    const matchedSwapOrderLog = transaction.logs.find(
+    const matchedSwapOrderLogs = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.TRADE
     );
-    if (matchedSwapOrderLog) {
-      actions.push(this.parseSwapOrder(matchedSwapOrderLog, transaction));
+    if (matchedSwapOrderLogs) {
+      for (const swapLog of matchedSwapOrderLogs) {
+        actions.push(this.parseSwapOrder(swapLog, transaction));
+      }
     }
     
     return actions;
