@@ -53,6 +53,15 @@ export const cowswapSwapData: IProtocolTestingData = {
           sender: "0x402904E954aebEE2E78b7B09595393cf05571333",
           recipient: "0x402904E954aebEE2E78b7B09595393cf05571333"
         },
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xC4441c2BE5d8fA8126822B9929CA0b81Ea0DE38E",
+          toToken: "0x06B964d96f5dCF7Eae9d7C559B09EDCe244d4B8E",
+          fromAmount: "96265819800000000000000",
+          toAmount: "77158511153969856923320",
+          sender: "0x26b415e0ac2b9C2ae7Dd49dbB38aef2D6EEcc8b5",
+          recipient: "0x26b415e0ac2b9C2ae7Dd49dbB38aef2D6EEcc8b5"
+        },
       ],
     },
     {
@@ -116,6 +125,58 @@ export const cowswapSwapData: IProtocolTestingData = {
           toAmount: "83753136176",
           sender: "0xF4DC338B1b1184F84a461f0bb2f974fC90A81456",
           recipient: "0xF4DC338B1b1184F84a461f0bb2f974fC90A81456"
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x67b9ee6d6d6a96c56ae689c71a588dd1739d98ed4b542b513b7f8896916fd6ee",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+          toToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          fromAmount: "90299255208252743987352003",
+          toAmount: "90299165782583",
+          sender: "0x964d9D1A532B5a5DaeacBAc71d46320DE313AE9C",
+          recipient: "0x964d9D1A532B5a5DaeacBAc71d46320DE313AE9C"
+        },
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          toToken: "0x903bEF1736CDdf2A537176cf3C64579C3867A881",
+          fromAmount: "248768000000",
+          toAmount: "3488319521144",
+          sender: "0x70d08Aec714948855fbeE7C61b709361be7144B6",
+          recipient: "0x70d08Aec714948855fbeE7C61b709361be7144B6"
+        },
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xCFEAead4947f0705A14ec42aC3D44129E1Ef3eD5",
+          toToken: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+          fromAmount: "268717652944",
+          toAmount: "3500000000000000000000",
+          sender: "0xB226279c160D97929c160074c0db3fA1C9802964",
+          recipient: "0xB226279c160D97929c160074c0db3fA1C9802964"
+        },
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          toToken: "0x0d438F3b5175Bebc262bF23753C1E53d03432bDE",
+          fromAmount: "7132000000",
+          toAmount: "212226173435030019337",
+          sender: "0x2917ED3b95995Ad05e46adF0204E8b51DC1026fD",
+          recipient: "0x2917ED3b95995Ad05e46adF0204E8b51DC1026fD"
+        },
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x99D8a9C45b2ecA8864373A26D1459e3Dff1e17F3",
+          toToken: "0x255Aa6DF07540Cb5d3d297f0D0D4D84cb52bc8e6",
+          fromAmount: "2999999999999999999999",
+          toAmount: "16951496901799509781563",
+          sender: "0x6A8941F08160833c1e39caDa512ea7ebE2e77469",
+          recipient: "0x6A8941F08160833c1e39caDa512ea7ebE2e77469"
         },
       ],
     }
