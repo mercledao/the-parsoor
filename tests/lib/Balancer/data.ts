@@ -3,7 +3,6 @@ import { ACTION_ENUM, CHAIN_ID } from "../../../src";
 import { IProtocolTestingData } from "../../../src/types";
 
 export enum BALANCER_VERSIONS {
-  V3 = "v3",
   V2 = "v2",
 }
 
