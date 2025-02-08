@@ -19,6 +19,6 @@ export const parsers = {
   [protocols.debridge.identifier]: new Debridge(),
   [protocols.aerodrome.identifier]: new Aerodrome(),
   [protocols.pancakeswap.identifier]: new Pancakeswap(),
-  [protocols.cowswap.identifier]: new Cowswap()
+  [protocols.cowswap.identifier]: new Cowswap(),
   [protocols.paraswap.identifier]: new Paraswap(),
 };
