@@ -9,8 +9,8 @@ import Bungee from "./Bungee"
 import Aerodrome from "./Aerodrome";
 import Pancakeswap from "./Pancakeswap";
 import Cowswap from "./Cowswap";
+import Paraswap from "./Paraswap";
 import Stargate from "./Stargate";
-
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -23,5 +23,6 @@ export const parsers = {
   [protocols.aerodrome.identifier]: new Aerodrome(),
   [protocols.pancakeswap.identifier]: new Pancakeswap(),
   [protocols.cowswap.identifier]: new Cowswap(),
+  [protocols.paraswap.identifier]: new Paraswap(),
   [protocols.stargate.identifier]: new Stargate(),
 };
