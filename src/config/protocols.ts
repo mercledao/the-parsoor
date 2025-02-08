@@ -64,6 +64,13 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/pancakeswap.png",
     website: "https://pancakeswap.finance/",
   },
+  cowswap: {
+    identifier: "cowswap",
+    name: "Cowswap",
+    twitter: "https://x.com/CoWSwap",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/cowswap.png",
+    website: "https://swap.cow.fi/",
+  },
   stargate: {
     identifier: "stargate",
     name: "Stargate",
