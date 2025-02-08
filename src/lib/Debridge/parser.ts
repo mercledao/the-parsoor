@@ -142,10 +142,10 @@ export class DlnBridgeContractParseTransaction {
     } else if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.CLAIM) {
       actions.push(this.parseClaimTransaction(transaction, parsedTxn));
     }
-
     return actions;
   }
 
+  
   private static parseSendTransaction(
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription

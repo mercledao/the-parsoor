@@ -33,6 +33,15 @@ export class SpokepoolContractParser {
       return actions;
     }
 
+    const filledDepositLogV2 = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.FILLED_DEPOSIT_V2
+    );
+
+    if (filledDepositLogV2) {
+      actions.push(this.parseFilledDepositV2(transaction, filledDepositLogV2));
+      return actions;
+    }
+
     return actions;
   }
 
@@ -79,6 +88,30 @@ export class SpokepoolContractParser {
       toToken: args.outputToken,
       fromAmount: args.inputAmount.toString(),
       toAmount: args.outputAmount.toString(),
+      sender: args.depositor,
+      recipient: args.recipient,
+    };
+  }
+
+  private static parseFilledDepositV2(
+    transaction: ITransaction,
+    depositLog: ITransactionLog
+  ): IBridgeInAction {
+    const parsedFilledDepositLog = ProtocolHelper.parseLog(
+      depositLog,
+      contracts.SPOKEPOOL_CONTRACT.events[EVENT_ENUM.FILLED_DEPOSIT_V2]
+    );
+
+    const args = parsedFilledDepositLog.args;
+
+    return {
+      type: ACTION_ENUM.BRIDGE_IN,
+      fromChain: args.originChainId.toString(),
+      toChain: transaction.chainId,
+      fromToken: null,
+      toToken: args.destinationToken,
+      fromAmount: null,
+      toAmount: args.fillAmount.toString(),
       sender: args.depositor,
       recipient: args.recipient,
     };

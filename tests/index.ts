@@ -47,6 +47,7 @@ export class ProtocolParserUtils {
       data.chainId,
       data.txnHash
     );
+    
     const actions =
       await parsers[this.protocolIdentifier].parseTransaction(formattedTxn);
     return actions;
@@ -79,6 +80,7 @@ export class ProtocolParserUtils {
         contractAddress: log.address,
         topics: log.topics as string[],
         data: log.data,
+        logIndex: log.index
       })),
     };
 
