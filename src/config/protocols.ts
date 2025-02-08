@@ -64,4 +64,10 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/cowswap.png",
     website: "https://swap.cow.fi/",
   },
+  paraswap: {
+    identifier: "paraswap",
+    name: "Paraswap",
+    twitter: "https://x.com/parasvwap",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/paraswap.png",
+    website: "https://www.paraswap.xyz/",
 };
