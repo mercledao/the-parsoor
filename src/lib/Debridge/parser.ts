@@ -145,6 +145,7 @@ export class DlnBridgeContractParseTransaction {
     return actions;
   }
 
+  
   private static parseSendTransaction(
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
