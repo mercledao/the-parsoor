@@ -89,5 +89,21 @@ export const BalancerData: IProtocolTestingData = {
         },
       ],
     },
+    {
+      txnHash:
+        "0xfe953e97b8b8938b84aa29a6c843918f387201aab2ab5c94e25849fd51d331c9",
+      chainId: CHAIN_ID.ETHEREUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          toToken: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+          fromAmount: "380429200220000",
+          toAmount: "1135",
+          sender: "0xF2044F0dC81D2e7B677f3d144eA77db3CF8d8977",
+          recipient: "0xF2044F0dC81D2e7B677f3d144eA77db3CF8d8977",
+        },
+      ],
+    },
   ]
 };
