@@ -32,8 +32,8 @@ export const BalancerData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0xd09ACb80C1E8f2291862c4978A008791c9167003",
-          toToken: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+          fromToken: "0xd09acb80c1e8f2291862c4978a008791c9167003",
+          toToken: "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
           fromAmount: "21000000000000000",
           toAmount: "82299597",
           sender: "0x025E545E693CfEB629bB5B7Be72fEA50Fa772774",
@@ -48,10 +48,10 @@ export const BalancerData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0xe1B4d34E8754600962Cd944B535180Bd758E6c2e",
-          toToken: "0x0000000000000000000000000000000000000000",
+          fromToken: "0xe1b4d34e8754600962cd944b535180bd758e6c2e",
+          toToken: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
           fromAmount: "97862895782597913",
-          toAmount: null,
+          toAmount: "100434541789404090",
           sender: "0x4CFb224C7886B3054f97b5D4140B5F3D2B9724c5",
           recipient: "0x4CFb224C7886B3054f97b5D4140B5F3D2B9724c5",
         },
@@ -64,8 +64,8 @@ export const BalancerData: IProtocolTestingData = {
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
-          fromToken: "0xC0c293ce456fF0ED870ADd98a0828Dd4d2903DBF",
-          toToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          fromToken: "0xc0c293ce456ff0ed870add98a0828dd4d2903dbf",
+          toToken: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
           fromAmount: "113495381560000000000",
           toAmount: "43826400",
           sender: "0x355BA13eae7c2fb83DDa80790395957238eA323A",

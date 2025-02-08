@@ -67,11 +67,8 @@ export class BalancerV2Parser {
     parsedTxn: ethers.TransactionDescription
   ): ISingleSwapAction {
     const fromSwapHop = parsedTxn.args.swaps[0];
-    const fromToken = parsedTxn.args.assets[fromSwapHop.assetInIndex];
-  
     const toSwapHop = parsedTxn.args.swaps[parsedTxn.args.swaps.length - 1];
-    const toToken = parsedTxn.args.assets[toSwapHop.assetOutIndex];
-  
+    
     let fromAmount = BigInt(0);
     let toAmount = BigInt(0);
   
@@ -79,9 +76,11 @@ export class BalancerV2Parser {
       (log) => log.topics[0] === EVENT_ENUM.SWAP
     );
 
-    console.log('fromToken', fromToken);
-    console.log('toToken', toToken);
+    const fromTxnPoolLog = swapLogs.find((log)=> log.topics[1] === fromSwapHop.poolId)
+    const toTxnPoolLog = swapLogs.find((log)=> log.topics[1] === toSwapHop.poolId)
     
+    const fromToken = `0x${fromTxnPoolLog.topics[2].slice(-40)}`;
+    const toToken = `0x${toTxnPoolLog.topics[3].slice(-40)}`;
   
     swapLogs.forEach((swapLog) => {
       const { args } = ProtocolHelper.parseLog(
@@ -89,11 +88,11 @@ export class BalancerV2Parser {
         contracts.BALANCER_V2.events[EVENT_ENUM.SWAP]
       );
   
-      if (args.tokenIn === fromToken) {
+      if (args.tokenIn.toLowerCase() === fromToken.toLowerCase()) {
         fromAmount += args.amountIn;
       }
 
-      if (args.tokenOut === toToken) {
+      if (args.tokenOut.toLowerCase() === toToken.toLowerCase()) {
         toAmount += args.amountOut;
       }
     });
@@ -101,8 +100,8 @@ export class BalancerV2Parser {
     // Return the parsed action with the accumulated amounts
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: fromToken,
-      toToken: toToken,
+      fromToken,
+      toToken,
       fromAmount: fromToken === ZeroAddress ? transaction.from : fromAmount > 0 ? fromAmount.toString() : null,
       toAmount: toAmount > 0 ? toAmount.toString() : null,
       sender: parsedTxn.args.funds.sender,
