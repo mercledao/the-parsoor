@@ -76,8 +76,8 @@ export class BalancerV2Parser {
       (log) => log.topics[0] === EVENT_ENUM.SWAP
     );
 
-    const fromTxnPoolLog = swapLogs.find((log)=> log.topics[1] === fromSwapHop.poolId)
-    const toTxnPoolLog = swapLogs.find((log)=> log.topics[1] === toSwapHop.poolId)
+    const fromTxnPoolLog = swapLogs.find((log)=> log.topics[1].toLowerCase() === fromSwapHop.poolId.toLowerCase())
+    const toTxnPoolLog = swapLogs.find((log)=> log.topics[1].toLowerCase() === toSwapHop.poolId.toLowerCase())
     
     const fromToken = `0x${fromTxnPoolLog.topics[2].slice(-40)}`;
     const toToken = `0x${toTxnPoolLog.topics[3].slice(-40)}`;
