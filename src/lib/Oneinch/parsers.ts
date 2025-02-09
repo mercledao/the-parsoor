@@ -87,7 +87,7 @@ export class AggregationRouterV5ContractParser {
   ): ISingleSwapAction {
     const toAddress = parsedTxn.args.desc.dstReceiver;
     const erc20Transactions = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
-    const toTxn = erc20Transactions.filter((log)=> log.toAddress === toAddress)
+    const toTxn = erc20Transactions.filter((log)=> log.toAddress.toLowerCase() === toAddress.toLowerCase())
     const consolidatedTransactions = this.consolidateTransactions(toTxn);
     const toAmount = consolidatedTransactions[0].value;
 
@@ -177,7 +177,7 @@ export class AggregationRouterV5ContractParser {
     const { recipient, srcToken } = parsedTxn.args;
     const erc20Transactions = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
   
-    const toTxn = erc20Transactions.find((log) => log.toAddress === recipient) || null;
+    const toTxn = erc20Transactions.find((log) => log.toAddress.toLowerCase() === recipient.toLowerCase()) || null;
     const fromTxn = erc20Transactions.filter((log) => log.contractAddress === srcToken);
   
     const toToken = toTxn ? toTxn.contractAddress : null;
