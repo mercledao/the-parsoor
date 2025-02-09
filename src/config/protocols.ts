@@ -85,4 +85,11 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/bungee.png",
     website: "https://www.bungee.exchange/",
   },
+  oneinch: {
+    identifier: "oneinch",
+    name: "Oneinch",
+    twitter: "https://x.com/1inch",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/oneinch.png",
+    website: "https://1inch.io/",
+  }
 };
