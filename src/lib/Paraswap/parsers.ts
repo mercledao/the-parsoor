@@ -189,7 +189,7 @@ export class AugustusV6Parser {
       fromToken: parsedTxn.args.swapData.srcToken,
       toToken: parsedTxn.args.swapData.destToken,
       fromAmount: parsedTxn.args.swapData.fromAmount.toString(),
-      toAmount: parsedTxn.args.swapData.quotedAmount.toString(),
+      toAmount: parsedTxn.args.swapData.toAmount.toString(),
       recipient: transaction.from,
       sender: transaction.from,
     };
@@ -204,7 +204,7 @@ export class AugustusV6Parser {
       fromToken: parsedTxn.args.uniData.srcToken,
       toToken: parsedTxn.args.uniData.destToken,
       fromAmount: parsedTxn.args.uniData.fromAmount.toString(),
-      toAmount: parsedTxn.args.uniData.quotedAmount.toString(),
+      toAmount: parsedTxn.args.uniData.toAmount.toString(),
       recipient: transaction.from,
       sender: transaction.from,
     };
@@ -219,7 +219,7 @@ export class AugustusV6Parser {
       fromToken: parsedTxn.args.curveV1Data.srcToken,
       toToken: parsedTxn.args.curveV1Data.destToken,
       fromAmount: parsedTxn.args.curveV1Data.fromAmount.toString(),
-      toAmount: parsedTxn.args.curveV1Data.quotedAmount.toString(),
+      toAmount: parsedTxn.args.curveV1Data.toAmount.toString(),
       recipient: transaction.from,
       sender: transaction.from,
     };
@@ -241,14 +241,14 @@ export class AugustusV6Parser {
       return t.toAddress === transaction.from;
     });
 
-    const { fromAmount, quotedAmount } = parsedTxn.args.balancerData;
+    const { fromAmount, toAmount } = parsedTxn.args.balancerData;
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: outGoingTxn[0].contractAddress,
       toToken: inComingTxn[0].contractAddress,
       fromAmount: fromAmount.toString(),
-      toAmount: quotedAmount.toString(),
+      toAmount: toAmount.toString(),
       recipient: transaction.from,
       sender: transaction.from,
     };
