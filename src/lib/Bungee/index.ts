@@ -9,11 +9,11 @@ import {
 import { CONTRACT_ENUM, contracts } from "./contracts";
 import { SocketGatewayParser } from "./parsers";
 
-export default class Across implements IProtocolParserExport {
+export default class Bungee implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
 
   constructor() {
-    this.protocolIdentifier = protocols.across.identifier;
+    this.protocolIdentifier = protocols.bungee.identifier;
   }
 
   public async parseTransaction(
