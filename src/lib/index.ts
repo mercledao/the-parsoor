@@ -9,6 +9,7 @@ import Pancakeswap from "./Pancakeswap";
 import Paraswap from "./Paraswap";
 import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
+import Balancer from "./Balancer"
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -21,4 +22,5 @@ export const parsers = {
   [protocols.pancakeswap.identifier]: new Pancakeswap(),
   [protocols.cowswap.identifier]: new Cowswap(),
   [protocols.paraswap.identifier]: new Paraswap(),
+  [protocols.balancer.identifier]: new Balancer(),
 };
