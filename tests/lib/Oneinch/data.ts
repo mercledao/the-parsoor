@@ -195,7 +195,7 @@ export const oneinchAggregationRouterData: IProtocolTestingData = {
           toToken: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
           fromAmount: "2048669",
           toAmount: "725100527597945378",
-          sender: "0x973c37FD15fe837fD3cf341420e6e70cC5078575",
+          sender: "0xBc21CcDF4A312b372E979A661E5b9c84d313483d",
           recipient: "0xBc21CcDF4A312b372E979A661E5b9c84d313483d",
         },
       ],

@@ -1,4 +1,4 @@
-import { ZeroAddress, toBigInt } from "ethers";
+import { toBigInt } from "ethers";
 import { ACTION_ENUM } from "../../enums";
 import { ProtocolHelper } from "../../helpers";
 import {
@@ -97,7 +97,7 @@ export class AggregationRouterV5ContractParser {
       toToken: parsedTxn.args.desc.dstToken,
       fromAmount: parsedTxn.args.desc.amount.toString(),
       toAmount: toAmount.toString(),
-      sender: parsedTxn.args.desc.dstReceiver,
+      sender: transaction.from,
       recipient: parsedTxn.args.desc.dstReceiver,
     };
   }
@@ -150,7 +150,7 @@ export class AggregationRouterV5ContractParser {
       toToken,
       fromAmount,
       toAmount,
-      sender: parsedTxn.args.recipient ?? transaction.from,
+      sender: transaction.from,
       recipient: parsedTxn.args.recipient ?? transaction.from,
     };
   }
@@ -165,7 +165,7 @@ export class AggregationRouterV5ContractParser {
       toToken: parsedTxn.args.dstToken,
       fromAmount: parsedTxn.args.inputAmount.toString(),
       toAmount: parsedTxn.args.outputAmount.toString(),
-      sender: parsedTxn.args.recipient,
+      sender: transaction.from,
       recipient: parsedTxn.args.recipient,
     };
   }
@@ -190,7 +190,7 @@ export class AggregationRouterV5ContractParser {
       toToken,
       fromAmount,
       toAmount,
-      sender: recipient,
+      sender: transaction.from,
       recipient,
     };
   }
@@ -221,7 +221,7 @@ export class AggregationRouterV5ContractParser {
       toToken: parsedTxn.args.dstToken,
       fromAmount: parsedTxn.args.inputAmount.toString(),
       toAmount: parsedTxn.args.outputAmount.toString(),
-      sender: parsedTxn.args.recipient,
+      sender: transaction.from,
       recipient: parsedTxn.args.recipient,
     };
   }
@@ -261,7 +261,7 @@ export class AggregationRouterV5ContractParser {
       toToken,
       fromAmount,
       toAmount,
-      sender: parsedTxn.args.target,
+      sender: transaction.from,
       recipient: parsedTxn.args.target,
     };
   }
