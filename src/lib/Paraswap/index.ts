@@ -18,7 +18,7 @@ export default class Paraswap implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
 
   constructor() {
-    this.protocolIdentifier = protocols.across.identifier;
+    this.protocolIdentifier = protocols.paraswap.identifier;
   }
 
   public async parseTransaction(
