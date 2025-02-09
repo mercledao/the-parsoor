@@ -12,6 +12,7 @@ import Uniswap from "./Uniswap";
 import Sushiswap from "./Sushiswap"
 import Bungee from "./Bungee"
 import Curve from "./Curve"
+import Maverick from "./Maverick";
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -27,4 +28,5 @@ export const parsers = {
   [protocols.sushiswap.identifier]: new Sushiswap(),
   [protocols.bungee.identifier]: new Bungee(),
   [protocols.curve.identifier]: new Curve(),
+  [protocols.maverick.identifier]: new Maverick(),
 };

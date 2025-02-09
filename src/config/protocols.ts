@@ -118,4 +118,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  maverick: {
+    identifier: "maverick",
+    name: "Maverick",
+    twitter: "https://x.com/mavprotocol",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/maverick.png",
+    website: "https://app.mav.xyz/",
+    type: ProtocolType.DEX,
+    actionTags: [ActionTags.SWAP],
+  },
 };
