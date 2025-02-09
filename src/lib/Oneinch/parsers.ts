@@ -1,4 +1,4 @@
-import { ZeroAddress } from "ethers";
+import { ZeroAddress, toBigInt } from "ethers";
 import { ACTION_ENUM } from "../../enums";
 import { ProtocolHelper } from "../../helpers";
 import {
@@ -64,6 +64,9 @@ export class AggregationRouterV5ContractParser {
       case CONTRACT_FUNCTION_NAMES.FILL_ORDER_TO_WITH_PERMIT:
         actions.push(this.parseFillOrderToTransaction(transaction, parsedTxn));
         break;
+      case CONTRACT_FUNCTION_NAMES.UNOSWAP_TO:
+        actions.push(this.parseUnoswapToTransaction(transaction, parsedTxn));
+        break;
       default:
         if (
           this.AGGREGATOR_SWAP_FUNCTIONS.has(
@@ -82,33 +85,72 @@ export class AggregationRouterV5ContractParser {
     transaction: ITransaction,
     parsedTxn: any
   ): ISingleSwapAction {
+    const toAddress = parsedTxn.args.desc.dstReceiver;
+    const erc20Transactions = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
+    const toTxn = erc20Transactions.filter((log)=> log.toAddress === toAddress)
+    const consolidatedTransactions = this.consolidateTransactions(toTxn);
+    const toAmount = consolidatedTransactions[0].value;
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: parsedTxn.args.desc.srcToken,
       toToken: parsedTxn.args.desc.dstToken,
       fromAmount: parsedTxn.args.desc.amount.toString(),
-      toAmount: null,
-      sender: transaction.from,
+      toAmount: toAmount.toString(),
+      sender: parsedTxn.args.desc.dstReceiver,
       recipient: parsedTxn.args.desc.dstReceiver,
     };
   }
+
+  private static consolidateTransactions(transactions) {
+    const consolidated = {};
+    
+    transactions.forEach(({ contractAddress, value }) => {
+      if (!consolidated[contractAddress]) {
+        consolidated[contractAddress] = BigInt(0);
+      }
+      consolidated[contractAddress] += value;
+    });
+    
+    return Object.entries(consolidated).map(([contractAddress, value]) => ({ contractAddress, value }));
+  }
+
 
   private static parseAggregatorSwapTransaction(
     transaction: ITransaction,
     parsedTxn: any
   ): ISingleSwapAction {
     const log = transaction.logs;
-
-    const { fromToken, toToken, fromAmount, toAmount } =
+    let fromToken, toToken, fromAmount, toAmount;
+    const swapData =
       ProtocolHelper.analyzeSingleSwapFromLogs(log, transaction);
 
+    fromToken = swapData.fromToken;
+    toToken = swapData.toToken;
+    fromAmount = swapData.fromAmount;
+    toAmount = swapData.toAmount;
+    
+    if(!fromToken){
+      const wethDepositLog = transaction.logs.find(
+        (log) => log.topics[0] === EVENT_ENUM.WETH_DEPOSIT
+      );
+      fromToken = wethDepositLog.contractAddress;
+      fromAmount = toBigInt(wethDepositLog.data).toString();
+    }
+    if(!toToken){
+      const wethWithdrawalLog = transaction.logs.find(
+        (log) => log.topics[0] === EVENT_ENUM.WETH_WITHDRAWAL
+      );
+      toToken = wethWithdrawalLog.contractAddress;
+      toAmount = toBigInt(wethWithdrawalLog.data).toString();
+    }
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: fromToken,
-      toToken: toToken ?? ZeroAddress,
-      fromAmount: BigInt(fromAmount) > 0 ? fromAmount : null,
-      toAmount: BigInt(toAmount) > 0 ? toAmount : null,
-      sender: transaction.from,
+      fromToken,
+      toToken,
+      fromAmount,
+      toAmount,
+      sender: parsedTxn.args.recipient ?? transaction.from,
       recipient: parsedTxn.args.recipient ?? transaction.from,
     };
   }
@@ -123,11 +165,37 @@ export class AggregationRouterV5ContractParser {
       toToken: parsedTxn.args.dstToken,
       fromAmount: parsedTxn.args.inputAmount.toString(),
       toAmount: parsedTxn.args.outputAmount.toString(),
-      sender: transaction.from,
+      sender: parsedTxn.args.recipient,
       recipient: parsedTxn.args.recipient,
     };
   }
 
+  private static parseUnoswapToTransaction(
+    transaction: ITransaction,
+    parsedTxn: any
+  ): ISingleSwapAction {
+    const { recipient, srcToken } = parsedTxn.args;
+    const erc20Transactions = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
+  
+    const toTxn = erc20Transactions.find((log) => log.toAddress === recipient) || null;
+    const fromTxn = erc20Transactions.filter((log) => log.contractAddress === srcToken);
+  
+    const toToken = toTxn ? toTxn.contractAddress : null;
+    const toAmount = toTxn ? this.consolidateTransactions([toTxn])[0].value.toString() : null;
+    const fromAmount = fromTxn.length > 0 ? this.consolidateTransactions(fromTxn)[0].value.toString() : null;
+  
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: srcToken,
+      toToken,
+      fromAmount,
+      toAmount,
+      sender: recipient,
+      recipient,
+    };
+  }
+  
+  
   private static parseClipperSwapTransaction(
     transaction: ITransaction,
     parsedTxn: any
@@ -153,7 +221,7 @@ export class AggregationRouterV5ContractParser {
       toToken: parsedTxn.args.dstToken,
       fromAmount: parsedTxn.args.inputAmount.toString(),
       toAmount: parsedTxn.args.outputAmount.toString(),
-      sender: transaction.from,
+      sender: parsedTxn.args.recipient,
       recipient: parsedTxn.args.recipient,
     };
   }
@@ -163,16 +231,37 @@ export class AggregationRouterV5ContractParser {
     parsedTxn: any
   ): ISingleSwapAction {
     const log = transaction.logs;
-    const { fromToken, toToken, fromAmount, toAmount } =
+    let fromToken, toToken, fromAmount, toAmount;
+    const swapData =
       ProtocolHelper.analyzeSingleSwapFromLogs(log, transaction);
+
+    fromToken = swapData.fromToken;
+    toToken = swapData.toToken;
+    fromAmount = swapData.fromAmount;
+    toAmount = swapData.toAmount;
+    
+    if(!fromToken){
+      const wethDepositLog = transaction.logs.find(
+        (log) => log.topics[0] === EVENT_ENUM.WETH_DEPOSIT
+      );
+      fromToken = wethDepositLog.contractAddress;
+      fromAmount = toBigInt(wethDepositLog.data).toString();
+    }
+    if(!toToken){
+      const wethWithdrawalLog = transaction.logs.find(
+        (log) => log.topics[0] === EVENT_ENUM.WETH_WITHDRAWAL
+      );
+      toToken = wethWithdrawalLog.contractAddress;
+      toAmount = toBigInt(wethWithdrawalLog.data).toString();
+    }
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: fromToken,
-      toToken: toToken ?? ZeroAddress,
-      fromAmount: BigInt(fromAmount) > 0 ? fromAmount : null,
-      toAmount: BigInt(toAmount) > 0 ? toAmount : null,
-      sender: transaction.from,
+      fromToken,
+      toToken,
+      fromAmount,
+      toAmount,
+      sender: parsedTxn.args.target,
       recipient: parsedTxn.args.target,
     };
   }
@@ -205,17 +294,39 @@ export class LimitOrderV4ContractParser {
     transaction: ITransaction,
     parsedTxn: any
   ): ISingleSwapAction {
+    
     const log = transaction.logs;
-    const { fromToken, toToken, fromAmount, toAmount } =
+    let fromToken, toToken, fromAmount, toAmount;
+    const swapData =
       ProtocolHelper.analyzeSingleSwapFromLogs(log, transaction);
+
+    fromToken = swapData.fromToken;
+    toToken = swapData.toToken;
+    fromAmount = swapData.fromAmount;
+    toAmount = swapData.toAmount;
+    
+    if(!fromToken){
+      const wethDepositLog = transaction.logs.find(
+        (log) => log.topics[0] === EVENT_ENUM.WETH_DEPOSIT
+      );
+      fromToken = wethDepositLog.contractAddress;
+      fromAmount = toBigInt(wethDepositLog.data).toString();
+    }
+    if(!toToken){
+      const wethWithdrawalLog = transaction.logs.find(
+        (log) => log.topics[0] === EVENT_ENUM.WETH_WITHDRAWAL
+      );
+      toToken = wethWithdrawalLog.contractAddress;
+      toAmount = toBigInt(wethWithdrawalLog.data).toString();
+    }
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: fromToken,
-      toToken: toToken ?? ZeroAddress,
-      fromAmount: BigInt(fromAmount) > 0 ? fromAmount : null,
-      toAmount: BigInt(toAmount) > 0 ? toAmount : null,
-      sender: transaction.from,
+      fromToken,
+      toToken,
+      fromAmount,
+      toAmount,
+      sender: parsedTxn.args.target ?? transaction.from,
       recipient: parsedTxn.args.target ?? transaction.from,
     };
   }

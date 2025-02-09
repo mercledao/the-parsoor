@@ -14,6 +14,8 @@ enum CONTRACT_ENUM {
 
 enum EVENT_ENUM {
   FILLED_ORDER = "0xb9ed0243fdf00f0545c63a0af8850c090d86bb46682baec4bf3c496814fe4f02",
+  WETH_DEPOSIT = "0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c",
+  WETH_WITHDRAWAL = "0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65"
 }
 
 const contracts: IProtocolContractDefinitions = {
@@ -70,6 +72,16 @@ const contracts: IProtocolContractDefinitions = {
       [EVENT_ENUM.FILLED_ORDER]: {
         abi: new ethers.Interface([
           "event OrderFilled (address indexed maker, bytes32 orderHash, uint256 remaining)",
+        ]),
+      },
+      [EVENT_ENUM.WETH_DEPOSIT]: {
+        abi: new ethers.Interface([
+          "event Deposit (address indexed dst, uint256 wad)",
+        ]),
+      },
+      [EVENT_ENUM.WETH_WITHDRAWAL]: {
+        abi: new ethers.Interface([
+          "event Withdrawal (address indexed src, uint256 wad)",
         ]),
       },
     },
