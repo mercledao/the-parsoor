@@ -11,9 +11,8 @@ import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
 import Bungee from "./Bungee"
 import Sushiswap from "./Sushiswap"
+import Curve from "./Curve"
 import Stargate from "./Stargate";
-
-
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -28,5 +27,6 @@ export const parsers = {
   [protocols.cowswap.identifier]: new Cowswap(),
   [protocols.paraswap.identifier]: new Paraswap(),
   [protocols.sushiswap.identifier]: new Sushiswap(),
+  [protocols.curve.identifier]: new Curve(),
   [protocols.stargate.identifier]: new Stargate(),
 };

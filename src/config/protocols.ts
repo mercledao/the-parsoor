@@ -107,6 +107,15 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  curve: {
+    identifier: "curve",
+    name: "Curve",
+    twitter: "https://x.com/CurveFinance",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/curve.png",
+    website: "https://curve.fi/dex/",
+    type: ProtocolType.DEX,
+    actionTags: [ActionTags.SWAP],
+  },
   stargate: {
     identifier: "stargate",
     name: "Stargate",
