@@ -109,4 +109,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.CROSS_CHAIN_BRIDGE,
     actionTags: [ActionTags.BRIDGE],
   },
+  curve: {
+    identifier: "curve",
+    name: "Curve",
+    twitter: "https://x.com/CurveFinance",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/curve.png",
+    website: "https://curve.fi/dex/",
+    type: ProtocolType.DEX,
+    actionTags: [ActionTags.BRIDGE],
+  },
 };
