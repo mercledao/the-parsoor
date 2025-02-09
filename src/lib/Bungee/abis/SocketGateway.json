@@ -1,0 +1,427 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_socketGatewayAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "NativeTokenTransferFailed",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fees",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "feesToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "feesTaker",
+                "type": "address"
+            }
+        ],
+        "name": "SocketFeesDeducted",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "BRIDGE_AFTER_SWAP_SELECTOR",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "FEES_TAKER_BRIDGE_FUNCTION_SELECTOR",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "FEES_TAKER_MULTI_BRIDGE_FUNCTION_SELECTOR",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "FEES_TAKER_REFUEL_SWAP_BRIDGE_FUNCTION_SELECTOR",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "FEES_TAKER_SWAP_BRIDGE_FUNCTION_SELECTOR",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "FEES_TAKER_SWAP_FUNCTION_SELECTOR",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "NATIVE_TOKEN_ADDRESS",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "NULL_ADDRESS",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "socketGatewayAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "socketRoute",
+        "outputs": [
+            {
+                "internalType": "contract ISocketRoute",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "feesTakerAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "feesToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "feesAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "refuelRouteId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "refuelData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "swapRouteId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "swapData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "bridgeRouteId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "bridgeData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct ISocketRequest.FeesTakerRefuelSwapBridgeRequest",
+                "name": "frsbRequest",
+                "type": "tuple"
+            }
+        ],
+        "name": "takeFeeAndRefuelAndSwapAndBridge",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "feesTakerAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "feesToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "feesAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "swapRouteId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "swapData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "bridgeRouteId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "bridgeData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct ISocketRequest.FeesTakerSwapBridgeRequest",
+                "name": "fsbRequest",
+                "type": "tuple"
+            }
+        ],
+        "name": "takeFeeAndSwapAndBridge",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "feesTakerAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "feesToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "feesAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "routeId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "bridgeRequestData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct ISocketRequest.FeesTakerBridgeRequest",
+                "name": "ftbRequest",
+                "type": "tuple"
+            }
+        ],
+        "name": "takeFeesAndBridge",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "feesTakerAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "feesToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "feesAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint32[]",
+                        "name": "bridgeRouteIds",
+                        "type": "uint32[]"
+                    },
+                    {
+                        "internalType": "bytes[]",
+                        "name": "bridgeRequestDataItems",
+                        "type": "bytes[]"
+                    }
+                ],
+                "internalType": "struct ISocketRequest.FeesTakerMultiBridgeRequest",
+                "name": "ftmbRequest",
+                "type": "tuple"
+            }
+        ],
+        "name": "takeFeesAndMultiBridge",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "feesTakerAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "feesToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "feesAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "routeId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "swapRequestData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct ISocketRequest.FeesTakerSwapRequest",
+                "name": "ftsRequest",
+                "type": "tuple"
+            }
+        ],
+        "name": "takeFeesAndSwap",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]

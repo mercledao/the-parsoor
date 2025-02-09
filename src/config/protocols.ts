@@ -78,4 +78,10 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/sushiswap.png",
     website: "https://www.sushi.com/",
   },
+  bungee: {
+    identifier: "bungee",
+    name: "Bungee",
+    twitter: "https://x.com/BungeeExchange",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/bungee.png",
+    website: "https://www.bungee.exchange/",
 };

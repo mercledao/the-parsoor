@@ -10,6 +10,7 @@ import Paraswap from "./Paraswap";
 import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
 import Sushiswap from "./Sushiswap"
+import Bungee from "./Bungee"
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -23,4 +24,5 @@ export const parsers = {
   [protocols.cowswap.identifier]: new Cowswap(),
   [protocols.paraswap.identifier]: new Paraswap(),
   [protocols.sushiswap.identifier]: new Sushiswap(),
+  [protocols.bungee.identifier]: new Bungee(),
 };
