@@ -78,6 +78,13 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/paraswap.png",
     website: "https://www.paraswap.xyz/",
   },
+  sushiswap: {
+    identifier: "sushiswap",
+    name: "Sushiswap",
+    twitter: "https://x.com/SushiSwap",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/sushiswap.png",
+    website: "https://www.sushi.com/",
+  },
   stargate: {
     identifier: "stargate",
     name: "Stargate",

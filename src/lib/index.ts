@@ -10,7 +10,9 @@ import Paraswap from "./Paraswap";
 import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
 import Bungee from "./Bungee"
+import Sushiswap from "./Sushiswap"
 import Stargate from "./Stargate";
+
 
 
 export const parsers = {
@@ -25,5 +27,6 @@ export const parsers = {
   [protocols.pancakeswap.identifier]: new Pancakeswap(),
   [protocols.cowswap.identifier]: new Cowswap(),
   [protocols.paraswap.identifier]: new Paraswap(),
+  [protocols.sushiswap.identifier]: new Sushiswap(),
   [protocols.stargate.identifier]: new Stargate(),
 };
