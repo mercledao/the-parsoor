@@ -16,9 +16,9 @@ describe('CurveParser', () => {
   });
 
   it('should parse v1 transactions correctly', async () => {
-    const v2Transactions = curveData[CURVE_VERSIONS.V1];
+    const v1Transactions = curveData[CURVE_VERSIONS.V1];
 
-    for (const transaction of v2Transactions) {
+    for (const transaction of v1Transactions) {
       const actions = await utils.fetchAndParseTestTxn(transaction);
       utils.assertTestTransactionForData(transaction, actions);
 

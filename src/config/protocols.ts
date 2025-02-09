@@ -116,6 +116,6 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/curve.png",
     website: "https://curve.fi/dex/",
     type: ProtocolType.DEX,
-    actionTags: [ActionTags.BRIDGE],
+    actionTags: [ActionTags.SWAP],
   },
 };
