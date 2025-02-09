@@ -8,10 +8,10 @@ import {
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
 import {
-  DlnSourceContractParseTransaction,
-  DlnDestinationContractParseTransaction,
-  DlnCrossChainContractParseTransaction,
   DlnBridgeContractParseTransaction,
+  DlnCrossChainContractParseTransaction,
+  DlnDestinationContractParseTransaction,
+  DlnSourceContractParseTransaction,
 } from "./parser";
 
 export default class Debridge implements IProtocolParserExport {
@@ -35,8 +35,6 @@ export default class Debridge implements IProtocolParserExport {
     ) {
       const action =
         DlnSourceContractParseTransaction.parseTransaction(transaction);
-      console.log(action);
-
       actions.push(...action);
     } else if (
       ProtocolHelper.txnToIsListenerContract(
@@ -68,7 +66,6 @@ export default class Debridge implements IProtocolParserExport {
       const action =
         DlnBridgeContractParseTransaction.parseTransaction(transaction);
       actions.push(...action);
-      
     }
     return actions;
   }
