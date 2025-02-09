@@ -1,14 +1,14 @@
 import { protocols } from "../config";
+import Across from "./Across";
+import Aerodrome from "./Aerodrome";
+import Cowswap from "./Cowswap";
+import Debridge from "./Debridge";
+import Lifi from "./LiFi";
 import Odos from "./Odos";
-import Lifi from './LiFi';
+import Pancakeswap from "./Pancakeswap";
+import Paraswap from "./Paraswap";
 import RhinoFi from "./RhinoFi";
 import Uniswap from "./Uniswap";
-import Across from "./Across";
-import Debridge from "./Debridge";
-import Aerodrome from "./Aerodrome";
-import Pancakeswap from "./Pancakeswap";
-import Cowswap from "./Cowswap";
-import Paraswap from "./Paraswap";
 import Sushiswap from "./Sushiswap"
 
 export const parsers = {
@@ -20,7 +20,7 @@ export const parsers = {
   [protocols.debridge.identifier]: new Debridge(),
   [protocols.aerodrome.identifier]: new Aerodrome(),
   [protocols.pancakeswap.identifier]: new Pancakeswap(),
-  [protocols.cowswap.identifier]: new Cowswap()
+  [protocols.cowswap.identifier]: new Cowswap(),
   [protocols.paraswap.identifier]: new Paraswap(),
   [protocols.sushiswap.identifier]: new Sushiswap(),
 };

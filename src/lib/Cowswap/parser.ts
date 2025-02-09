@@ -14,11 +14,13 @@ export class CowswapContractParser {
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
     
-    const matchedSwapOrderLog = transaction.logs.find(
+    const matchedSwapOrderLogs = transaction.logs.filter(
       (log) => log.topics[0] === EVENT_ENUM.TRADE
     );
-    if (matchedSwapOrderLog) {
-      actions.push(this.parseSwapOrder(matchedSwapOrderLog, transaction));
+    if (matchedSwapOrderLogs) {
+      for (const swapLog of matchedSwapOrderLogs) {
+        actions.push(this.parseSwapOrder(swapLog, transaction));
+      }
     }
     
     return actions;
@@ -36,7 +38,7 @@ export class CowswapContractParser {
       toToken: parsedLog.args.buyToken,
       fromAmount: parsedLog.args.sellAmount.toString(),
       toAmount: parsedLog.args.buyAmount.toString(),
-      sender: transaction.from,
+      sender: parsedLog.args.owner ?? `0x${parsedLog.args.orderUid.slice(66,106)}`,
       recipient: parsedLog.args.owner ?? `0x${parsedLog.args.orderUid.slice(66,106)}`
     };
   }
