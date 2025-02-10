@@ -34,7 +34,7 @@ export const sushiswapData: IProtocolTestingData = {
           toToken: "0x6E79B51959CF968d87826592f46f819F92466615",
           fromAmount: "50000000000000",
           toAmount: "2318746351060",
-          sender: "0xB4765Bee75A0fa0a2f66Bf68CE1796c55854c154",
+          sender: "0x4914C684ddDEB55AA205EA380667a4c0f3531717",
           recipient: "0x4914C684ddDEB55AA205EA380667a4c0f3531717",
         },
       ],
@@ -132,6 +132,22 @@ export const sushiswapData: IProtocolTestingData = {
           toAmount: "43615333555846695133",
           sender: "0xdEf76dC86C5003a7382bb97900b4C6c475FDBfbA",
           recipient: "0xdEf76dC86C5003a7382bb97900b4C6c475FDBfbA",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x6520797238f56049b3d16fbb082823165d6e67c9e477810e9852dd3df31c407d",
+      chainId: CHAIN_ID.BASE,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xAEd2599e3306fAF6d21295BF87DCD66d15141c63",
+          toToken: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          fromAmount: "2000000000000000",
+          toAmount: "415458605",
+          sender: "0xc56a8C0cC37B2235Bfc1e7082b09a8207FE76dB2",
+          recipient: "0xc56a8C0cC37B2235Bfc1e7082b09a8207FE76dB2",
         },
       ],
     }
