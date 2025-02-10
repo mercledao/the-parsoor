@@ -150,6 +150,38 @@ export const dodoData: IProtocolTestingData = {
           recipient: "0x96E193956178c9BEB3a63af118c99cc397888112"
         },
       ],
-    }
+    },
+    {
+      txnHash:
+        "0x3c28ff4b108312af084dabd7799514de1a4538f8f9e32956221c727f74d45c3b",
+      chainId: CHAIN_ID.BASE,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+          toToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+          fromAmount: "260754404238882",
+          toAmount: "285462332050865",
+          sender: "0x5e57B765ee0ff8311531D969400B8a507A80bc05",
+          recipient: "0x5e57B765ee0ff8311531D969400B8a507A80bc05"
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0xbacd36d19ba23e1ce8199a0379a95a1a33f6ed16a6ebad6d0cc6ee0569acaac0",
+      chainId: CHAIN_ID.ARBITRUM,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+          toToken: "0x912CE59144191C1204E64559FE8253a0e49E6548",
+          fromAmount: "300000000000000",
+          toAmount: "1740187397105323245",
+          sender: "0x0fD3d2746E3114fa30C5C3380D3eCB978955E3ED",
+          recipient: "0x0fD3d2746E3114fa30C5C3380D3eCB978955E3ED"
+        },
+      ],
+    } 
   ],
 };

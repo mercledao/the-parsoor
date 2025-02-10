@@ -125,6 +125,6 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/dodo.png",
     website: "https://app.dodoex.io/",
     type: ProtocolType.DEX,
-    actionTags: [ActionTags.SWAP, ActionTags.BRIDGE],
+    actionTags: [ActionTags.SWAP],
   },
 };
