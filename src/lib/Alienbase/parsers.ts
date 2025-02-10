@@ -13,6 +13,7 @@ import {
   contracts,
   EVENT_ENUM,
 } from "./contracts";
+import { log } from "node:console";
 
 interface IV3SwapParams {
   tokenIn: string;
@@ -390,29 +391,51 @@ export class AlienbaseParser {
   public static async parseV3Transaction(
     transaction: ITransaction
   ): Promise<ITransactionAction[]> {
-    const parsedTxn = contracts[CONTRACT_ENUM.SMART_ROUTER].interface.parseTransaction({
+    const parsedTxn = contracts[
+      CONTRACT_ENUM.SMART_ROUTER
+    ].interface.parseTransaction({
       data: transaction.data,
     });
-  
+
     if (!parsedTxn) return [];
-  
+
     if (parsedTxn.name !== "multicall") {
       const action = await this.createV3SwapAction(parsedTxn, transaction);
       return action ? [action] : [];
     }
-  
-    const calls = parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
+
+    const calls =
+      parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
     const result: ITransactionAction[] = [];
-  
+
     for (const callData of calls) {
-      const subParsedTxn = contracts[CONTRACT_ENUM.SMART_ROUTER].interface.parseTransaction({ data: callData });
+      const subParsedTxn = contracts[
+        CONTRACT_ENUM.SMART_ROUTER
+      ].interface.parseTransaction({ data: callData });
       if (!subParsedTxn) continue;
-  
       const action = await this.createV3SwapAction(subParsedTxn, transaction);
-      if (action) result.push(action);
+      if (action) {
+        result.push(action);
+      }
+    }
+    return this.removeDuplicateSwaps(result);
+  }
+
+  private static removeDuplicateSwaps(swaps: ITransactionAction[]): ITransactionAction[] {
+    const uniqueSwaps: ITransactionAction[] = [];
+    const seen = new Set<string>();
+  
+    for (const action of swaps) {
+      const singleSwapAction = action as ISingleSwapAction;
+      const key = `${singleSwapAction.type}-${singleSwapAction.fromToken.toLowerCase()}-${singleSwapAction.toToken.toLowerCase()}-${singleSwapAction.fromAmount}-${singleSwapAction.toAmount}-${singleSwapAction.sender.toLowerCase()}-${singleSwapAction.recipient.toLowerCase()}`;
+  
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueSwaps.push(action);
+      }
     }
   
-    return result;
+    return uniqueSwaps;
   }
   
 
@@ -439,6 +462,7 @@ export class AlienbaseParser {
     transaction: ITransaction
   ): Promise<ISingleSwapAction | null> {
     const functionName = parsedTxn.name.toLowerCase();
+
     const params: IV3SwapParams = {
       tokenIn: parsedTxn.args.tokenIn || parsedTxn.args.params?.tokenIn,
       tokenOut: parsedTxn.args.tokenOut || parsedTxn.args.params?.tokenOut,
@@ -485,25 +509,60 @@ export class AlienbaseParser {
       transaction.logs
     );
 
-    const fromTxn = erc20TransferLogs.find((log) => {
+    const fromTxnLogs = erc20TransferLogs.filter((log) => {
       return log.contractAddress.toLowerCase() === params.tokenIn.toLowerCase();
     });
+    const consolidatedFromTxns = this.consolidateFromTransactions(fromTxnLogs);
 
-    const toTxn = erc20TransferLogs.find((log) => {
+    const toTxnLogs = erc20TransferLogs.filter((log) => {
       return (
         log.contractAddress.toLowerCase() === params.tokenOut.toLowerCase()
       );
     });
 
+    const consolidatedToTxns = this.consolidateToTransactions(toTxnLogs);
+
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: params.tokenIn,
       toToken: params.tokenOut,
-      fromAmount: fromTxn.value.toString(),
-      toAmount: toTxn.value.toString(),
+      fromAmount: consolidatedFromTxns[0].value.toString(),
+      toAmount: consolidatedToTxns[0].value.toString(),
       sender: transaction.from,
       recipient: params.recipient || transaction.from,
     };
+  }
+
+  private static consolidateFromTransactions(transactions) {
+    const consolidatedMap = new Map();
+
+    transactions.forEach(({ fromAddress, value, contractAddress }) => {
+      const key = `${fromAddress}-${contractAddress}`;
+
+      if (consolidatedMap.has(key)) {
+        consolidatedMap.get(key).value += value;
+      } else {
+        consolidatedMap.set(key, { fromAddress, value, contractAddress });
+      }
+    });
+
+    return Array.from(consolidatedMap.values());
+  }
+
+  private static consolidateToTransactions(transactions) {
+    const consolidatedMap = new Map();
+
+    transactions.forEach(({ toAddress, value, contractAddress }) => {
+      const key = `${toAddress}-${contractAddress}`;
+
+      if (consolidatedMap.has(key)) {
+        consolidatedMap.get(key).value += value;
+      } else {
+        consolidatedMap.set(key, { toAddress, value, contractAddress });
+      }
+    });
+
+    return Array.from(consolidatedMap.values());
   }
 
   private static createMultiHopV3SwapAction(
@@ -528,20 +587,24 @@ export class AlienbaseParser {
       transaction.logs
     );
 
-    const fromTxn = erc20TransferLogs.find((log) => {
+    const fromTxn = erc20TransferLogs.filter((log) => {
       return log.contractAddress.toLowerCase() === fromToken.toLowerCase();
     });
 
-    const toTxn = erc20TransferLogs.find((log) => {
+    const consolidatedFromTxns = this.consolidateFromTransactions(fromTxn);
+
+    const toTxn = erc20TransferLogs.filter((log) => { 
       return log.contractAddress.toLowerCase() === toToken.toLowerCase();
     });
+
+    const consolidatedToTxns = this.consolidateToTransactions(toTxn);
 
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken,
       toToken,
-      fromAmount: fromTxn.value.toString(),
-      toAmount: toTxn.value.toString(),
+      fromAmount: consolidatedFromTxns[0].value.toString(),
+      toAmount: consolidatedToTxns[0].value.toString(),
       sender: transaction.from,
       recipient: params.recipient || transaction.from,
     };
