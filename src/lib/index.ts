@@ -12,6 +12,7 @@ import Uniswap from "./Uniswap";
 import Bungee from "./Bungee"
 import Sushiswap from "./Sushiswap"
 import Curve from "./Curve"
+import Dodo from "./Dodo";
 import Stargate from "./Stargate";
 
 export const parsers = {
@@ -28,5 +29,6 @@ export const parsers = {
   [protocols.paraswap.identifier]: new Paraswap(),
   [protocols.sushiswap.identifier]: new Sushiswap(),
   [protocols.curve.identifier]: new Curve(),
+  [protocols.dodo.identifier]: new Dodo(),
   [protocols.stargate.identifier]: new Stargate(),
 };
