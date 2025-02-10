@@ -43,18 +43,35 @@ export class SushiswapParser {
     
     if(parsedLogs.length > 0){
       inwardTxn = parsedLogs.filter((log)=>{
-        return log.toAddress === args.from
+        return log.toAddress === args.from && log.contractAddress === args.tokenOut
       })
     }
-  
+    const toTxn = this.consolidateTransactions(inwardTxn)
+    
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
       fromToken: args.tokenIn,
       toToken: args.tokenOut,
       fromAmount: args.amountIn.toString(),
-      toAmount: inwardTxn.length > 0 ? inwardTxn[0].value.toString() : args.amountOut.toString(),
+      toAmount: toTxn[0]?.value.toString() ?? args.amountOut.toString(),
       sender: transaction.from,
       recipient: args.from,
     };
+  }
+
+  private static consolidateTransactions(transactions) {
+    const consolidatedMap = new Map();
+  
+    transactions.forEach(({ toAddress, value, contractAddress }) => {
+      const key = `${toAddress}-${contractAddress}`;
+      
+      if (consolidatedMap.has(key)) {
+        consolidatedMap.get(key).value += value;
+      } else {
+        consolidatedMap.set(key, { toAddress, value, contractAddress });
+      }
+    });
+  
+    return Array.from(consolidatedMap.values());
   }
 }
