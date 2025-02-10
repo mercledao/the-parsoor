@@ -118,4 +118,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  dodo: {
+    identifier: "dodo",
+    name: "Dodo",
+    twitter: "https://x.com/BreederDodo",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/dodo.png",
+    website: "https://app.dodoex.io/",
+    type: ProtocolType.DEX,
+    actionTags: [ActionTags.SWAP],
+  },
 };
