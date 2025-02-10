@@ -15,10 +15,10 @@ describe('DodoParser', () => {
     utils.isValidProtocol();
   });
 
-  it('should parse v1 transactions correctly', async () => {
-    const v1Transactions = dodoData[DODO_VERSIONS.V2];
+  it('should parse v2 transactions correctly', async () => {
+    const v2Transactions = dodoData[DODO_VERSIONS.V2];
 
-    for (const transaction of v1Transactions) {
+    for (const transaction of v2Transactions) {
       const actions = await utils.fetchAndParseTestTxn(transaction);
       utils.assertTestTransactionForData(transaction, actions);
 
