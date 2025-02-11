@@ -196,7 +196,6 @@ export class PortalParser {
     const bridgeLog = transaction.logs.find(
       (log) => log.topics[0] === EVENT_ENUM.PORTICO_SWAP_FINISH
     );
-    console.log(bridgeLog);
     
     if (bridgeLog) {
       actions.push(this.parseBridgeLog(transaction, bridgeLog));
@@ -220,11 +219,11 @@ export class PortalParser {
       fromChain: null,
       toChain: transaction.chainId,
       fromToken: null,
-      toToken: parsedLog.args.finalTokenAddress,
+      toToken: parsedLog.args.data.finalTokenAddress,
       fromAmount: null,
-      toAmount: parsedLog.args.finaluserAmount,
-      sender: transaction.from,
-      recipient: "",
+      toAmount: parsedLog.args.finaluserAmount.toString(),
+      sender: parsedLog.args.data.recipientAddress,
+      recipient: parsedLog.args.data.recipientAddress,
     };
   }
 
