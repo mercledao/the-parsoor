@@ -127,4 +127,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  portal: {
+    identifier: "portal",
+    name: "Portal",
+    twitter: "https://x.com/wormhole",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/portal.png",
+    website: "https://portalbridge.com/",
+    type:ProtocolType.CROSS_CHAIN_BRIDGE,
+    actionTags: [ActionTags.BRIDGE],
+  },
 };
