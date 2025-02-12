@@ -1,9 +1,9 @@
-import chalk from 'chalk';
-import { protocols } from '../../../src';
-import { ProtocolParserUtils } from '../../index';
-import { STARGATE_VERSIONS, stargateData } from './data';
+import chalk from "chalk";
+import { protocols } from "../../../src";
+import { ProtocolParserUtils } from "../../index";
+import { STARGATE_VERSIONS, stargateData } from "./data";
 
-describe('StargateParser', () => {
+describe("StargateParser", () => {
   let utils: ProtocolParserUtils;
 
   beforeAll(async () => {
@@ -11,11 +11,11 @@ describe('StargateParser', () => {
     await utils.initialize();
   });
 
-  it('is correctly defined', () => {
+  it("is correctly defined", () => {
     utils.isValidProtocol();
   });
 
-  it('should parse v1 transactions correctly', async () => {
+  it("should parse v1 transactions correctly", async () => {
     const v1Transactions = stargateData[STARGATE_VERSIONS.V1];
 
     for (const transaction of v1Transactions) {
@@ -23,8 +23,11 @@ describe('StargateParser', () => {
       utils.assertTestTransactionForData(transaction, actions);
 
       console.log(
-        chalk.green('Successfully parsed swap transaction with actions:', actions.map((action) => action.type).join(',')),
-        'and hash:',
+        chalk.green(
+          "Successfully parsed transaction with actions:",
+          actions.map((action) => action.type).join(",")
+        ),
+        "and hash:",
         transaction.txnHash
       );
     }

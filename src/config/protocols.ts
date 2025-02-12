@@ -131,5 +131,7 @@ export const protocols: IProtocolDefinitionMap = {
     twitter: "https://x.com/StargateFinance",
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/stargate.png",
     website: "https://stargate.finance/",
+    type: ProtocolType.DEX_AGGREGGATOR,
+    actionTags: [ActionTags.BRIDGE],
   },
 };

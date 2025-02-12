@@ -7,7 +7,7 @@ import {
   ITransactionAction,
 } from "../../types";
 import { CONTRACT_ENUM, contracts } from "./contracts";
-import { RouterV1ContractParser, EthRouterV1ContractParser, WidgetSwapV1ContractParser } from "./parsers";
+import { StargateParser } from "./parsers";
 
 export default class Stargate implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
@@ -24,29 +24,35 @@ export default class Stargate implements IProtocolParserExport {
     if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
-        CONTRACT_ENUM.ROUTER_V1,
+        CONTRACT_ENUM.ROUTER_CONTRACT,
         contracts
       )
     ) {
-      const action = RouterV1ContractParser.parseTransaction(transaction);
-      actions.push(...action);
-    }else if (
-      ProtocolHelper.txnToIsListenerContract(
-        transaction,
-        CONTRACT_ENUM.ETH_ROUTER_V1,
-        contracts
-      )
-    ) {
-      const action = EthRouterV1ContractParser.parseTransaction(transaction);
+      console.log("ROUTER_CONTRACT");
+
+      const action = StargateParser.parseRouterContractTransaction(transaction);
       actions.push(...action);
     } else if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
-        CONTRACT_ENUM.WIDGET_SWAP_V1,
+        CONTRACT_ENUM.ETH_ROUTER_2,
         contracts
       )
     ) {
-      const action = WidgetSwapV1ContractParser.parseTransaction(transaction);
+      console.log("ETH_ROUTER_2");
+      const action =
+        StargateParser.parseEthRouter2ContractTransaction(transaction);
+      actions.push(...action);
+    } else if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.WIDGET_SWAP,
+        contracts
+      )
+    ) {
+      console.log("WIDGET_SWAP");
+      const action =
+        StargateParser.parseWidgetSwapContractTransaction(transaction);
       actions.push(...action);
     }
     return actions;
