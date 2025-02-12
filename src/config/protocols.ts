@@ -127,4 +127,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  alienbase: {
+    identifier: "alienbase",
+    name: "Alienbase",
+    twitter: "https://x.com/BreederDodo",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/alienbase.png",
+    website: "https://app.alienbase.xyz/",
+    type: ProtocolType.DEX_AGGREGGATOR,
+    actionTags: [ActionTags.SWAP],
+  },
 };
