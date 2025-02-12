@@ -13,6 +13,7 @@ import Sushiswap from "./Sushiswap"
 import Bungee from "./Bungee"
 import Curve from "./Curve"
 import Dodo from "./Dodo"
+import Portal from "./Portal"
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -29,4 +30,5 @@ export const parsers = {
   [protocols.bungee.identifier]: new Bungee(),
   [protocols.curve.identifier]: new Curve(),
   [protocols.dodo.identifier]: new Dodo(),
+  [protocols.portal.identifier]: new Portal(),
 };
