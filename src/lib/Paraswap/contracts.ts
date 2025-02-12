@@ -18,7 +18,8 @@ enum EVENT_ENUM {
   SWAPPED_DIRECT = "0xd2d73da2b5fd52cd654d8fd1b514ad57355bad741de639e3a1c3a20dd9f17347",
   ORDER_FILLED = "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473",
   ORDER_SETTLED = "0x75d5267369ab1e5d036f575e588260a9d604f045d27109fdc44442c4f12bd61a",
-  SWAP = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822"
+  SWAP = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822",
+  BOUGHT_V3 = "0x4cc7e95e48af62690313a0733e93308ac9a73326bc3c29f1788b1191c376d5b6"
 }
 
 const contracts: IProtocolContractDefinitions = {
@@ -76,6 +77,11 @@ const contracts: IProtocolContractDefinitions = {
       [EVENT_ENUM.SWAP]: {
         abi: new ethers.Interface([
           "event Swap (address indexed sender, uint256 amount0In, uint256 amount1In, uint256 amount0Out, uint256 amount1Out, address indexed to)",
+        ]),
+      },
+      [EVENT_ENUM.BOUGHT_V3]: {
+        abi: new ethers.Interface([
+          "event BoughtV3 (bytes16 uuid, address partner, uint256 feePercent, address initiator, address indexed beneficiary, address indexed srcToken, address indexed destToken, uint256 srcAmount, uint256 receivedAmount, uint256 expectedAmount)",
         ]),
       },
     },

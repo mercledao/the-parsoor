@@ -21,7 +21,8 @@ enum CONTRACT_FUNCTION_NAMES {
   SWAP_EXACT_AMOUNT_OUT_ON_UNISWAP_V2 = "swapExactAmountOutOnUniswapV2",
   SWAP_EXACT_AMOUNT_OUT_ON_UNISWAP_V3 = "swapExactAmountOutOnUniswapV3",
   SWAP_EXACT_AMOUNT_OUT_ON_BALANCER_V2 = "swapExactAmountOutOnBalancerV2",
-  SWAP_ON_UNISWAP_V2 = "swapOnUniswapV2Fork"
+  SWAP_ON_UNISWAP_V2 = "swapOnUniswapV2Fork",
+  SIMPLE_BUY = "simpleBuy"
 }
 
 export class AugustusV5Parser {
@@ -29,7 +30,6 @@ export class AugustusV5Parser {
     transaction: ITransaction
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
-
 
     const SwappedV5Log = transaction.logs.find(
       (log) => log.topics[0] === EVENT_ENUM.SWAPPED_V3
@@ -43,18 +43,44 @@ export class AugustusV5Parser {
       (log) => log.topics[0] === EVENT_ENUM.SWAP
     );
 
+    const BoughtV3Log = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.BOUGHT_V3
+    );
+
     if (SwappedV5Log) {
       actions.push(this.parseSwappedV3(transaction, SwappedV5Log));
-      return actions;
     } else if (SwappedDirectLog) {
       actions.push(this.parseSwappedDirect(transaction, SwappedDirectLog));
-      return actions;
-    } else {
+    } else if(BoughtV3Log){
+      actions.push(this.parseBoughtV3Direct(transaction, BoughtV3Log));
+    }
+      else {
       actions.push(this.parseSwap(transaction, SwapLog));
-      return actions;
     }
 
     return actions;
+  }
+
+  private static parseBoughtV3Direct(
+    transaction: ITransaction,
+    depositLog: ITransactionLog
+  ): ISingleSwapAction {
+    const parsedBoughtV3Log = ProtocolHelper.parseLog(
+      depositLog,
+      contracts.AUGUSTUS_V5.events[EVENT_ENUM.BOUGHT_V3]
+    );
+
+    const args = parsedBoughtV3Log.args;
+
+    return {
+      type: ACTION_ENUM.SINGLE_SWAP,
+      fromToken: args.srcToken,
+      toToken: args.destToken,
+      fromAmount: args.srcAmount.toString(),
+      toAmount: args.receivedAmount.toString(),
+      recipient: args.beneficiary,
+      sender: args.initiator,
+    };
   }
 
   private static parseSwappedV3(
@@ -106,21 +132,24 @@ export class AugustusV5Parser {
     depositLog: ITransactionLog
   ): ISingleSwapAction {
     const erc20Transfers = ProtocolHelper.parseERC20TransferLogs(transaction.logs);
+    
 
     const outGoingTxn = erc20Transfers.filter((t) => {
-      return t.fromAddress === transaction.from;
+      return t.fromAddress.toLowerCase() === transaction.from.toLowerCase();
     });
+    
 
     const inComingTxn = erc20Transfers.filter((t) => {
-      return t.toAddress === transaction.from;
+      return t.toAddress.toLowerCase() === transaction.from.toLowerCase();
     });
+    
     
     return {
       type: ACTION_ENUM.SINGLE_SWAP,
-      fromToken: outGoingTxn[0].contractAddress,
-      toToken: inComingTxn[0].contractAddress,
-      fromAmount: outGoingTxn[0].value.toString(),
-      toAmount: inComingTxn[0].value.toString(),
+      fromToken: outGoingTxn[0]?.contractAddress,
+      toToken: inComingTxn[0]?.contractAddress,
+      fromAmount: outGoingTxn[0]?.value.toString(),
+      toAmount: inComingTxn[0]?.value.toString(),
       recipient: transaction.from,
       sender: transaction.from,
     };
@@ -234,11 +263,11 @@ export class AugustusV6Parser {
     );
 
     const outGoingTxn = erc20Transfers.filter((t) => {
-      return t.fromAddress === transaction.from;
+      return t.fromAddress.toLowerCase() === transaction.from.toLowerCase();
     });
 
     const inComingTxn = erc20Transfers.filter((t) => {
-      return t.toAddress === transaction.from;
+      return t.toAddress.toLowerCase() === transaction.from.toLowerCase();
     });
 
     const { fromAmount, toAmount } = parsedTxn.args.balancerData;
