@@ -13,17 +13,17 @@ export const paraswapSimpleSwappedData: IProtocolTestingData = {
   [PARASWAP_VERSIONS.V5]: [
     {
       txnHash:
-        "0xf5d5406179059d2ab5b5f8b9e480291ad4963d2a772677f6b52c57b28cc846c7",
-      chainId: CHAIN_ID.ETHEREUM,
+        "0xe7b71eda72a5486300153994c942d45ac1d93943408bcac26bd05f22c8f24a7e",
+      chainId: CHAIN_ID.ARBITRUM,
       emittedActions: [
         {
           type: ACTION_ENUM.SINGLE_SWAP,
           fromToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-          toToken: "0x3593D125a4f7849a1B059E64F4517A86Dd60c95d",
-          fromAmount: "70000000000000000",
-          toAmount: "39275112292035519014",
-          sender: "0xA04FFF5e90B35a38bfa09d2a0857474790827090",
-          recipient: "0xA04FFF5e90B35a38bfa09d2a0857474790827090",
+          toToken: "0x2Ac2B254Bc18cD4999f64773a966E4f4869c34Ee",
+          fromAmount: "632488793219173",
+          toAmount: "1000000000000000000",
+          sender: "0xf370882660Ef4FCE5bEf46945935714f33f02a08",
+          recipient: "0xf370882660Ef4FCE5bEf46945935714f33f02a08",
         },
       ],
     },
