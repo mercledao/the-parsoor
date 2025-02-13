@@ -9,14 +9,15 @@ import {
   ITransactionLog,
 } from "../../types";
 import { contracts, CONTRACT_ENUM } from "./contracts";
+import { ChildProcess } from "child_process";
 enum CONTRACT_FUNCTION_NAMES {
   SWAP = "swap",
   SWAP_ETH = "swapETH",
   SWAP_TOKENS = "swapTokens",
-  SEND = "send"
+  SEND = "send",
 }
 
-const STARGATE_TO_CHAIN_ID: Record<number, CHAIN_ID> = {
+const STARGATE_TO_CHAIN_ID_V1: Record<number, CHAIN_ID> = {
   101: CHAIN_ID.ETHEREUM,
   102: CHAIN_ID.BSC,
   106: CHAIN_ID.AVALANCHE,
@@ -29,6 +30,45 @@ const STARGATE_TO_CHAIN_ID: Record<number, CHAIN_ID> = {
   181: CHAIN_ID.MANTLE,
   183: CHAIN_ID.LINEA,
   184: CHAIN_ID.BASE,
+};
+
+const STARGATE_TO_CHAIN_ID_V2: Record<number, CHAIN_ID> = {
+  30101: CHAIN_ID.ETHEREUM,
+  30102: CHAIN_ID.BSC,
+  30106: CHAIN_ID.AVALANCHE,
+  30109: CHAIN_ID.POLYGON,
+  30110: CHAIN_ID.ARBITRUM,
+  30111: CHAIN_ID.OPTIMISM,
+  30214: CHAIN_ID.SCROLL,
+  30151: CHAIN_ID.METIS,
+  30177: CHAIN_ID.KAVA,
+  30181: CHAIN_ID.MANTLE,
+  30183: CHAIN_ID.LINEA,
+  30184: CHAIN_ID.BASE,
+  30211: CHAIN_ID.AURORA,
+  30290: CHAIN_ID.TAIKO,
+  30153: CHAIN_ID.CORE,
+  30150: CHAIN_ID.KAIA,
+  30284: CHAIN_ID.IOTA,
+  30235: CHAIN_ID.RARI,
+  30280: CHAIN_ID.SEI,
+  30295: CHAIN_ID.FLARE,
+  30294: CHAIN_ID.GRAVIRY,
+  30309: CHAIN_ID.LIGHTLINK,
+  30318: CHAIN_ID.PLUME,
+  30324: CHAIN_ID.ABSTRACT,
+  30336: CHAIN_ID.FLOW,
+  30340: CHAIN_ID.SONEIUM,
+  30361: CHAIN_ID.GOAT,
+  30362: CHAIN_ID.BERACHAIN,
+  30333: CHAIN_ID.ROOTSTOCK,
+  30329: CHAIN_ID.HEMI,
+  30339: CHAIN_ID.INK,
+  30342: CHAIN_ID.GLUE,
+  30138: CHAIN_ID.FUSE,
+  30327: CHAIN_ID.SUPERPOSITION,
+  30267: CHAIN_ID.DEGEN,
+  30323: CHAIN_ID.CODEX
 };
 
 const tokens = {
@@ -121,7 +161,7 @@ export class StargateParser {
 
     if (!parsedTxn) return actions;
 
-    if(parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP){
+    if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP) {
       actions.push(this.handleSwap(transaction, parsedTxn));
     }
 
@@ -129,22 +169,27 @@ export class StargateParser {
   }
 
   private static getChainId = (chain: CHAIN_ID): number | undefined => {
-    return Object.entries(STARGATE_TO_CHAIN_ID).find(([_, value]) => value === chain)?.[0] as unknown as number;
+    return Object.entries(STARGATE_TO_CHAIN_ID_V1).find(
+      ([_, value]) => value === chain
+    )?.[0] as unknown as number;
   };
-  
 
   private static handleSwap(
     transaction: ITransaction,
     parsedTxn: ethers.TransactionDescription
   ): IBridgeOutAction {
     const fromChain = transaction.chainId;
-    const fromToken = tokens[this.getChainId(transaction.chainId)][parsedTxn.args._srcPoolId]?.address;
-    const toToken = tokens[this.getChainId(transaction.chainId)][parsedTxn.args._dstPoolId]?.address;
+    const fromToken =
+      tokens[this.getChainId(transaction.chainId)][parsedTxn.args._srcPoolId]
+        ?.address;
+    const toToken =
+      tokens[this.getChainId(transaction.chainId)][parsedTxn.args._dstPoolId]
+        ?.address;
 
     return {
       type: ACTION_ENUM.BRIDGE_OUT,
       fromChain,
-      toChain: STARGATE_TO_CHAIN_ID[parsedTxn.args._dstChainId],
+      toChain: STARGATE_TO_CHAIN_ID_V1[parsedTxn.args._dstChainId],
       fromToken,
       toToken,
       fromAmount: parsedTxn.args._amountLD.toString(),
@@ -164,8 +209,8 @@ export class StargateParser {
       CONTRACT_ENUM.ETH_ROUTER_2,
       contracts
     );
-    
-    if(parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP_ETH){
+
+    if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP_ETH) {
       actions.push(this.handleSwapEth(transaction, parsedTxn));
     }
 
@@ -182,9 +227,9 @@ export class StargateParser {
     return {
       type: ACTION_ENUM.BRIDGE_OUT,
       fromChain,
-      toChain: STARGATE_TO_CHAIN_ID[parsedTxn.args._dstChainId],
+      toChain: STARGATE_TO_CHAIN_ID_V1[parsedTxn.args._dstChainId],
       fromToken,
-      toToken : null,
+      toToken: null,
       fromAmount: transaction.value.toString(),
       toAmount: null,
       sender: transaction.from,
@@ -197,13 +242,17 @@ export class StargateParser {
     parsedTxn: ethers.TransactionDescription
   ): IBridgeOutAction {
     const fromChain = transaction.chainId;
-    const fromToken = tokens[this.getChainId(transaction.chainId)][parsedTxn.args._srcPoolId]?.address;
-    const toToken = tokens[this.getChainId(transaction.chainId)][parsedTxn.args._dstPoolId]?.address;
+    const fromToken =
+      tokens[this.getChainId(transaction.chainId)][parsedTxn.args._srcPoolId]
+        ?.address;
+    const toToken =
+      tokens[this.getChainId(transaction.chainId)][parsedTxn.args._dstPoolId]
+        ?.address;
 
     return {
       type: ACTION_ENUM.BRIDGE_OUT,
       fromChain,
-      toChain: STARGATE_TO_CHAIN_ID[parsedTxn.args._dstChainId],
+      toChain: STARGATE_TO_CHAIN_ID_V1[parsedTxn.args._dstChainId],
       fromToken,
       toToken,
       fromAmount: parsedTxn.args._amountLD.toString(),
@@ -223,10 +272,10 @@ export class StargateParser {
       CONTRACT_ENUM.WIDGET_SWAP,
       contracts
     );
-    
-    if(parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP_ETH){
+
+    if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP_ETH) {
       actions.push(this.handleSwapEth(transaction, parsedTxn));
-    } else if(parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP_TOKENS){
+    } else if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SWAP_TOKENS) {
       actions.push(this.handleSwapTokens(transaction, parsedTxn));
     }
 
@@ -243,8 +292,8 @@ export class StargateParser {
       CONTRACT_ENUM.POOL_NATIVE,
       contracts
     );
-    
-    if(parsedTxn.name === CONTRACT_FUNCTION_NAMES.SEND){
+
+    if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SEND) {
       actions.push(this.handleSend(transaction, parsedTxn));
     }
 
@@ -256,19 +305,58 @@ export class StargateParser {
     parsedTxn: ethers.TransactionDescription
   ): IBridgeOutAction {
     const fromChain = transaction.chainId;
-    const fromToken = tokens[this.getChainId(transaction.chainId)][parsedTxn.args._srcPoolId]?.address;
-    const toToken = tokens[this.getChainId(transaction.chainId)][parsedTxn.args._dstPoolId]?.address;
+    const fromToken = ZeroAddress;
+    console.log(parsedTxn.args._sendParam.dstEid);
+    
 
     return {
       type: ACTION_ENUM.BRIDGE_OUT,
       fromChain,
-      toChain: STARGATE_TO_CHAIN_ID[parsedTxn.args._dstChainId],
+      toChain: STARGATE_TO_CHAIN_ID_V2[parsedTxn.args._sendParam.dstEid.toString()],
       fromToken,
-      toToken,
-      fromAmount: parsedTxn.args._amountLD.toString(),
+      toToken: null,
+      fromAmount: transaction.value.toString(),
       toAmount: null,
       sender: transaction.from,
-      recipient: parsedTxn.args._to,
+      recipient: ethers.getAddress(
+        `0x${parsedTxn.args._sendParam.to.slice(-40)}`
+      ),
     };
+  }
+
+  public static parsePoolUSDCContractTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const parsedTxn = ProtocolHelper.parseTransaction(
+      transaction,
+      CONTRACT_ENUM.POOL_NATIVE,
+      contracts
+    );
+
+    if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SEND) {
+      actions.push(this.handleSend(transaction, parsedTxn));
+    }
+
+    return actions;
+  }
+
+  public static parsePoolUSDTContractTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const parsedTxn = ProtocolHelper.parseTransaction(
+      transaction,
+      CONTRACT_ENUM.POOL_NATIVE,
+      contracts
+    );
+
+    if (parsedTxn.name === CONTRACT_FUNCTION_NAMES.SEND) {
+      actions.push(this.handleSend(transaction, parsedTxn));
+    }
+
+    return actions;
   }
 }

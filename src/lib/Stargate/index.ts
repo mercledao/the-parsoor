@@ -55,10 +55,34 @@ export default class Stargate implements IProtocolParserExport {
         transaction,
         CONTRACT_ENUM.POOL_NATIVE,
         contracts
+      ) || ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.POOL_METH,
+        contracts
       )
     ) {
       const action =
         StargateParser.parsePoolNativeContractTransaction(transaction);
+      actions.push(...action);
+    } else if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.POOL_USDC,
+        contracts
+      )
+    ) {
+      const action =
+        StargateParser.parsePoolUSDCContractTransaction(transaction);
+      actions.push(...action);
+    } else if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.POOL_USDT,
+        contracts
+      )
+    ) {
+      const action =
+        StargateParser.parsePoolUSDTContractTransaction(transaction);
       actions.push(...action);
     }
     return actions;
