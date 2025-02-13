@@ -28,8 +28,6 @@ export default class Stargate implements IProtocolParserExport {
         contracts
       )
     ) {
-      console.log("ROUTER_CONTRACT");
-
       const action = StargateParser.parseRouterContractTransaction(transaction);
       actions.push(...action);
     } else if (
@@ -39,7 +37,6 @@ export default class Stargate implements IProtocolParserExport {
         contracts
       )
     ) {
-      console.log("ETH_ROUTER_2");
       const action =
         StargateParser.parseEthRouter2ContractTransaction(transaction);
       actions.push(...action);
@@ -50,9 +47,18 @@ export default class Stargate implements IProtocolParserExport {
         contracts
       )
     ) {
-      console.log("WIDGET_SWAP");
       const action =
         StargateParser.parseWidgetSwapContractTransaction(transaction);
+      actions.push(...action);
+    } else if (
+      ProtocolHelper.txnToIsListenerContract(
+        transaction,
+        CONTRACT_ENUM.POOL_NATIVE,
+        contracts
+      )
+    ) {
+      const action =
+        StargateParser.parsePoolNativeContractTransaction(transaction);
       actions.push(...action);
     }
     return actions;

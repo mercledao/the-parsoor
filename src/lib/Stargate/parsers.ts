@@ -12,7 +12,8 @@ import { contracts, CONTRACT_ENUM } from "./contracts";
 enum CONTRACT_FUNCTION_NAMES {
   SWAP = "swap",
   SWAP_ETH = "swapETH",
-  SWAP_TOKENS = "swapTokens"
+  SWAP_TOKENS = "swapTokens",
+  SEND = "send"
 }
 
 const STARGATE_TO_CHAIN_ID: Record<number, CHAIN_ID> = {
@@ -230,5 +231,44 @@ export class StargateParser {
     }
 
     return actions;
+  }
+
+  public static parsePoolNativeContractTransaction(
+    transaction: ITransaction
+  ): ITransactionAction[] {
+    const actions: ITransactionAction[] = [];
+
+    const parsedTxn = ProtocolHelper.parseTransaction(
+      transaction,
+      CONTRACT_ENUM.POOL_NATIVE,
+      contracts
+    );
+    
+    if(parsedTxn.name === CONTRACT_FUNCTION_NAMES.SEND){
+      actions.push(this.handleSend(transaction, parsedTxn));
+    }
+
+    return actions;
+  }
+
+  private static handleSend(
+    transaction: ITransaction,
+    parsedTxn: ethers.TransactionDescription
+  ): IBridgeOutAction {
+    const fromChain = transaction.chainId;
+    const fromToken = tokens[this.getChainId(transaction.chainId)][parsedTxn.args._srcPoolId]?.address;
+    const toToken = tokens[this.getChainId(transaction.chainId)][parsedTxn.args._dstPoolId]?.address;
+
+    return {
+      type: ACTION_ENUM.BRIDGE_OUT,
+      fromChain,
+      toChain: STARGATE_TO_CHAIN_ID[parsedTxn.args._dstChainId],
+      fromToken,
+      toToken,
+      fromAmount: parsedTxn.args._amountLD.toString(),
+      toAmount: null,
+      sender: transaction.from,
+      recipient: parsedTxn.args._to,
+    };
   }
 }

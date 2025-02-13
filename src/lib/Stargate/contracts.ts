@@ -4,6 +4,10 @@ import { IProtocolContractDefinitions } from "../../types";
 import RouterAbi from "./abis/Router.json";
 import EthRouter2Abi from "./abis/EthRouter2.json";
 import WidgetSwapAbi from "./abis/WidgetSwap.json";
+import PoolmEthAbi from "./abis/PoolmEth.json";
+import PoolNativeAbi from "./abis/PoolNative.json";
+import PoolUsdcAbi from "./abis/PoolUsdc.json";
+import PoolUsdtAbi from "./abis/PoolUsdt.json"
 
 enum CONTRACT_ENUM {
   ROUTER_CONTRACT = "ROUTER_CONTRACT",
@@ -150,10 +154,10 @@ const contracts: IProtocolContractDefinitions = {
     events: {},
   },
   [CONTRACT_ENUM.POOL_NATIVE]: {
-    interface: new ethers.Interface(WidgetSwapAbi),
+    interface: new ethers.Interface(PoolNativeAbi),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
-        address: "0x10d16248bED1E0D0c7cF94fFD99A50c336c7Bcdc",
+        address: "0x77b2043768d28E9C9aB44E1aBfC95944bcE57931",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.BSC]: {
@@ -201,7 +205,7 @@ const contracts: IProtocolContractDefinitions = {
     events: {},
   },
   [CONTRACT_ENUM.POOL_USDC]: {
-    interface: new ethers.Interface(WidgetSwapAbi),
+    interface: new ethers.Interface(PoolUsdcAbi),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x10d16248bED1E0D0c7cF94fFD99A50c336c7Bcdc",
@@ -252,7 +256,7 @@ const contracts: IProtocolContractDefinitions = {
     events: {},
   },
   [CONTRACT_ENUM.POOL_USDT]: {
-    interface: new ethers.Interface(WidgetSwapAbi),
+    interface: new ethers.Interface(PoolUsdtAbi),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x10d16248bED1E0D0c7cF94fFD99A50c336c7Bcdc",
@@ -303,7 +307,7 @@ const contracts: IProtocolContractDefinitions = {
     events: {},
   },
   [CONTRACT_ENUM.POOL_METH]: {
-    interface: new ethers.Interface(WidgetSwapAbi),
+    interface: new ethers.Interface(PoolmEthAbi),
     deployments: {
       [CHAIN_ID.ETHEREUM]: {
         address: "0x10d16248bED1E0D0c7cF94fFD99A50c336c7Bcdc",
