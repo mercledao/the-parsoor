@@ -127,4 +127,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  thruster: {
+    identifier: "thruster",
+    name: "Thruster",
+    twitter: "https://x.com/ThrusterFi",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/thruster.png",
+    website: "https://app.thruster.finance/",
+    type: ProtocolType.DEX,
+    actionTags: [ActionTags.SWAP],
+  },
 };

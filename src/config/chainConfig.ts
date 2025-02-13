@@ -83,4 +83,7 @@ export const chainConfig: IChainDefinitions = {
   [CHAIN_ID.HARMONY]: {
     rpcUrl: process.env.HARMONY_RPC_URL || "https://api.harmony.one",
   },
+  [CHAIN_ID.BLAST]: {
+    rpcUrl: process.env.BLAST_RPC_URL || "https://rpc.blast.io",
+  },
 };
