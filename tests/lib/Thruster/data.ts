@@ -3,7 +3,6 @@ import { IProtocolTestingData } from "../../../src/types";
 
 export enum THRUSTER_VERSIONS {
   V2 = "v2",
-  V3 = "v3",
 }
 
 export const thrusterData: IProtocolTestingData = {
@@ -53,6 +52,38 @@ export const thrusterData: IProtocolTestingData = {
           toAmount: "35308075431506426",
           sender: "0x1ABC8dD6A82f9ad1cB7cd11338D2F9Df004bb4aB",
           recipient: "0x1ABC8dD6A82f9ad1cB7cd11338D2F9Df004bb4aB",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x0dc5a3736ca91f73e99939a5fbd7ef1904c91e8837a1e0abae9fefe3b2117523",
+      chainId: CHAIN_ID.BLAST,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x4300000000000000000000000000000000000003",
+          toToken: "0x4300000000000000000000000000000000000004",
+          fromAmount: "167019114591186238",
+          toAmount: "62383972460673",
+          sender: "0xD688325b4ec06CBB80FE71843e87Ca9F7E0B2c48",
+          recipient: "0xD688325b4ec06CBB80FE71843e87Ca9F7E0B2c48",
+        },
+      ],
+    },
+    {
+      txnHash:
+        "0x43f0051b35b7f15a71c5b2c5007335a028b0d3133e79bdd1cbb0cca64af2e3c3",
+      chainId: CHAIN_ID.BLAST,
+      emittedActions: [
+        {
+          type: ACTION_ENUM.SINGLE_SWAP,
+          fromToken: "0x4300000000000000000000000000000000000004",
+          toToken: "0x59c159e5a4F4d1C86F7aBDC94B7907B7473477F6",
+          fromAmount: "9437687190590353",
+          toAmount: "11799800000000000000000",
+          sender: "0xB80D90fcf2Ed0e4FeBE02d2a209109Bf1F62DF95",
+          recipient: "0xF5aAE5276b1ED63544edB779Dcd7e449a7d8017B",
         },
       ],
     },

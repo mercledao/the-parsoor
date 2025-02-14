@@ -5,10 +5,8 @@ import {
   ISingleSwapAction,
   ITransaction,
   ITransactionAction,
-  ITransactionLog,
 } from "../../types";
 import {
-  COMMAND_ENUM,
   CONTRACT_ENUM,
   contracts,
   EVENT_ENUM,
