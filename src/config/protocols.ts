@@ -127,4 +127,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  camelot: {
+    identifier: "camelot",
+    name: "Camelot",
+    twitter: "https://x.com/BreederDodo",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/camelot.png",
+    website: "https://app.camelot.exchange/",
+    type: ProtocolType.DEX_AGGREGGATOR,
+    actionTags: [ActionTags.SWAP],
+  },
 };
