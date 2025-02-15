@@ -70,6 +70,22 @@ export const lynexData: IProtocolTestingData = {
             recipient: "0x0000000000000000000000000000000000000000"
           },
         ],
+      },
+      {
+        txnHash:
+          "0x7cc59e40f8b66086bd44aebf441dd6f6b2faf1347f336aa0ecb256dc1fe051e0",
+        chainId: CHAIN_ID.LINEA,
+        emittedActions: [
+          {
+            type: ACTION_ENUM.SINGLE_SWAP,
+            fromToken: "0xA219439258ca9da29E9Cc4cE5596924745e12B93",
+            toToken: "0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f",
+            fromAmount: "1495949549",
+            toAmount: "548000000000000000",
+            sender: "0xd82DeF4400793894Fb175F3b1bA6E4402C92c98c",
+            recipient: "0xd82DeF4400793894Fb175F3b1bA6E4402C92c98c"
+          },
+        ],
       }
   ],
 };
