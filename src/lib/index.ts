@@ -14,6 +14,7 @@ import Bungee from "./Bungee"
 import Curve from "./Curve"
 import Dodo from "./Dodo"
 import Lynex from "./Lynex";
+import Ambient from "./Ambient";
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -31,4 +32,5 @@ export const parsers = {
   [protocols.curve.identifier]: new Curve(),
   [protocols.dodo.identifier]: new Dodo(),
   [protocols.lynex.identifier]: new Lynex(),
+  [protocols.ambient.identifier]: new Ambient(),
 };

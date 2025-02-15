@@ -136,4 +136,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  ambient: {
+    identifier: "ambient",
+    name: "Ambient",
+    twitter: "https://x.com/ambient_finance",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/ambient.png",
+    website: "https://ambient.finance/",
+    type: ProtocolType.DEX_AGGREGGATOR,
+    actionTags: [ActionTags.SWAP],
+  },
 };
