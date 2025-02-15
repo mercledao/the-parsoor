@@ -133,7 +133,7 @@ export const protocols: IProtocolDefinitionMap = {
     twitter: "https://x.com/LynexFi",
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/lynex.png",
     website: "https://app.lynex.fi/swap",
-    type: ProtocolType.DEX_AGGREGGATOR,
+    type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
 };
