@@ -15,6 +15,7 @@ import Curve from "./Curve"
 import Dodo from "./Dodo"
 import Lynex from "./Lynex";
 import Rango from "./Rango"
+import Openocean from "./Openocean"
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -33,4 +34,5 @@ export const parsers = {
   [protocols.dodo.identifier]: new Dodo(),
   [protocols.lynex.identifier]: new Lynex(),
   [protocols.rango.identifier]:new Rango(),
+  [protocols.openocean.identifier]:new Openocean(),
 };
