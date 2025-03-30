@@ -9,11 +9,11 @@ import {
 import { CONTRACT_ENUM, contracts } from "./contracts";
 import { OpenOceanExchangeContractParser } from "./parser";
 
-export default class Rango implements IProtocolParserExport {
+export default class Openocean implements IProtocolParserExport {
   public readonly protocolIdentifier: string;
 
   constructor() {
-    this.protocolIdentifier = protocols.rango.identifier;
+    this.protocolIdentifier = protocols.openocean.identifier;
   }
 
   public async parseTransaction(

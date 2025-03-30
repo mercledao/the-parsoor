@@ -3,7 +3,7 @@ import { protocols } from '../../../src';
 import { ProtocolParserUtils } from '../../index';
 import { OPENOCEAN_EXCHANGE_VERSION, openOceanData } from './data';
 
-describe('RangoParser', () => {
+describe('OpenoceanParser', () => {
   let utils: ProtocolParserUtils;
 
   beforeAll(async () => {
