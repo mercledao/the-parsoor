@@ -136,4 +136,22 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
+  rango: {
+    identifier: "rango",
+    name: "Rango",
+    twitter: "https://x.com/RangoExchange",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/rango.png",
+    website: "https://rango.exchange/",
+    type: ProtocolType.DEX_AGGREGGATOR,
+    actionTags: [ActionTags.SWAP,ActionTags.BRIDGE],
+  },
+  openocean: {
+    identifier: "openocean",
+    name: "openocean",
+    twitter: "https://x.com/OpenOceanGlobal",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/openocean.png",
+    website: "https://openocean.finance/",
+    type: ProtocolType.DEX_AGGREGGATOR,
+    actionTags: [ActionTags.SWAP],
+  },
 };
