@@ -14,6 +14,16 @@ export enum ProtocolType {
   DEX = "DEX",
   DEX_AGGREGGATOR = "DEX Aggregator",
   CROSS_CHAIN_BRIDGE = "Cross Chain Bridge",
+  DATA_ANALYTICS = "Data Analytics",
+  WALLET = "Wallet",
+  TRADING_PLATFORM = "Trading Platform",
+  GRANTS = "Grants",
+  QUESTING_PLATFORM = "Questing Platform",
+  STAKING = "Staking Platform",
+  DOMAIN_SERVICE = "Domain Name Service",
+  NFT_MARKETPLACE = "NFT Marketplace",
+  INFRA = "Web3 Infra",
+  MESSAGING_PROTOCOL = "Messaging Protocol",
 }
 
 export enum ActionTags {
