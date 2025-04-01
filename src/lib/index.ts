@@ -14,6 +14,9 @@ import Bungee from "./Bungee"
 import Curve from "./Curve"
 import Dodo from "./Dodo"
 import Lynex from "./Lynex";
+import Rango from "./Rango"
+import Openocean from "./Openocean"
+import KyberswapAggregator from "./Kyberswap";
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -31,4 +34,7 @@ export const parsers = {
   [protocols.curve.identifier]: new Curve(),
   [protocols.dodo.identifier]: new Dodo(),
   [protocols.lynex.identifier]: new Lynex(),
+  [protocols.rango.identifier]:new Rango(),
+  [protocols.openocean.identifier]:new Openocean(),
+  [protocols.kyberswap.identifier]:new KyberswapAggregator(),
 };

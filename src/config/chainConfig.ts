@@ -3,7 +3,7 @@ import { IChainDefinitions } from "../types";
 
 export const chainConfig: IChainDefinitions = {
   [CHAIN_ID.ETHEREUM]: {
-    rpcUrl: process.env.ETHEREUM_RPC_URL || "https://eth.public-rpc.com",
+    rpcUrl: process.env.ETHEREUM_RPC_URL || "https://go.getblock.io/df56efb737f6446c875c08f366b2e68e",
   },
   [CHAIN_ID.OPTIMISM]: {
     rpcUrl: process.env.OPTIMISM_RPC_URL || "https://mainnet.optimism.io",
