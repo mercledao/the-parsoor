@@ -3,22 +3,22 @@ import Across from "./Across";
 import Aerodrome from "./Aerodrome";
 import Cowswap from "./Cowswap";
 import Debridge from "./Debridge";
-import Lifi from "./LiFi";
+// import Lifi from "./LiFi";
+import Bungee from "./Bungee";
+import Curve from "./Curve";
+import Dodo from "./Dodo";
+import Lynex from "./Lynex";
 import Odos from "./Odos";
 import Pancakeswap from "./Pancakeswap";
 import Paraswap from "./Paraswap";
 import RhinoFi from "./RhinoFi";
+import Sushiswap from "./Sushiswap";
 import Uniswap from "./Uniswap";
-import Sushiswap from "./Sushiswap"
-import Bungee from "./Bungee"
-import Curve from "./Curve"
-import Dodo from "./Dodo"
-import Lynex from "./Lynex";
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
   [protocols.uniswap.identifier]: new Uniswap(),
-  [protocols.lifi.identifier]: new Lifi(),
+  // [protocols.lifi.identifier]: new Lifi(),
   [protocols.odos.identifier]: new Odos(),
   [protocols.across.identifier]: new Across(),
   [protocols.debridge.identifier]: new Debridge(),

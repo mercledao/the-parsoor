@@ -19,15 +19,6 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [ActionTags.SWAP],
   },
-  lifi: {
-    identifier: "lifi",
-    name: "LiFi",
-    twitter: "https://x.com/lifiprotocol",
-    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/lifi.png",
-    website: "https://li.fi/",
-    type: ProtocolType.DEX_AGGREGGATOR,
-    actionTags: [ActionTags.SWAP, ActionTags.BRIDGE],
-  },
   odos: {
     identifier: "odos",
     name: "Odos",
