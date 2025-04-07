@@ -89,6 +89,10 @@ export const contracts: IProtocolContractDefinitions = {
         address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
+      [CHAIN_ID.BERACHAIN]: {
+        address: "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
     },
     events: {
       [EVENT_ENUM.ORDER_PLACED]: {
@@ -146,6 +150,10 @@ export const contracts: IProtocolContractDefinitions = {
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
       [CHAIN_ID.NEON]: {
+        address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.BERACHAIN]: {
         address: "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
       },
