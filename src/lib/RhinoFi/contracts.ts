@@ -41,6 +41,18 @@ const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.DEPOSIT_CONTRACT]: {
     interface: new ethers.Interface(RhinoFiDepositAbi),
     deployments: {
+      [CHAIN_ID.ABSTRACT]: {
+        address: "0xdd6a084b563731be8ed039df29fa73bebdaaea2c",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.BERACHAIN]: {
+        address: "0x5e023c31e1d3dcd08a1b3e8c96f6ef8aa8fcacd1",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
+      [CHAIN_ID.UNICHAIN]: {
+        address: "0xb0d7040b93fe5b099d3ce02ea86c4a1b695732d0",
+        listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
+      },
       [CHAIN_ID.ARBITRUM]: {
         address: "0x10417734001162Ea139e8b044DFe28DbB8B28ad0",
         listenForTransactions: [LISTEN_FOR_TRANSACTIONS.INCOMING],
