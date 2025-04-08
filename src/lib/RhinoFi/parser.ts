@@ -10,22 +10,22 @@ import {
 } from "../../types";
 import { CONTRACT_ENUM, contracts, EVENT_ENUM } from "./contracts";
 
-enum CONTRACT_FUNCTION_NAMES {
-  // Function for depositing tokens to the bridge
-  DEPOSIT = "deposit",
+// enum CONTRACT_FUNCTION_NAMES {
+//   // Function for depositing tokens to the bridge
+//   DEPOSIT = "deposit",
 
-  // Function for depositing native tokens to the bridge
-  DEPOSIT_NATIVE = "depositNative",
+//   // Function for depositing native tokens to the bridge
+//   DEPOSIT_NATIVE = "depositNative",
 
-  // Function for withdrawing tokens from the bridge
-  WITHDRAW = "withdrawV2",
+//   // Function for withdrawing tokens from the bridge
+//   WITHDRAW = "withdrawV2",
 
-  // Function for withdrawing native tokens from the bridge
-  WITHDRAW_NATIVE = "withdrawNativeV2",
+//   // Function for withdrawing native tokens from the bridge
+//   WITHDRAW_NATIVE = "withdrawNativeV2",
 
-  // Function for withdrawing tokens from the bridge with native + erc20
-  WITHDRAW_WITH_NATIVE = "withdrawV2WithNative",
-}
+//   // Function for withdrawing tokens from the bridge with native + erc20
+//   WITHDRAW_WITH_NATIVE = "withdrawV2WithNative",
+// }
 
 export class DepositContractParser {
   private static contractDefinition = contracts[CONTRACT_ENUM.DEPOSIT_CONTRACT];
@@ -62,23 +62,25 @@ export class DepositContractParser {
     const hasBirdgeIN = transaction.logs.find(
           (log) => log.topics[0] === EVENT_ENUM.BRIDGED_WITHDRAWAL
         );
-    
     const hasBridgeOut = transaction.logs.find(
           (log) => log.topics[0] === EVENT_ENUM.BRIDGED_DEPOSIT_WITH_ID
         );
-        const hasDeposit = transaction.logs.find(
+    const hasDeposit = transaction.logs.find(
           (log) => log.topics[0] === EVENT_ENUM.BRIDGED_DEPOSIT
+        );
+        const hasWithdraw = transaction.logs.find(
+          (log) => log.topics[0] === EVENT_ENUM.BRIDGED_WITHDRAWAL_WITH_NATIVE
         );
     
         if (hasBirdgeIN) {
           actions.push(this.parseBridgeIn(transaction,hasBirdgeIN));
-        } 
-        if(hasBridgeOut) {
+        } else if(hasBridgeOut) {
         actions.push(this.parseBridgeOut(transaction, hasBridgeOut));
-        }
-        if(hasDeposit) {
+        } else if(hasDeposit) {
           actions.push(this.parseDeposit(transaction, hasDeposit));
-          }
+        } else if(hasWithdraw) {
+            actions.push(this.parseWithdraw(transaction, hasWithdraw));
+        }
 
     return actions;
   }
@@ -151,6 +153,29 @@ export class DepositContractParser {
           sender:  parsedLog.args.user,
           recipient: null,
         };
+      }
+
+      private static parseWithdraw( transaction: ITransaction,log: ITransactionLog): IBridgeInAction {
+        const parsedLog = ProtocolHelper.parseLog(
+          log,
+          this.contractDefinition.events[EVENT_ENUM.BRIDGED_WITHDRAWAL_WITH_NATIVE]
+        );
+    
+        return {
+        type: ACTION_ENUM.BRIDGE_IN,
+
+        fromChain: null,
+        toChain: transaction.chainId,
+
+        fromToken: null,
+        toToken: parsedLog.args.token,
+
+        fromAmount: null,
+        toAmount: parsedLog.args.amountToken.toString(),
+
+        sender: null,
+        recipient: parsedLog.args.user,
+      };
       }
 
 
