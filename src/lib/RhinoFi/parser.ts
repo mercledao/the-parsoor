@@ -28,159 +28,222 @@ enum CONTRACT_FUNCTION_NAMES {
 }
 
 export class DepositContractParser {
+  private static contractDefinition = contracts[CONTRACT_ENUM.DEPOSIT_CONTRACT];
+  
   public static parseTransaction(
     transaction: ITransaction
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
 
-    const parsedTxn = ProtocolHelper.parseTransaction(
-      transaction,
-      CONTRACT_ENUM.DEPOSIT_CONTRACT,
-      contracts
-    );
+    // const parsedTxn = ProtocolHelper.parseTransaction(
+    //   transaction,
+    //   CONTRACT_ENUM.DEPOSIT_CONTRACT,
+    //   contracts
+    // );
 
-    switch (parsedTxn.name) {
-      case CONTRACT_FUNCTION_NAMES.DEPOSIT:
-        actions.push(this.parseDeposit(transaction, parsedTxn));
-        break;
-      case CONTRACT_FUNCTION_NAMES.DEPOSIT_NATIVE:
-        actions.push(this.parseDepositNative(transaction, parsedTxn));
-        break;
-      case CONTRACT_FUNCTION_NAMES.WITHDRAW:
-        actions.push(this.parseWithdraw(transaction, parsedTxn));
-        break;
-      case CONTRACT_FUNCTION_NAMES.WITHDRAW_NATIVE:
-        actions.push(this.parseWithdrawNative(transaction, parsedTxn));
-        break;
-      case CONTRACT_FUNCTION_NAMES.WITHDRAW_WITH_NATIVE:
-        actions.push(...this.parseWithdrawWithNative(transaction, parsedTxn));
-        break;
-    }
+    // switch (parsedTxn.name) {
+    //   case CONTRACT_FUNCTION_NAMES.DEPOSIT:
+    //     actions.push(this.parseDeposit(transaction, parsedTxn));
+    //     break;
+    //   case CONTRACT_FUNCTION_NAMES.DEPOSIT_NATIVE:
+    //     actions.push(this.parseDepositNative(transaction, parsedTxn));
+    //     break;
+    //   case CONTRACT_FUNCTION_NAMES.WITHDRAW:
+    //     actions.push(this.parseWithdraw(transaction, parsedTxn));
+    //     break;
+    //   case CONTRACT_FUNCTION_NAMES.WITHDRAW_NATIVE:
+    //     actions.push(this.parseWithdrawNative(transaction, parsedTxn));
+    //     break;
+    //   case CONTRACT_FUNCTION_NAMES.WITHDRAW_WITH_NATIVE:
+    //     actions.push(...this.parseWithdrawWithNative(transaction, parsedTxn));
+    //     break;
+    // }
+
+    const hasBirdgeIN = transaction.logs.find(
+          (log) => log.topics[0] === EVENT_ENUM.BRIDGED_WITHDRAWAL
+        );
+    
+        const hasBridgeOut = transaction.logs.find(
+          (log) => log.topics[0] === EVENT_ENUM.BRIDGED_DEPOSIT_WITH_ID
+        );
+    
+        if (hasBirdgeIN) {
+          actions.push(this.parseBridgeIn(transaction,hasBirdgeIN));
+        } else if(hasBridgeOut) {
+        actions.push(this.parseBridgeOut(transaction, hasBridgeOut));
+        }
 
     return actions;
   }
 
-  private static parseWithdraw(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): IBridgeInAction {
-    return {
-      type: ACTION_ENUM.BRIDGE_IN,
-
-      fromChain: null,
-      toChain: transaction.chainId,
-
-      fromToken: null,
-      toToken: parsedTxn.args.token,
-
-      fromAmount: null,
-      toAmount: parsedTxn.args.amount.toString(),
-
-      sender: null,
-      recipient: parsedTxn.args.to,
-    };
-  }
-
-  private static parseWithdrawNative(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): IBridgeInAction {
-    return {
-      type: ACTION_ENUM.BRIDGE_IN,
-
-      fromChain: null,
-      toChain: transaction.chainId,
-
-      fromToken: null,
-      toToken: ethers.ZeroAddress,
-
-      fromAmount: null,
-      toAmount: parsedTxn.args.amount.toString(),
-
-      sender: null,
-      recipient: parsedTxn.args.to,
-    };
-  }
-
-  private static parseWithdrawWithNative(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): IBridgeInAction[] {
-    return [
-      {
+  private static parseBridgeIn( transaction: ITransaction,log: ITransactionLog): IBridgeInAction {
+      const parsedLog = ProtocolHelper.parseLog(
+        log,
+        this.contractDefinition.events[EVENT_ENUM.BRIDGED_DEPOSIT_WITH_ID]
+      );
+  
+      return {
         type: ACTION_ENUM.BRIDGE_IN,
-
+  
         fromChain: null,
         toChain: transaction.chainId,
-
+  
         fromToken: null,
-        toToken: parsedTxn.args.token,
-
+        toToken: parsedLog.args.token,
+  
         fromAmount: null,
-        toAmount: parsedTxn.args.amountToken.toString(),
+        toAmount: parsedLog.args.amount.toString(),
+  
+        sender:  parsedLog.args.sender,
+        recipient: parsedLog.args.origin,
+      };
+    }
 
-        sender: null,
-        recipient: parsedTxn.args.to,
-      },
-      {
-        type: ACTION_ENUM.BRIDGE_IN,
+    private static parseBridgeOut( transaction: ITransaction,log: ITransactionLog): IBridgeOutAction {
+        const parsedLog = ProtocolHelper.parseLog(
+          log,
+          this.contractDefinition.events[EVENT_ENUM.BRIDGED_WITHDRAWAL]
+        );
+    
+        return {
+          type: ACTION_ENUM.BRIDGE_OUT,
+    
+          fromChain: transaction.chainId,
+          toChain: null,
+    
+          fromToken: null,
+          toToken: parsedLog.args.token,
+    
+          fromAmount: null,
+          toAmount: parsedLog.args.amount.toString(),
+    
+          sender:null,
+          recipient: parsedLog.args.user,
+        };
+      }
 
-        fromChain: null,
-        toChain: transaction.chainId,
 
-        fromToken: null,
-        toToken: ethers.ZeroAddress,
+  // private static parseWithdraw(
+  //   transaction: ITransaction,
+  //   parsedTxn: ethers.TransactionDescription
+  // ): IBridgeInAction {
+  //   return {
+  //     type: ACTION_ENUM.BRIDGE_IN,
 
-        fromAmount: null,
-        toAmount: parsedTxn.args.amountNative.toString(),
+  //     fromChain: null,
+  //     toChain: transaction.chainId,
 
-        sender: null,
-        recipient: parsedTxn.args.to,
-      },
-    ];
-  }
+  //     fromToken: null,
+  //     toToken: parsedTxn.args.token,
 
-  private static parseDeposit(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): IBridgeOutAction {
-    return {
-      type: ACTION_ENUM.BRIDGE_OUT,
+  //     fromAmount: null,
+  //     toAmount: parsedTxn.args.amount.toString(),
 
-      fromChain: transaction.chainId,
-      toChain: null,
+  //     sender: null,
+  //     recipient: parsedTxn.args.to,
+  //   };
+  // }
 
-      fromToken: parsedTxn.args.token,
-      toToken: null,
+  // private static parseWithdrawNative(
+  //   transaction: ITransaction,
+  //   parsedTxn: ethers.TransactionDescription
+  // ): IBridgeInAction {
+  //   return {
+  //     type: ACTION_ENUM.BRIDGE_IN,
 
-      fromAmount: parsedTxn.args.amount.toString(),
-      toAmount: null,
+  //     fromChain: null,
+  //     toChain: transaction.chainId,
 
-      sender: transaction.from,
-      recipient: null,
-    };
-  }
+  //     fromToken: null,
+  //     toToken: ethers.ZeroAddress,
 
-  private static parseDepositNative(
-    transaction: ITransaction,
-    parsedTxn: ethers.TransactionDescription
-  ): IBridgeOutAction {
-    return {
-      type: ACTION_ENUM.BRIDGE_OUT,
+  //     fromAmount: null,
+  //     toAmount: parsedTxn.args.amount.toString(),
 
-      fromChain: transaction.chainId,
-      toChain: null,
+  //     sender: null,
+  //     recipient: parsedTxn.args.to,
+  //   };
+  // }
 
-      fromToken: ethers.ZeroAddress,
-      toToken: null,
+  // private static parseWithdrawWithNative(
+  //   transaction: ITransaction,
+  //   parsedTxn: ethers.TransactionDescription
+  // ): IBridgeInAction[] {
+  //   return [
+  //     {
+  //       type: ACTION_ENUM.BRIDGE_IN,
 
-      fromAmount: transaction.value.toString(),
-      toAmount: null,
+  //       fromChain: null,
+  //       toChain: transaction.chainId,
 
-      sender: transaction.from,
-      recipient: null,
-    };
-  }
+  //       fromToken: null,
+  //       toToken: parsedTxn.args.token,
+
+  //       fromAmount: null,
+  //       toAmount: parsedTxn.args.amountToken.toString(),
+
+  //       sender: null,
+  //       recipient: parsedTxn.args.to,
+  //     },
+  //     {
+  //       type: ACTION_ENUM.BRIDGE_IN,
+
+  //       fromChain: null,
+  //       toChain: transaction.chainId,
+
+  //       fromToken: null,
+  //       toToken: ethers.ZeroAddress,
+
+  //       fromAmount: null,
+  //       toAmount: parsedTxn.args.amountNative.toString(),
+
+  //       sender: null,
+  //       recipient: parsedTxn.args.to,
+  //     },
+  //   ];
+  // }
+
+  // private static parseDeposit(
+  //   transaction: ITransaction,
+  //   parsedTxn: ethers.TransactionDescription
+  // ): IBridgeOutAction {
+  //   return {
+  //     type: ACTION_ENUM.BRIDGE_OUT,
+
+  //     fromChain: transaction.chainId,
+  //     toChain: null,
+
+  //     fromToken: parsedTxn.args.token,
+  //     toToken: null,
+
+  //     fromAmount: parsedTxn.args.amount.toString(),
+  //     toAmount: null,
+
+  //     sender: transaction.from,
+  //     recipient: null,
+  //   };
+  // }
+
+  // private static parseDepositNative(
+  //   transaction: ITransaction,
+  //   parsedTxn: ethers.TransactionDescription
+  // ): IBridgeOutAction {
+  //   return {
+  //     type: ACTION_ENUM.BRIDGE_OUT,
+
+  //     fromChain: transaction.chainId,
+  //     toChain: null,
+
+  //     fromToken: ethers.ZeroAddress,
+  //     toToken: null,
+
+  //     fromAmount: transaction.value.toString(),
+  //     toAmount: null,
+
+  //     sender: transaction.from,
+  //     recipient: null,
+  //   };
+  // }
 }
 
 export class RhinoFiEthL1DepositContractParser {
@@ -220,9 +283,14 @@ export class RhinoFiEthL1DepositContractParser {
     const hasDepositLog = transaction.logs.find(
       (log) => log.topics[0] === EVENT_ENUM.L1_DEPOSIT_LOG
     );
+    const hasWithdrawlLog = transaction.logs.find(
+      (log) => log.topics[0] === EVENT_ENUM.L1_WITHDRAWAL
+    );
 
     if (hasDepositLog) {
       actions.push(this.parseDeposit(transaction, hasDepositLog));
+    }else if(hasWithdrawlLog){
+      actions.push(this.parseWithdrawl(transaction,hasWithdrawlLog))
     }
 
     return actions;
@@ -258,7 +326,38 @@ export class RhinoFiEthL1DepositContractParser {
       recipient: null,
     };
   }
+  private static parseWithdrawl(
+    transaction: ITransaction,
+    depositLog: ITransactionLog
+  ): IBridgeInAction {
+    const parsedLog = ProtocolHelper.parseLog(
+      depositLog,
+      this.contractDefiniton.events[EVENT_ENUM.L1_DEPOSIT_LOG]
+    );
+
+    const fromToken =
+      this.assetTypesToTokenAddress[parsedLog.args.assetType.toString()];
+
+    if (!fromToken) {
+      throw new Error(
+        `No token found for asset type ${parsedLog.args.assetType.toString()}`
+      );
+    }
+
+    return {
+      type: ACTION_ENUM.BRIDGE_IN,
+      fromChain: null,
+      toChain: transaction.chainId,
+      fromToken,
+      toToken: null,
+      fromAmount: parsedLog.args.nonQuantizedAmount.toString(),
+      toAmount: null,
+      sender: transaction.from,
+      recipient: parsedLog.args.recipient,
+    };
+  }
 }
+
 
 export class RhinofiL1WithdrawalRegistryParser {
   private static contractDefiniton =
