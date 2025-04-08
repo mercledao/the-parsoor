@@ -63,15 +63,22 @@ export class DepositContractParser {
           (log) => log.topics[0] === EVENT_ENUM.BRIDGED_WITHDRAWAL
         );
     
-        const hasBridgeOut = transaction.logs.find(
+    const hasBridgeOut = transaction.logs.find(
           (log) => log.topics[0] === EVENT_ENUM.BRIDGED_DEPOSIT_WITH_ID
+        );
+        const hasDeposit = transaction.logs.find(
+          (log) => log.topics[0] === EVENT_ENUM.BRIDGED_DEPOSIT
         );
     
         if (hasBirdgeIN) {
           actions.push(this.parseBridgeIn(transaction,hasBirdgeIN));
-        } else if(hasBridgeOut) {
+        } 
+        if(hasBridgeOut) {
         actions.push(this.parseBridgeOut(transaction, hasBridgeOut));
         }
+        if(hasDeposit) {
+          actions.push(this.parseDeposit(transaction, hasDeposit));
+          }
 
     return actions;
   }
@@ -79,7 +86,7 @@ export class DepositContractParser {
   private static parseBridgeIn( transaction: ITransaction,log: ITransactionLog): IBridgeInAction {
       const parsedLog = ProtocolHelper.parseLog(
         log,
-        this.contractDefinition.events[EVENT_ENUM.BRIDGED_DEPOSIT_WITH_ID]
+        this.contractDefinition.events[EVENT_ENUM.BRIDGED_WITHDRAWAL]
       );
   
       return {
@@ -94,15 +101,16 @@ export class DepositContractParser {
         fromAmount: null,
         toAmount: parsedLog.args.amount.toString(),
   
-        sender:  parsedLog.args.sender,
-        recipient: parsedLog.args.origin,
+        sender:null,
+        recipient: parsedLog.args.user,
       };
+      
     }
 
     private static parseBridgeOut( transaction: ITransaction,log: ITransactionLog): IBridgeOutAction {
         const parsedLog = ProtocolHelper.parseLog(
           log,
-          this.contractDefinition.events[EVENT_ENUM.BRIDGED_WITHDRAWAL]
+          this.contractDefinition.events[EVENT_ENUM.BRIDGED_DEPOSIT_WITH_ID]
         );
     
         return {
@@ -111,14 +119,37 @@ export class DepositContractParser {
           fromChain: transaction.chainId,
           toChain: null,
     
-          fromToken: null,
-          toToken: parsedLog.args.token,
+          fromToken: parsedLog.args.token,
+          toToken: null,
     
-          fromAmount: null,
-          toAmount: parsedLog.args.amount.toString(),
+          fromAmount: parsedLog.args.amount.toString(),
+          toAmount: null,
     
-          sender:null,
-          recipient: parsedLog.args.user,
+          sender:  parsedLog.args.sender,
+          recipient: parsedLog.args.origin,
+        };
+      }
+
+      private static parseDeposit( transaction: ITransaction,log: ITransactionLog): IBridgeOutAction {
+        const parsedLog = ProtocolHelper.parseLog(
+          log,
+          this.contractDefinition.events[EVENT_ENUM.BRIDGED_DEPOSIT]
+        );
+    
+        return {
+          type: ACTION_ENUM.BRIDGE_OUT,
+    
+          fromChain: transaction.chainId,
+          toChain: null,
+    
+          fromToken: parsedLog.args.token,
+          toToken: null,
+    
+          fromAmount: parsedLog.args.amount.toString(),
+          toAmount: null,
+    
+          sender:  parsedLog.args.user,
+          recipient: null,
         };
       }
 
@@ -289,7 +320,8 @@ export class RhinoFiEthL1DepositContractParser {
 
     if (hasDepositLog) {
       actions.push(this.parseDeposit(transaction, hasDepositLog));
-    }else if(hasWithdrawlLog){
+    }
+    if(hasWithdrawlLog){
       actions.push(this.parseWithdrawl(transaction,hasWithdrawlLog))
     }
 

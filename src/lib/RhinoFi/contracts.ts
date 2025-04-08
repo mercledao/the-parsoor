@@ -28,8 +28,8 @@ enum EVENT_ENUM {
    // Event for when a withdrawal is done
   BRIDGED_WITHDRAWAL = "0xe4f4f1fb3534fe80225d336f6e5a73007dc992e5f6740152bf13ed2a08f3851a",
 
-  // // Event for when a deposit is done
-  // BRIDGED_DEPOSIT = "0x573284f4c36da6a8d8d84cd06662235f8a770cc98e8c80e304b8f382fdc3dca2",
+  // Event for when a deposit is done
+  BRIDGED_DEPOSIT = "0x573284f4c36da6a8d8d84cd06662235f8a770cc98e8c80e304b8f382fdc3dca2",
 
   // // Event for when a withdrawal is done with native + erc20
   // BRIDGED_WITHDRAWAL_WITH_NATIVE = "0x0ec14d41fb8dd758c7a1fc411ce327517caf88a8b9dee8bed60869801990d22c",
@@ -96,11 +96,11 @@ const contracts: IProtocolContractDefinitions = {
           "event BridgedDepositWithId(address sender, address origin, address token, uint256 amount, uint256 commitmentId)"
         ])
       },
-      // [EVENT_ENUM.BRIDGED_DEPOSIT]: {
-      //   abi: new ethers.Interface([
-      //     "event BridgedDeposit(address indexed user, address indexed token, uint256 amount)",
-      //   ]),
-      // },
+      [EVENT_ENUM.BRIDGED_DEPOSIT]: {
+        abi: new ethers.Interface([
+          "event BridgedDeposit(address indexed user, address indexed token, uint256 amount)",
+        ]),
+      },
 
       [EVENT_ENUM.BRIDGED_WITHDRAWAL]: {
         abi: new ethers.Interface([
