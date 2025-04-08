@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
 import { CHAIN_ID } from "../enums";
 import { IChainDefinitions } from "../types";
+
+dotenv.config();
 
 export const chainConfig: IChainDefinitions = {
   [CHAIN_ID.ETHEREUM]: {
