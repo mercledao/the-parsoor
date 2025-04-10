@@ -17,6 +17,7 @@ import Lynex from "./Lynex";
 import Rango from "./Rango"
 import Openocean from "./Openocean"
 import KyberswapAggregator from "./Kyberswap";
+import AllBridge from "./Allbridge";
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -37,4 +38,5 @@ export const parsers = {
   [protocols.rango.identifier]:new Rango(),
   [protocols.openocean.identifier]:new Openocean(),
   [protocols.kyberswap.identifier]:new KyberswapAggregator(),
+  [protocols.allBridge.identifier]:new AllBridge(),
 };

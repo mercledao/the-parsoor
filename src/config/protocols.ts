@@ -172,4 +172,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX_AGGREGGATOR,
     actionTags: [ActionTags.SWAP],
   },
+  allBridge: {
+    identifier: "allBridge",
+    name: "AllBridge",
+    twitter: "https://x.com/Allbridge_io",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/allbridge.png",
+    website: "https://allbridge.io/",
+    type: ProtocolType.CROSS_CHAIN_BRIDGE,
+    actionTags: [ActionTags.BRIDGE],
+  },
 };

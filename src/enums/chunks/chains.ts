@@ -36,4 +36,9 @@ export enum CHAIN_ID {
   READ_STONE = 690,
   SONIC = 146,
   NEON = 245022934,
+
+  // for all bridge
+  TRON = 728126428, 
+  STELLAR = 1500,
+  SUI = 101
 }
