@@ -190,6 +190,15 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.QUESTING_PLATFORM,
     actionTags: [],
   },
+  layer3: {
+    identifier: "layer3",
+    name: "LayerThree",
+    twitter: "https://x.com/layer3xyz",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/layer3.png",
+    website: "https://app.layer3.xyz/quests",
+    type: ProtocolType.QUESTING_PLATFORM,
+    actionTags: [],
+  },
   etherfi: {
     identifier: "etherfi",
     name: "Etherfi",
