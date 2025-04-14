@@ -192,7 +192,7 @@ export const protocols: IProtocolDefinitionMap = {
   },
   layer3: {
     identifier: "layer3",
-    name: "LayerThree",
+    name: "Layer3",
     twitter: "https://x.com/layer3xyz",
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/layer3.png",
     website: "https://app.layer3.xyz/quests",
