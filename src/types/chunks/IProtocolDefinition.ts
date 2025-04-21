@@ -24,6 +24,7 @@ export enum ProtocolType {
   NFT_MARKETPLACE = "NFT Marketplace",
   INFRA = "Web3 Infra",
   MESSAGING_PROTOCOL = "Messaging Protocol",
+  SOCIAL_FI = "SocialFi",
 }
 
 export enum ActionTags {

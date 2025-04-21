@@ -251,5 +251,15 @@ export const protocols: IProtocolDefinitionMap = {
     logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/lynex.png",
     website: "https://app.lynex.fi/swap",
     type: ProtocolType.DEX,
+    actionTags: [],
+  },
+  zora: {
+    identifier: "zora",
+    name: "Zora",
+    twitter: "https://x.com/zora",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/zora.png",
+    website: "https://zora.co/",
+    type: ProtocolType.SOCIAL_FI,
+    actionTags: [],
   },
 };
