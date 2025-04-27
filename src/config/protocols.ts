@@ -262,4 +262,22 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.SOCIAL_FI,
     actionTags: [],
   },
+  bex: {
+    identifier: "bex",
+    name: "BEX",
+    twitter: "https://x.com/berachain",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/bex.png",
+    website: "https://hub.berachain.com/",
+    type: ProtocolType.DEX,
+    actionTags: [],
+  },
+  burrbear: {
+    identifier: "burrbear",
+    name: "BurrBear",
+    twitter: "https://x.com/moneygoesburr",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/burrbear.png",
+    website: "https://app.burrbear.io/#/",
+    type: ProtocolType.DEX,
+    actionTags: [],
+  },
 };

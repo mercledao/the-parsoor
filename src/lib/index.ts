@@ -14,6 +14,7 @@ import Paraswap from "./Paraswap";
 import RhinoFi from "./RhinoFi";
 import Sushiswap from "./Sushiswap";
 import Uniswap from "./Uniswap";
+import Bex from "./Bex";
 
 export const parsers = {
   [protocols.rhinofi.identifier]: new RhinoFi(),
@@ -31,4 +32,5 @@ export const parsers = {
   [protocols.curve.identifier]: new Curve(),
   [protocols.dodo.identifier]: new Dodo(),
   [protocols.lynex.identifier]: new Lynex(),
+  [protocols.bex.identifier]:new Bex(),
 };
