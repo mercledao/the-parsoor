@@ -13,23 +13,27 @@ export class BexContractParser {
     transaction: ITransaction
   ): ITransactionAction[] {
     const actions: ITransactionAction[] = [];
-    
+
     const matchedSwapOrderLogs = transaction.logs.filter(
-        (log) => log.topics[0] === EVENT_ENUM.SWAP
-      );
-      if (matchedSwapOrderLogs) {
-        for (const swapLog of matchedSwapOrderLogs) {
-          actions.push(this.parseSwap(swapLog, transaction));
-        }
+      (log) => log.topics[0] === EVENT_ENUM.SWAP
+    );
+
+    if (matchedSwapOrderLogs) {
+      for (const swapLog of matchedSwapOrderLogs) {
+        actions.push(this.parseSwap(swapLog, transaction));
       }
-    
+    }
+
     return actions;
   }
-  
-  private static parseSwap(log: ITransactionLog, transaction:ITransaction): ISingleSwapAction {
+
+  private static parseSwap(
+    log: ITransactionLog,
+    transaction: ITransaction
+  ): ISingleSwapAction {
     const parsedLog = ProtocolHelper.parseLog(
       log,
-      contracts.VAULT.events[EVENT_ENUM.SWAP]
+      contracts[CONTRACT_ENUM.VAULT].events[EVENT_ENUM.SWAP]
     );
 
     return {
@@ -39,7 +43,7 @@ export class BexContractParser {
       fromAmount: parsedLog.args.amountIn.toString(),
       toAmount: parsedLog.args.amountOut.toString(),
       sender: transaction.from,
-      recipient: transaction.from
+      recipient: transaction.from,
     };
   }
 }

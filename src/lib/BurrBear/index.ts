@@ -20,7 +20,7 @@ export default class BurrBear implements IProtocolParserExport {
     transaction: ITransaction
   ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
-    
+
     if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,

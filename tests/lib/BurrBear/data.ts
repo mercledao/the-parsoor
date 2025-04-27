@@ -19,7 +19,7 @@ export const BurrBearData: IProtocolTestingData = {
           fromAmount: "150162118979220504607",
           toAmount: "40381398399061016523",
           sender: "0x704bd731a687efab67A532713a3233112580204C",
-          recipient: "0x704bd731a687efab67A532713a3233112580204C"
+          recipient: "0x704bd731a687efab67A532713a3233112580204C",
         },
       ],
     },
@@ -35,7 +35,7 @@ export const BurrBearData: IProtocolTestingData = {
           fromAmount: "110118887251428370045",
           toAmount: "29709336497741567158",
           sender: "0x704bd731a687efab67A532713a3233112580204C",
-          recipient: "0x704bd731a687efab67A532713a3233112580204C"
+          recipient: "0x704bd731a687efab67A532713a3233112580204C",
         },
       ],
     },
@@ -51,7 +51,7 @@ export const BurrBearData: IProtocolTestingData = {
           fromAmount: "2583000000000000",
           toAmount: "2585723765751085",
           sender: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7",
-          recipient: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7"
+          recipient: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7",
         },
       ],
     },
@@ -67,7 +67,7 @@ export const BurrBearData: IProtocolTestingData = {
           fromAmount: "2583000000000000",
           toAmount: "2585723765987255",
           sender: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7",
-          recipient: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7"
+          recipient: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7",
         },
         {
           type: ACTION_ENUM.SINGLE_SWAP,
@@ -76,7 +76,7 @@ export const BurrBearData: IProtocolTestingData = {
           fromAmount: "2585723765987255",
           toAmount: "9556740618199936",
           sender: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7",
-          recipient: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7"
+          recipient: "0x97A730698390e82240415eE175Cf16eF3AD4f5a7",
         },
       ],
     },
@@ -92,7 +92,7 @@ export const BurrBearData: IProtocolTestingData = {
           fromAmount: "16117181450516674932",
           toAmount: "60123284280224349908",
           sender: "0x704bd731a687efab67A532713a3233112580204C",
-          recipient: "0x704bd731a687efab67A532713a3233112580204C"
+          recipient: "0x704bd731a687efab67A532713a3233112580204C",
         },
       ],
     },
@@ -108,9 +108,9 @@ export const BurrBearData: IProtocolTestingData = {
           fromAmount: "37346363728614004950",
           toAmount: "140209869762381018395",
           sender: "0x704bd731a687efab67A532713a3233112580204C",
-          recipient: "0x704bd731a687efab67A532713a3233112580204C"
+          recipient: "0x704bd731a687efab67A532713a3233112580204C",
         },
       ],
-    }
+    },
   ],
 };

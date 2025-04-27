@@ -20,7 +20,7 @@ export default class Bex implements IProtocolParserExport {
     transaction: ITransaction
   ): Promise<ITransactionAction[]> {
     const actions: ITransactionAction[] = [];
-    
+
     if (
       ProtocolHelper.txnToIsListenerContract(
         transaction,
@@ -31,6 +31,7 @@ export default class Bex implements IProtocolParserExport {
       const action = BexContractParser.parseTransaction(transaction);
       actions.push(...action);
     }
+
     return actions;
   }
 

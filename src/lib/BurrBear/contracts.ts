@@ -7,7 +7,7 @@ enum CONTRACT_ENUM {
   VAULT = "Vault",
 }
 enum EVENT_ENUM {
-  SWAP = "0x2170c741c41531aec20e7c107c24eecfdd15e69c9bb0a8dd37b1840b9e0b207b"
+  SWAP = "0x2170c741c41531aec20e7c107c24eecfdd15e69c9bb0a8dd37b1840b9e0b207b",
 }
 const contracts: IProtocolContractDefinitions = {
   [CONTRACT_ENUM.VAULT]: {

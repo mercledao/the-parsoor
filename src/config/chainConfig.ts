@@ -86,4 +86,14 @@ export const chainConfig: IChainDefinitions = {
   [CHAIN_ID.HARMONY]: {
     rpcUrl: process.env.HARMONY_RPC_URL || "https://api.harmony.one",
   },
+  [CHAIN_ID.BERACHAIN]: {
+    rpcUrl: process.env.BERACHAIN_RPC_URL || "https://rpc.berachain.com",
+  },
+  [CHAIN_ID.ABSTRACT]: {
+    rpcUrl: process.env.ABSTRACT_RPC_URL || "https://api.mainnet.abs.xyz",
+  },
+  [CHAIN_ID.UNICHAIN]: {
+    rpcUrl:
+      process.env.UNICHAIN_RPC_URL || "https://unichain-rpc.publicnode.com",
+  },
 };
