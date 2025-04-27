@@ -1,11 +1,12 @@
 import { protocols } from "../config";
 import Across from "./Across";
 import Aerodrome from "./Aerodrome";
-import Cowswap from "./Cowswap";
-import Debridge from "./Debridge";
-// import Lifi from "./LiFi";
+import Bex from "./Bex";
 import Bungee from "./Bungee";
+import BurrBear from "./BurrBear";
+import Cowswap from "./Cowswap";
 import Curve from "./Curve";
+import Debridge from "./Debridge";
 import Dodo from "./Dodo";
 import Lynex from "./Lynex";
 import Odos from "./Odos";
@@ -31,4 +32,6 @@ export const parsers = {
   [protocols.curve.identifier]: new Curve(),
   [protocols.dodo.identifier]: new Dodo(),
   [protocols.lynex.identifier]: new Lynex(),
+  [protocols.bex.identifier]: new Bex(),
+  [protocols.burrbear.identifier]: new BurrBear(),
 };
