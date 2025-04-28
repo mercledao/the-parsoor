@@ -8,6 +8,7 @@ import Cowswap from "./Cowswap";
 import Curve from "./Curve";
 import Debridge from "./Debridge";
 import Dodo from "./Dodo";
+import Kodiak from "./Kodiak";
 import Lynex from "./Lynex";
 import Odos from "./Odos";
 import Pancakeswap from "./Pancakeswap";
@@ -34,4 +35,5 @@ export const parsers = {
   [protocols.lynex.identifier]: new Lynex(),
   [protocols.bex.identifier]: new Bex(),
   [protocols.burrbear.identifier]: new BurrBear(),
+  [protocols.kodiak.identifier]: new Kodiak(),
 };

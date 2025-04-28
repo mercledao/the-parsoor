@@ -280,4 +280,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [],
   },
+  kodiak: {
+    identifier: "kodiak",
+    name: "Kodiak Finance",
+    twitter: "https://x.com/KodiakFi",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/kodiak.png",
+    website: "https://www.kodiak.finance/",
+    type: ProtocolType.DEX,
+    actionTags: [],
+  },
 };
