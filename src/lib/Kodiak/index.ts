@@ -15,7 +15,7 @@ export default class Kodiak implements IProtocolParserExport {
 
   constructor() {
     this.protocolIdentifier = protocols.kodiak.identifier;
-    // this.combinedContracts = contracts;
+    this.combinedContracts = contracts;
   }
 
   public async parseTransaction(
