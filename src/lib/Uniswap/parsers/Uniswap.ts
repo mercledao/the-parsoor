@@ -461,28 +461,30 @@ export class UniswapParser {
     const parsedTxn = contracts[routerType].interface.parseTransaction({
       data: transaction.data,
     });
-  
+
     if (!parsedTxn) return [];
-  
+
     if (parsedTxn.name !== "multicall") {
       const action = await this.createV3SwapAction(parsedTxn, transaction);
       return action ? [action] : [];
     }
-  
-    const calls = parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
+
+    const calls =
+      parsedTxn.args.length === 2 ? parsedTxn.args[1] : parsedTxn.args[0];
     const result: ITransactionAction[] = [];
-  
+
     for (const callData of calls) {
-      const subParsedTxn = contracts[routerType].interface.parseTransaction({ data: callData });
+      const subParsedTxn = contracts[routerType].interface.parseTransaction({
+        data: callData,
+      });
       if (!subParsedTxn) continue;
-  
+
       const action = await this.createV3SwapAction(subParsedTxn, transaction);
       if (action) result.push(action);
     }
-  
+
     return result;
   }
-  
 
   public static decodeV3Path(path: string): string[] {
     if (!path.startsWith("0x")) return [];
