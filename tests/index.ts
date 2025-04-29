@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { Provider as ZkSyncProvider } from "zksync-ethers";
 import {
   ACTION_ENUM,
   CHAIN_ID,
@@ -25,8 +26,17 @@ export class ProtocolParserUtils {
 
   public async initialize(): Promise<void> {
     for (const [chainId, chain] of Object.entries(chainConfig)) {
-      this.rpcPool[chainId] = new ethers.JsonRpcProvider(chain.rpcUrl);
+      if (this.isZkSync(+chainId)) {
+        this.rpcPool[chainId] = new ZkSyncProvider(chain.rpcUrl);
+      } else {
+        this.rpcPool[chainId] = new ethers.JsonRpcProvider(chain.rpcUrl);
+      }
     }
+  }
+
+  private isZkSync(chainId: CHAIN_ID): boolean {
+    const zkSyncChainIds = [CHAIN_ID.ABSTRACT];
+    return zkSyncChainIds.includes(chainId);
   }
 
   public isValidProtocol(): void {
@@ -47,7 +57,7 @@ export class ProtocolParserUtils {
       data.chainId,
       data.txnHash
     );
-    
+
     const actions =
       await parsers[this.protocolIdentifier].parseTransaction(formattedTxn);
     return actions;
@@ -80,7 +90,7 @@ export class ProtocolParserUtils {
         contractAddress: log.address,
         topics: log.topics as string[],
         data: log.data,
-        logIndex: log.index
+        logIndex: log.index,
       })),
     };
 
