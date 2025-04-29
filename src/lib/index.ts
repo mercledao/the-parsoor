@@ -12,6 +12,7 @@ import Kodiak from "./Kodiak";
 import Lynex from "./Lynex";
 import Odos from "./Odos";
 import Pancakeswap from "./Pancakeswap";
+import Pandora from "./Pandora";
 import Paraswap from "./Paraswap";
 import RhinoFi from "./RhinoFi";
 import Sushiswap from "./Sushiswap";
@@ -36,4 +37,5 @@ export const parsers = {
   [protocols.bex.identifier]: new Bex(),
   [protocols.burrbear.identifier]: new BurrBear(),
   [protocols.kodiak.identifier]: new Kodiak(),
+  [protocols.pandora.identifier]: new Pandora(),
 };

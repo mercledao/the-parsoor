@@ -289,4 +289,13 @@ export const protocols: IProtocolDefinitionMap = {
     type: ProtocolType.DEX,
     actionTags: [],
   },
+  pandora: {
+    identifier: "pandora",
+    name: "Pandora",
+    twitter: "https://x.com/pandoradotfun",
+    logo: "https://storage-mercle-prod.s3.amazonaws.com/public/protocol-logos/pandora.png",
+    website: "https://www.pandora.fun/",
+    type: ProtocolType.DEX,
+    actionTags: [],
+  },
 };
