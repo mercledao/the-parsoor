@@ -144,8 +144,8 @@ export class ProtocolParserUtils {
   ): void {
     expect(actualAction.fromChain).toBe(expectedAction.fromChain);
     expect(actualAction.toChain).toBe(expectedAction.toChain);
-    expect(actualAction.fromToken).toBe(expectedAction.fromToken);
-    expect(actualAction.toToken).toBe(expectedAction.toToken);
+    expect(ethers.getAddress(actualAction.fromToken)).toBe(ethers.getAddress(expectedAction.fromToken));
+    expect(ethers.getAddress(actualAction.toToken)).toBe(ethers.getAddress(expectedAction.toToken));
     expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
     expect(actualAction.sender).toBe(expectedAction.sender);
@@ -163,8 +163,8 @@ export class ProtocolParserUtils {
   ): void {
     expect(actualAction.fromChain).toBe(expectedAction.fromChain);
     expect(actualAction.toChain).toBe(expectedAction.toChain);
-    expect(actualAction.fromToken).toBe(expectedAction.fromToken);
-    expect(actualAction.toToken).toBe(expectedAction.toToken);
+    expect(ethers.getAddress(actualAction.fromToken)).toBe(ethers.getAddress(expectedAction.fromToken));
+    expect(ethers.getAddress(actualAction.toToken)).toBe(ethers.getAddress(expectedAction.toToken));
     expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
     expect(actualAction.sender).toBe(expectedAction.sender);
@@ -180,8 +180,8 @@ export class ProtocolParserUtils {
     expectedAction: ISingleSwapAction,
     actualAction: ISingleSwapAction
   ): void {
-    expect(actualAction.fromToken).toBe(expectedAction.fromToken);
-    expect(actualAction.toToken).toBe(expectedAction.toToken);
+    expect(ethers.getAddress(actualAction.fromToken)).toBe(ethers.getAddress(actualAction.fromToken));
+    expect(ethers.getAddress(actualAction.toToken)).toBe(ethers.getAddress(expectedAction.toToken));
     expect(actualAction.fromAmount).toBe(expectedAction.fromAmount);
     expect(actualAction.toAmount).toBe(expectedAction.toAmount);
     expect(actualAction.sender).toBe(expectedAction.sender);
@@ -197,8 +197,8 @@ export class ProtocolParserUtils {
     expectedAction: IMultiSwapAction,
     actualAction: IMultiSwapAction
   ): void {
-    expect(actualAction.fromTokens).toEqual(expectedAction.fromTokens);
-    expect(actualAction.toTokens).toEqual(expectedAction.toTokens);
+    expect(actualAction.fromTokens.map(a => ethers.getAddress(a))).toEqual(expectedAction.fromTokens.map(a => ethers.getAddress(a)));
+    expect(actualAction.toTokens.map(a => ethers.getAddress(a))).toEqual(expectedAction.toTokens.map(a => ethers.getAddress(a)));
     expect(actualAction.fromAmounts).toEqual(expectedAction.fromAmounts);
     expect(actualAction.toAmounts).toEqual(expectedAction.toAmounts);
     expect(actualAction.recipients).toEqual(expectedAction.recipients);
