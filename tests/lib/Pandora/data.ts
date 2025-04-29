@@ -151,21 +151,22 @@ export const pandoraData: Record<PANDORA_VERSIONS, IProtocolTestTransaction[]> =
           },
         ],
       },
-      //   {
-      //     txnHash:
-      //       "0x3fa02076573ab3d2bc4653a572ed31e37dd617979ccc8e19be64c8c112b61037",
-      //     chainId: CHAIN_ID.ABSTRACT,
-      //     emittedActions: [
-      //       {
-      //         type: ACTION_ENUM.SINGLE_SWAP,
-      //         fromToken: "0x3439153EB7AF838Ad19d56E1571FBD09333C2809",
-      //         toToken: "0xDf70075737E9F96B078ab4461EeE3e055E061223",
-      //         fromAmount: "200000000000000000",
-      //         toAmount: "281249679849264743002",
-      //         recipient: "0xdB172eD9e1354Bde90583dCA0F2247c7b4A62a35",
-      //       },
-      //     ],
-      //   },
+      {
+        txnHash:
+          "0x3fa02076573ab3d2bc4653a572ed31e37dd617979ccc8e19be64c8c112b61037",
+        chainId: CHAIN_ID.ABSTRACT,
+        emittedActions: [
+          {
+            type: ACTION_ENUM.SINGLE_SWAP,
+            fromToken: "0x3439153EB7AF838Ad19d56E1571FBD09333C2809",
+            toToken: "0xDf70075737E9F96B078ab4461EeE3e055E061223",
+            fromAmount: "200000000000000000",
+            toAmount: "281249679849264743002",
+            recipient: "0xdB172eD9e1354Bde90583dCA0F2247c7b4A62a35",
+            sender: "0xdB172eD9e1354Bde90583dCA0F2247c7b4A62a35",
+          },
+        ],
+      },
     ],
     [PANDORA_VERSIONS.V3]: [
       {

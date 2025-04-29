@@ -31,7 +31,7 @@ export type ISingleSwapAction = {
   /**
    * The sender of the swap
    */
-  sender?: string;
+  sender: string;
   /**
    * The fee for the bridge
    */

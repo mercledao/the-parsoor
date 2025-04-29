@@ -259,6 +259,7 @@ export class UniswapParser {
       fromAmount: transaction.value.toString(),
       toAmount: toTxn.value.toString(),
       recipient: parsedTxn.args.to,
+      sender: transaction.from,
     };
   }
 
@@ -574,6 +575,7 @@ export class UniswapParser {
       fromAmount: fromTxn.value.toString(),
       toAmount: toTxn.value.toString(),
       recipient: params.recipient || transaction.from,
+      sender: transaction.from,
     };
   }
 
@@ -614,6 +616,7 @@ export class UniswapParser {
       fromAmount: fromTxn.value.toString(),
       toAmount: toTxn.value.toString(),
       recipient: params.recipient || transaction.from,
+      sender: transaction.from,
     };
   }
 
@@ -674,6 +677,7 @@ export class UniswapParser {
           fromAmount: fromTxn.value.toString(),
           toAmount: toTxn.value.toString(),
           recipient: decodedInput[0],
+          sender: transaction.from,
         });
       }
     }
